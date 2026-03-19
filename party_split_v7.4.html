@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> 派對分帳神器 v7.4</title>
+    <style>
+        :root {
+            --bg: #f6f8fb;
+            --card: #ffffff;
+            --muted: #6b7280;
+            --accent: #2563eb;
+            --accent-2: #06b6d4;
+            --danger: #ef4444;
+            --radius: 10px;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: "Noto Sans TC", Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+            color: #111827;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .title {
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 0.2px;
+        }
+
+        .title .sub {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+            padding: 18px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(15, 23, 42, 0.03);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            border: 1px solid #e6e9ee;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #fff;
+            outline: none;
+            transition: box-shadow .12s, border-color .12s;
+            font-size: 14px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
+            border-color: var(--accent);
+        }
+
+        button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .06s ease, box-shadow .08s ease, opacity .08s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+        }
+
+        button.secondary {
+            background: #fff;
+            color: var(--accent);
+            border: 1px solid #e6e9ee;
+            box-shadow: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px dashed #e6e9ee;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        ul#peopleList,
+        ul#groupList {
+            list-style: none;
+            padding-left: 0;
+            margin: 8px 0 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        ul#peopleList li,
+        ul#groupList li {
+            background: #f8fafc;
+            padding: 8px 10px;
+            border-radius: 999px;
+            color: #0f172a;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(2, 6, 23, 0.03);
+        }
+
+        ul#peopleList li button {
+            background: transparent;
+            color: var(--danger);
+            border: none;
+            padding: 0 6px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .member-box {
+            gap: 8px;
+        }
+
+        .member-box label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #f3f7ff, #ffffff);
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            color: #0f172a;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .member-box input {
+            margin-right: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        th,
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eef2f6;
+            text-align: left;
+        }
+
+        thead th {
+            background: transparent;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        tbody tr:nth-child(odd) {
+            background: rgba(15, 23, 42, 0.02);
+        }
+
+        .table-box {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .result {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 13px;
+            color: #0b1220;
+        }
+
+        /* Small screens */
+        @media(max-width:720px) {
+            .app {
+                padding: 12px;
+            }
+
+            .title h1 {
+                font-size: 18px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .biginput {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+            border-radius: 60px;
+            outline: none;
+            transition: all 0.3s;
+            width: 80%;
+            box-sizing: border-box;
+        }
+
+        /* 折疊區塊樣式 */
+        details.fold-section {
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        details.fold-section summary {
+            cursor: pointer;
+            padding: 10px 14px;
+            font-weight: 700;
+            background: linear-gradient(180deg, #fafafe, #ffffff);
+            list-style: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        details.fold-section[open] summary {
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+        }
+
+        details.fold-section .fold-body {
+            padding: 10px 14px;
+        }
+
+        details.fold-section summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .fold-summary-title {
+            display: inline-block;
+        }
+
+        .fold-summary-chevron {
+            font-size: 14px;
+            color: var(--muted);
+            margin-left: 8px;
+        }
+
+        /* 小型說明彈出 (驚嘆號) - 改為浮層以避免展開時推版 */
+        details.help-box {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        details.help-box summary {
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            list-style: none;
+            padding: 0;
+            outline: none;
+        }
+
+        details.help-box summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* 預設隱藏幫助內容，展開時顯示為絕對定位的浮層，不會推動版面 */
+        details.help-box .help-body {
+            display: none;
+            position: absolute;
+            top: 38px;
+            right: 0;
+            width: 420px;
+            max-width: calc(100vw - 32px);
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
+            border-radius: 8px;
+            padding: 12px;
+            z-index: 1200;
+            font-size: 13px;
+            color: #111827;
+            box-sizing: border-box;
+            max-height: 60vh;
+            overflow: auto;
+        }
+
+        details.help-box[open] .help-body {
+            display: block;
+        }
+
+        details.help-box .help-body p {
+            margin: 6px 0;
+            line-height: 1.4;
+        }
+
+        details.help-box .help-body code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <div class="header">
+            <div class="title">
+            <h1>派對分帳神器 v7.4</h1>
+            <div class="sub">快速解析帳單、手動編輯與群組管理</div>
+                <details class="help-box" aria-label="使用說明">
+                    <summary title="使用說明">!</summary>
+                    <div class="help-body">
+                        <strong>使用說明 / 解析規則（簡要）</strong>
+                        <p><b>優先判斷人名：</b>若一行以已知<code>人名</code>開頭，且後面沒有「出/代出」字樣，視為個人費用（personal）。格式範例：<br><code>藍天 胭脂歐蕾 $78</code></p>
+                        <p><b>代付判斷：</b>含有「代出」或「出」的行視為代付（advance）。若開頭為人名且緊接「出/代出」，該人為代付者。範例：<br><code>藍天 出 大布丁 167元</code></p>
+                        <p><b>派對項目：</b>不符合上述兩種情況則視為派對共攤（party），預設分攤給全部人。範例：<br><code>披薩 300</code></p>
+                        <p><b>金額解析：</b>支援 <code>x * y</code>（例如 <code>85 * 3</code>）及取行內最後一個數字為價格。可接受 $ / 元 / NT$ 標記。</p>
+                        <p><b>手動修正：</b>切到一般模式可手動編輯每列類型（派對/個人/代付）與分攤人。個人費用：members 欄位第一個人即為付款者；代付：第一個為代付人，後續為分攤對象。</p>
+                        <p>若要解析正確，建議常用格式：</p>
+                        <ul>
+                            <li><code>人名 品項 $金額</code>（個人）</li>
+                            <li><code>人名 出/代出 品項 $金額</code>（代付）</li>
+                            <li><code>品項 $金額</code>或<code>品項 數量*單價</code>（派對共攤）</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+            <div class="controls">
+                <button onclick="calculate()">計算</button>
+                <button class="secondary" onclick="exportLine()">一鍵複製結果</button>
+                <button class="secondary" onclick="resetAll()">清空</button>
+            </div>
+        </div>
+
+        <h2>參加人員</h2>
+        <h3>新增人員</h3>
+        <input class="biginput" id="personName" placeholder="輸入人員名稱">
+        <button onclick="addPerson()">新增</button>
+        <h3>批次匯入人員</h3>
+        <textarea id="bulkPeople" rows="3" style="width: 100%;" placeholder="可以一次使用空格逗號或換行實現一次輸入多位 ex. 藍天 阿劉 麻煩 手手 闆娘 沒角 IE 阿球 yuna 阿文 飯粒 米粒
+"></textarea>
+        <button onclick="importPeople()">批次匯入</button>
+        <h3>人員清單</h3>
+        <ul id="peopleList"></ul>
+
+        <h2>現有人員進行群組</h2>
+        <div>
+            <ul id="groupEditList"></ul>
+        </div>
+        <div class="member-box" id="groupSelectBox"></div>
+        <div style="margin:6px 0;">
+            <input class="biginput" type="text" id="groupName" placeholder="群組名稱">
+            <button onclick="groupPeople()">群組</button>
+            <button onclick="clearGroupSelection()" id="clearGroupBtn">清除勾選</button>
+        </div>
+        <ul id="groupList"></ul>
+        <div id="groupEditBox" style="display:none; margin-top:10px;"></div>
+
+        <h2>帳單解析</h2>
+
+        <label>主要付錢人：
+            <select id="primaryPayerSelect" onchange="onPrimaryPayerChange()">
+                <option value="">（未選擇）</option>
+            </select>
+        </label>
+
+        <!-- 新增：模式切換按鈕 -->
+        <div style="margin-bottom:8px;margin-top: 15px;">
+            <button id="toggleParseModeBtn" onclick="toggleParseMode()" class="btn">切換到一般模式</button>
+        </div>
+
+        <!-- 自動解析區（原本的 textarea + 解析按鈕） -->
+        <div id="autoParseBox">
+            <!-- 範例說明，可展開檢視 -->
+            <details style="margin-bottom:8px;">
+                <summary style="cursor:pointer;font-weight:600;">示範範例（點擊展開/收合）</summary>
+                <pre style="white-space:pre-wrap;background:#f7fafc;padding:10px;border-radius:8px;border:1px solid #e6e9ee;margin-top:8px;font-size:13px;">
+                    --------------- 雞蛋糕費用 ---------------
+                    藍天 牛奶糖 $33 
+                    藍天 乳酪 $121
+                    藍天 雞蛋 $99
+                    藍天 牛奶 $40
+                    藍天 奶油 $30
+
+                    --------------- 飲料費用 ---------------
+                    藍天 胭脂歐蕾 $78 溫無糖
+                    藍天 熟成榛果歐蕾 $80 微冰無糖
+                    藍天 胭脂紅茶 $55 微冰無糖
+                    藍天 熟成榛果歐蕾 $80 少冰無糖
+                    麻煩 熟成歐蕾 $75 常溫無糖
+                    沒角 熟成歐蕾 $150 去冰半糖
+                    yuna 金蜜歐蕾 $70 中杯 去冰無糖
+                    手手 春芽冷露 $65 去冰無糖
+                    闆娘 春檸綠茶 $65 去冰無糖
+                    阿文 胭脂歐蕾 $78 微冰微糖
+
+                    --------------- 點心費用 ---------------
+                    藍天 出 大布丁 167元
+                    闆娘 出 海鮮大拼盤 500元
+                    沒角 出 生乳捲 210元
+                </pre>
+                <div style="margin-top:6px;">
+                    <button onclick="loadExample()" class="secondary" style="padding:6px 10px;">載入示範範例到解析區</button>
+                    <small style="color:var(--muted); margin-left:8px;">載入後按「解析」即可示範解析結果。</small>
+                </div>
+            </details>
+            <textarea id="importText" rows="12" style="width: 100%;"></textarea>
+            <div style="margin-top:8px; display:flex; gap:8px;margin-bottom: 10px;">
+                <button onclick="parseText()">解析</button>
+                <button class="secondary" onclick="loadExample()">載入示範範例</button>
+            </div>
+        </div>
+        <script>
+            function loadExample() {
+                const example = `--------------- 雞蛋糕派對費用 ---------------
+牛奶糖 $33 
+乳酪 $121
+雞蛋 $99
+牛奶 $40
+奶油 $30
+
+--------------- 消夜費用 ---------------
+雞排 85 * 3
+鹹酥雞 大份 100 * 2
+魷魚 大份 100 * 3
+馬鈴薯條 35 * 2
+甜不辣 35 * 2
+柳葉魚 55 * 2
+雞蛋豆腐 40 * 2
+九層塔 30
+玉米筍 40
+杏包菇 40 * 2
+
+--------------- 個人費用 ---------------
+藍天 胭脂歐蕾 $78 溫無糖
+藍天 熟成榛果歐蕾 $80 微冰無糖
+藍天 胭脂紅茶 $55 微冰無糖
+藍天 熟成榛果歐蕾 $80 少冰無糖
+麻煩 熟成歐蕾 $75 常溫無糖
+沒角 熟成歐蕾 $150 去冰半糖
+yuna 金蜜歐蕾 $70 中杯 去冰無糖
+手手 春芽冷露 $65 去冰無糖
+闆娘 春檸綠茶 $65 去冰無糖
+阿文 胭脂歐蕾 $78 微冰微糖
+
+--------------- 晚餐費用 ---------------
+阿劉 川香麻辣豬 $255.00 小辣 
+阿文 川香麻辣牛 $240.00 大辣 
+手手 川香麻辣牛 $240.00 小辣 
+闆娘 川香麻辣豬 $300.00 小辣
+沒角 經典黃燜牛 $240.00 小辣 
+IE 黃燜雞米飯 $255.00 不辣
+阿球 鮮肉大餛飩湯 $98.00 
+藍天 鮮肉大餛飩麵 $109.00 
+
+--------------- 星期日的麥當勞晚餐費用 ---------------
+藍天 辣麥脆雞+雙層牛 $223
+藍天 雪碧 $38
+藍天 冰蜂蜜奶茶 $68
+藍天 六塊麥克雞買一送一 $99
+藍天 玉米湯大 $55
+手手 辣麥脆雞+雙層牛 $223
+手手 雪碧 2杯 $76
+沒角 四盎司 + 勁辣堡 $203
+沒角 冰蜂蜜奶茶 2杯 $136
+闆娘 麥香雞+雙層牛 $133
+闆娘 紅茶 2杯 $86
+闆娘 原味雞腿排 $68
+
+--------------- 代出費用 ---------------
+藍天 出 大布丁 167元
+闆娘 出 海鮮大拼盤 500元
+沒角 出 生乳捲 210元`;
+                const ta = document.getElementById('importText');
+                if (ta) ta.value = example;
+            }
+        </script>
+
+        <!-- 手動一般模式編輯區（預設隱藏） -->
+        <div id="manualParseBox" style="display:none; margin-top:8px;">
+            <table style="width:100%; border-collapse:collapse; margin-bottom:8px;">
+                <thead>
+                    <tr>
+                        <th style="border:1px solid #ccc; padding:6px; width:15%;">分類</th>
+                        <th style="border:1px solid #ccc; padding:6px; width:45%;">品項</th>
+                        <th style="border:1px solid #ccc; padding:6px; width:15%;">價格</th>
+                        <th style="border:1px solid #ccc; padding:6px; width:20%;">分攤人（逗號分隔）</th>
+                        <th style="border:1px solid #ccc; padding:6px; width:20%;">分攤項目</th>
+                        <th style="border:1px solid #ccc; padding:6px; width:5%;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="manualRowsBody"></tbody>
+            </table>
+            <div style="margin-bottom:8px;">
+                <button onclick="addManualRow()" class="btn">新增列</button>
+                <button onclick="saveManualRows()" class="btn">儲存至派對費用</button>
+            </div>
+        </div>
+        <!-- 折疊：派對費用 -->
+        <details class="fold-section" id="partyDetails" open>
+            <summary>
+                <span class="fold-summary-title">派對費用</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>分類</th>
+                            <th>品項</th>
+                            <th>價格</th>
+                            <th>分攤人</th>
+                            <th>付款人</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partyTable"></tbody>
+                </table>
+            </div>
+        </details>
+
+        <!-- 折疊：個人費用 -->
+        <details class="fold-section" id="personalDetails" open>
+            <summary>
+                <span class="fold-summary-title">個人費用</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>人</th>
+                            <th>品項</th>
+                            <th>價格</th>
+                            <th>付款人</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personalTable"></tbody>
+                </table>
+            </div>
+        </details>
+
+        <!-- 折疊：代付 -->
+        <details class="fold-section" id="advanceDetails" open>
+            <summary>
+                <span class="fold-summary-title">代付</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <!-- 新增: 主要付錢人 & 合併代付選項 -->
+                <div style="margin-bottom:8px;">
+                    <label style="margin-left:12px;">
+                        <input type="checkbox" id="consolidateAdvance" onchange="onConsolidateChange()"> 把其他人的代付視為要還給主要付錢人
+                    </label>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>人</th>
+                            <th>品項</th>
+                            <th>金額</th>
+                            <th>分攤人</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advanceTable"></tbody>
+                </table>
+                <div style="margin-top:8px;">
+                    <button onclick="calculate()">計算</button>
+                    <button onclick="exportLine()">一鍵複製結果</button>
+                    <button onclick="resetAll()">清空</button>
+                </div>
+            </div>
+        </details>
+
+        <!-- 折疊：總計 -->
+        <details class="fold-section" id="resultDetails" open>
+            <summary>
+                <span class="fold-summary-title">總計</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <div class="result" id="result"></div>
+            </div>
+        </details>
+
+        <script>
+            let people = JSON.parse(localStorage.people || "[]");
+            let party = JSON.parse(localStorage.party || "[]");
+            let personal = JSON.parse(localStorage.personal || "[]");
+            let advance = JSON.parse(localStorage.advance || "[]");
+
+            // 新增: 群組資料
+            let groups = JSON.parse(localStorage.groups || "[]");
+
+            // 新增: 編輯人員選中狀態
+            let editSelectedIndex = null;
+            let editGroupIndex = null;
+
+            // 新增: 全域變數記錄群組勾選
+            let groupSelectedPeople = [];
+
+            // 新增: 主要付錢人狀態
+            let primaryPayer = localStorage.primaryPayer || "";
+            let consolidateAdvance = JSON.parse(localStorage.consolidateAdvance || "false");
+
+            function save() {
+                localStorage.people = JSON.stringify(people);
+                localStorage.party = JSON.stringify(party);
+                localStorage.personal = JSON.stringify(personal);
+                localStorage.advance = JSON.stringify(advance);
+                localStorage.groups = JSON.stringify(groups);
+            }
+
+            function render() {
+                // 合併顯示一般名單與編輯功能
+                peopleList.innerHTML = "";
+                for (let i = 0; i < people.length; i++) {
+                    let html = '<li>';
+                    html += '<span>' + people[i] + '</span>';
+                    html += ' <button onclick="deletePerson(' + i + ')">刪除</button>';
+                    html += '</li>';
+                    peopleList.innerHTML += html;
+                }
+
+                partyTable.innerHTML = "";
+                for (let k = 0; k < party.length; k++) {
+                    let p = party[k];
+                    let members = p.members || [];
+                    let checkboxHTML = '<div class="member-box">';
+                    for (let l = 0; l < people.length; l++) {
+                        let person = people[l];
+                        let checked = members.includes(person) ? "checked" : "";
+                        checkboxHTML += '<label>';
+                        checkboxHTML += '<input type="checkbox" ' + checked + ' onchange="toggleMember(' + k + ', \'' + person + '\')">';
+                        checkboxHTML += person;
+                        checkboxHTML += '</label>';
+                    }
+                    // 群組選擇（「全部」/已建立群組），並加入單項「全部取消」按鈕
+                    // 「全部」
+                    let allChecked = (members.length === people.length) ? "checked" : "";
+                    checkboxHTML += `<label style="background:#cce;"><input type="radio" name="party_group_${k}" onclick="setPartyGroup(${k}, -1)" ${allChecked}>全部</label>`;
+                    // 已建立群組
+                    for (let g = 0; g < groups.length; g++) {
+                        let grpMembers = groups[g].members || [];
+                        let checked = (grpMembers.length > 0 && grpMembers.join(',') === members.join(',')) ? "checked" : "";
+                        checkboxHTML += `<label style="background:#cce;"><input type="radio" name="party_group_${k}" onclick="setPartyGroup(${k}, ${g})" ${checked}>${groups[g].name}</label>`;
+                    }
+                    // 加入單項「全部取消」按鈕（清除此項分攤人）
+                    checkboxHTML += `<button type="button" style="margin-left:8px;padding:6px;border-radius:8px;border:1px solid #e6e9ee;background:#fff;color:var(--accent);" onclick="clearPartyMembers(${k})">全部取消</button>`;
+                    checkboxHTML += '</div>';
+
+                    // 付款人下拉（每筆品項）
+                    let payerHTML = '<select onchange="setPartyPayer(' + k + ', this.value)">';
+                    payerHTML += '<option value="">付款人</option>';
+                    for (let pi = 0; pi < people.length; pi++) {
+                        let pp = people[pi];
+                        let sel = (p.payer && p.payer === pp) ? 'selected' : '';
+                        payerHTML += `<option value="${pp}" ${sel}>${pp}</option>`;
+                    }
+                    payerHTML += '</select>';
+                    partyTable.innerHTML += '<tr>' + '<td>' + p.cat + '</td>' + '<td>' + p.item + '</td>' + '<td>' + p.price + '</td>' + '<td>' + checkboxHTML + '</td>' +'<td>' + payerHTML + '</td>' + '<td><button onclick="deleteParty(' + k + ')">刪除</button></td>' + '</tr>';
+                }
+
+                personalTable.innerHTML = "";
+                for (let m = 0; m < personal.length; m++) {
+                    let p = personal[m];
+                    // 個人費用也加入付款人下拉（預設為 p.payer 或 p.person）
+                    let payerHTML = '<select onchange="setPersonalPayer(' + m + ', this.value)">';
+                    payerHTML += '<option value="">付款人</option>';
+                    for (let pi = 0; pi < people.length; pi++) {
+                        let pp = people[pi];
+                        let sel = (p.payer && p.payer === pp) ? 'selected' : '';
+                        // 若沒 payer，預設選擇項目本人
+                        if (!p.payer && pp === p.person) sel = 'selected';
+                        payerHTML += `<option value="${pp}" ${sel}>${pp}</option>`;
+                    }
+                    payerHTML += '</select>';
+
+                    personalTable.innerHTML += '<tr>' + '<td>' + p.person + '</td>' + '<td>' + p.item + '</td>' + '<td>' + p.price + '</td>' + '<td>' + payerHTML+ '</td>' + '<td>' + '<button onclick="deletePersonal(' + m + ')"> 刪除</button></td>' + '</tr>';
+                }
+
+                advanceTable.innerHTML = "";
+                for (let n = 0; n < advance.length; n++) {
+                    let a = advance[n];
+                    // 建立分攤成員選單（全部 / 已建立群組 / 自訂）
+                    let memberSelect = '<select onchange="setAdvanceMembers(' + n + ', this.value)">';
+                    // 全部
+                    let allSelected = (a.members && a.members.length === people.length) ? 'selected' : '';
+                    memberSelect += `<option value="ALL" ${allSelected}>全部</option>`;
+                    // 既有群組
+                    for (let gi = 0; gi < groups.length; gi++) {
+                        let grp = groups[gi];
+                        let grpSel = '';
+                        if (a.members && Array.isArray(a.members) && grp.members && grp.members.join(',') === a.members.join(',')) grpSel = 'selected';
+                        memberSelect += `<option value="GROUP_${gi}" ${grpSel}>群組：${grp.name}</option>`;
+                    }
+                    // 自訂
+                    let customSel = (a.custom) ? 'selected' : '';
+                    memberSelect += `<option value="CUSTOM" ${customSel}>自訂</option>`;
+                    memberSelect += '</select>';
+
+                    // 顯示當前成員簡短說明
+                    let memberSummary = '';
+                    if (a.members && a.members.length) {
+                        memberSummary = a.members.join(', ');
+                        if (memberSummary.length > 40) memberSummary = memberSummary.substring(0, 40) + '...';
+                    } else {
+                        memberSummary = '全部';
+                    }
+
+                    advanceTable.innerHTML += '<tr>' +
+                        '<td>' + a.person + '</td>' +
+                        '<td>' + a.item + '</td>' +
+                        '<td>' + a.price + '</td>' +
+                        '<td>' + memberSelect + '<div style="margin-top:6px;font-size:12px;color:#666;">' + memberSummary + '</div></td>' +
+                        '<td><button onclick="editAdvanceMembers(' + n + ')">編輯成員</button> <button onclick="deleteAdvance(' + n + ')">刪除</button></td>' +
+                        '</tr>';
+                }
+
+                // 顯示可勾選人員清單（群組建立用），保留勾選狀態
+                let groupSelectHTML = '';
+                for (let i = 0; i < people.length; i++) {
+                    let checked = groupSelectedPeople.includes(people[i]) ? "checked" : "";
+                    groupSelectHTML += `<label><input type="checkbox" class="group-person" value="${people[i]}" ${checked} onchange="onGroupPersonChange(this)"> ${people[i]}</label>`;
+                }
+                groupSelectBox.innerHTML = groupSelectHTML;
+
+                // 顯示已建立群組列表，並加上編輯按鈕 & 套用按鈕
+                groupList.innerHTML = '';
+                for (let i = 0; i < groups.length; i++) {
+                    groupList.innerHTML += `<li>
+                    <b>${groups[i].name}</b>：${groups[i].members.join(', ')}
+                    <button onclick="editGroup(${i})">編輯</button>
+                    <button onclick="deleteGroup(${i})">刪除</button>
+                </li>`;
+                }
+
+                // 編輯群組人員區塊
+                if (editGroupIndex !== null && groups[editGroupIndex]) {
+                    let group = groups[editGroupIndex];
+                    let html = `<div style="padding:10px; border:1px solid #ccc; background:#f9f9f9;">
+                    <b>編輯群組「${group.name}」</b><br>`;
+                    for (let i = 0; i < people.length; i++) {
+                        let checked = group.members.includes(people[i]) ? "checked" : "";
+                        html += `<label style="margin-right:8px;">
+                        <input type="checkbox" value="${people[i]}" ${checked} onchange="toggleGroupMember(${editGroupIndex},'${people[i]}')">
+                        ${people[i]}
+                    </label>`;
+                    }
+                    html += `<br><button onclick="saveGroupEdit()">儲存</button>
+                    <button onclick="cancelGroupEdit()">取消</button>
+                </div>`;
+                    groupEditBox.innerHTML = html;
+                    groupEditBox.style.display = '';
+                } else {
+                    groupEditBox.innerHTML = '';
+                    groupEditBox.style.display = 'none';
+                }
+
+                // === 新增：建立主要付錢人下拉與合併勾選狀態 (每次 render 更新) ===
+                (function updatePrimaryPayerUI() {
+                    const sel = document.getElementById('primaryPayerSelect');
+                    const chk = document.getElementById('consolidateAdvance');
+                    if (sel) {
+                        sel.innerHTML = '<option value="">（未選擇）</option>';
+                        for (let i = 0; i < people.length; i++) {
+                            const p = people[i];
+                            const selected = (p === primaryPayer) ? ' selected' : '';
+                            sel.innerHTML += `<option value="${p}"${selected}>${p}</option>`;
+                        }
+                        // 若 primaryPayer 已被刪除，清除記錄
+                        if (primaryPayer && !people.includes(primaryPayer)) {
+                            primaryPayer = "";
+                            localStorage.primaryPayer = "";
+                            sel.value = "";
+                        } else {
+                            sel.value = primaryPayer || "";
+                        }
+                    }
+                    if (chk) {
+                        chk.checked = !!consolidateAdvance;
+                    }
+                })();
+                // === end updatePrimaryPayerUI ===
+            }
+
+            // 清空總計顯示（當上方資料變動時呼叫）
+            function clearResult() {
+                const resEl = document.getElementById('result');
+                if (resEl) resEl.textContent = '';
+            }
+
+            function addPerson() {
+                clearResult();
+                let name = personName.value.trim();
+                if (name === "") {
+                    return;
+                }
+                if (!people.includes(name)) {
+                    people.push(name);
+                }
+                personName.value = "";
+                save();
+                render();
+            }
+
+            function importPeople() {
+                clearResult();
+                // 支援各種分隔符：半型/全型空白、換行、Tab、英文逗號/中文逗號、分號等
+                let raw = bulkPeople.value || '';
+                raw = raw.trim();
+                if (raw === '') return;
+
+                // 將所有常見分隔符統一轉成英文逗號，再分割
+                // \u3000 = 全形空格
+                let normalized = raw.replace(/[\s\u3000,，;；\t]+/g, ',');
+                let arr = normalized.split(',').map(s => s.trim()).filter(Boolean);
+
+                for (let i = 0; i < arr.length; i++) {
+                    let p = arr[i];
+                    if (p !== "") {
+                        if (!people.includes(p)) {
+                            people.push(p);
+                        }
+                    }
+                }
+                bulkPeople.value = "";
+                save();
+                render();
+            }
+
+            function toggleMember(i, person) {
+                clearResult();
+                let arr = party[i].members;
+                if (arr.includes(person)) {
+                    party[i].members = arr.filter(function (x) {
+                        return x !== person;
+                    });
+                } else {
+                    arr.push(person);
+                }
+                save();
+            }
+
+            // 新增：設定每筆 party 的付款人
+            function setPartyPayer(idx, payer) {
+                clearResult();
+                party[idx].payer = payer || '';
+                save();
+                render();
+            }
+
+            // 新增：設定每筆 personal 的付款人
+            function setPersonalPayer(idx, payer) {
+                clearResult();
+                personal[idx].payer = payer || '';
+                save();
+                render();
+            }
+
+            // 新增：依照群組套用該列分攤人（-1 = 全部, number = groups[index]）
+            function setPartyGroup(idx, gIdx) {
+                clearResult();
+                if (!party[idx]) {
+                    return;
+                }
+                if (gIdx === -1) {
+                    // 全部
+                    party[idx].members = people.slice();
+                } else {
+                    const grp = groups[gIdx];
+                    if (grp && Array.isArray(grp.members)) {
+                        party[idx].members = grp.members.slice();
+                    } else {
+                        party[idx].members = [];
+                    }
+                }
+                save();
+                render();
+            }
+
+            // 新增：單項全部取消（清空該列 members）
+            function clearPartyMembers(idx) {
+                clearResult();
+                if (!party[idx]) {
+                    return;
+                }
+                if (!confirm('確定要將此項目的所有分攤人取消嗎？')) {
+                    return;
+                }
+                party[idx].members = [];
+                save();
+                render();
+            }
+
+            // 設定 advance 的分攤成員（來自選單）
+            function setAdvanceMembers(idx, val) {
+                clearResult();
+                if (!advance[idx]) return;
+                if (val === 'ALL') {
+                    advance[idx].members = people.slice();
+                    advance[idx].custom = false;
+                } else if (val.indexOf('GROUP_') === 0) {
+                    let gi = parseInt(val.split('_')[1]);
+                    if (groups[gi] && Array.isArray(groups[gi].members)) {
+                        advance[idx].members = groups[gi].members.slice();
+                    } else {
+                        advance[idx].members = [];
+                    }
+                    advance[idx].custom = false;
+                } else if (val === 'CUSTOM') {
+                    // 轉到編輯模式 prompting 使用者輸入
+                    editAdvanceMembers(idx);
+                    return;
+                }
+                save();
+                render();
+            }
+
+            // 以 prompt 編輯 advance 的分攤成員（簡單實作）
+            function editAdvanceMembers(idx) {
+                clearResult();
+                if (!advance[idx]) return;
+                let current = (advance[idx].members && advance[idx].members.length) ? advance[idx].members.join(',') : '';
+                let input = prompt('請輸入分攤成員（逗號或空白分隔）：', current);
+                if (input === null) return; // 取消
+                let arr = input.replace(/\u3000/g, ' ').split(/[\s,，;；]+/).map(s => s.trim()).filter(Boolean);
+                if (arr.length === 0) {
+                    // 若輸入空，則回到全部
+                    advance[idx].members = people.slice();
+                    advance[idx].custom = false;
+                } else {
+                    advance[idx].members = arr;
+                    advance[idx].custom = true;
+                }
+                save();
+                render();
+            }
+
+            function parseText() {
+                clearResult();
+                let lines = importText.value.split("\n");
+                let cat = "未分類";
+                for (let i = 0; i < lines.length; i++) {
+                    let raw = lines[i].trim();
+                    if (raw === "") {
+                        continue;
+                    }
+                    // 區塊標題（例：---- 雞蛋糕費用 ----）
+                    if (/費用/.test(raw) && /-{3,}/.test(raw)) {
+                        cat = raw.replace(/[-]+/g, "").trim();
+                        continue;
+                    }
+                    if (raw.includes("小計") || raw.includes("總計")) {
+                        continue;
+                    }
+
+                    // 解析價格（取最後一個數字，支援小數與 "x * y" 格式）
+                    let price = 0;
+                    let multi = raw.match(/(\d+(?:\.\d+)?)\s*\*\s*(\d+(?:\.\d+)?)/);
+                    if (multi) {
+                        price = parseFloat(multi[1]) * parseFloat(multi[2]);
+                    } else {
+                        let nums = raw.match(/(\d+(?:\.\d+)?)/g);
+                        if (nums && nums.length > 0) {
+                            price = Math.round(parseFloat(nums[nums.length - 1]));
+                        } else {
+                            price = 0;
+                        }
+                    }
+
+                    // 若含有 "出"（但沒有 /X人）則視為代出（advance），例如：藍天出 大布丁 167元
+                    if (raw.includes("出")) {
+                        let parts = raw.split("出");
+                        let person = parts[0].trim();
+                        let itemDesc = parts[1] ? parts[1].trim() : "";
+                        advance.push({
+                            person: person,
+                            item: itemDesc,
+                            price: Number(price) || 0,
+                            members: people.slice(), // 預設分攤給全部人，使用者可再調整
+                            custom: false
+                        });
+                        continue;
+                    }
+
+                    // 若第一個 token 為已知人名，視為個人費用（personal）
+                    let tokens = raw.split(/\s+/);
+                    if (tokens.length > 0 && people.includes(tokens[0])) {
+                        let person = tokens[0];
+                        // 將品項描述保留中間部分（去掉人名與最後價格）
+                        let itemPart = raw.replace(new RegExp('^' + person), '').trim();
+                        itemPart = itemPart.replace(/(\d+(?:\.\d+)?)(\s*元|(\s*NT\$?)|(\s*\$))?(\s*)$/, '').trim();
+                        personal.push({
+                            person: person,
+                            item: itemPart,
+                            price: Number(price) || 0,
+                            payer: primaryPayer || person // 若有主要付錢人則預設為主要付錢人，否則預設本人
+                        });
+                        continue;
+                    }
+
+                    // 其餘視為派對項目（party），預設付款人空白，分攤對象為所有人
+                    party.push({
+                        cat: cat,
+                        item: raw,
+                        price: Number(price) || 0,
+                        payer: primaryPayer || '', // 若已設定主要付錢人，解析時預設為主要付錢人
+                        members: people.slice()
+                    });
+                }
+                save();
+                render();
+            }
+
+            function deleteParty(i) {
+                clearResult();
+                party.splice(i, 1);
+                save();
+                render();
+            }
+
+            function deletePersonal(i) {
+                clearResult();
+                personal.splice(i, 1);
+                save();
+                render();
+            }
+
+            function deleteAdvance(i) {
+                clearResult();
+                advance.splice(i, 1);
+                save();
+                render();
+            }
+
+            // 新增: 點擊人員顯示刪除按鈕
+            function selectEditPerson(idx) {
+                editSelectedIndex = idx;
+                render();
+            }
+
+            // 新增: 刪除人員
+            function deletePerson(idx) {
+                clearResult();
+                if (!confirm("確定要刪除「" + people[idx] + "」嗎？")) return;
+                let name = people[idx];
+                people.splice(idx, 1);
+
+                // 同步移除所有費用資料中該人員
+                for (let i = 0; i < party.length; i++) {
+                    if (party[i].members) {
+                        party[i].members = party[i].members.filter(p => p !== name);
+                    }
+                }
+                personal = personal.filter(p => p.person !== name);
+                advance = advance.filter(a => a.person !== name);
+
+                // 如果刪除的正是主要付錢人，則清除相關設定
+                if (name === primaryPayer) {
+                    primaryPayer = "";
+                    localStorage.primaryPayer = "";
+                }
+
+                editSelectedIndex = null;
+                save();
+                render();
+            }
+
+            // 改寫：讀取 DOM 值並存 localStorage
+            function onPrimaryPayerChange() {
+                const sel = document.getElementById('primaryPayerSelect');
+                if (!sel) return;
+                primaryPayer = sel.value || "";
+                localStorage.primaryPayer = primaryPayer;
+                // 若有設定主要付錢人，將現有 personal / party 中未指定 payer 的項目預設為主要付錢人
+                applyPrimaryPayerDefaults();
+            }
+
+            // 將未指定付款人的 personal 與 party 項目預設為主要付錢人（若有）
+            function applyPrimaryPayerDefaults() {
+                if (!primaryPayer) return;
+                let changed = false;
+                // personal
+                for (let i = 0; i < personal.length; i++) {
+                    if (!personal[i].payer || personal[i].payer === '') {
+                        personal[i].payer = primaryPayer;
+                        changed = true;
+                    }
+                }
+                // party (僅影響未指定 payer 的項目)
+                for (let i = 0; i < party.length; i++) {
+                    if (!party[i].payer || party[i].payer === '') {
+                        party[i].payer = primaryPayer;
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    save();
+                    render();
+                }
+            }
+
+            function onConsolidateChange() {
+                const chk = document.getElementById('consolidateAdvance');
+                if (!chk) return;
+                consolidateAdvance = !!chk.checked;
+                localStorage.consolidateAdvance = JSON.stringify(consolidateAdvance);
+            }
+
+            function calculate() {
+                // 若尚未新增任何人員，禁止執行計算
+                if (!people || people.length === 0) {
+                    alert('請先新增參加人員再進行計算');
+                    return;
+                }
+                 // 建立 balance 與明細小計（不變）
+                let balance = {};
+                for (let i = 0; i < people.length; i++) {
+                    balance[people[i]] = 0;
+                }
+
+                let partyShareMap = {};
+                let personalTotals = {};
+                let advancePaidMap = {};
+                for (let i = 0; i < people.length; i++) {
+                    partyShareMap[people[i]] = 0;
+                    personalTotals[people[i]] = 0;
+                    advancePaidMap[people[i]] = 0;
+                }
+
+                // 計算每人因派對項目要分擔的份額
+                for (let i = 0; i < party.length; i++) {
+                    let item = party[i];
+                    let members = item.members && item.members.length ? item.members : people.slice();
+                    let per = Math.floor((item.price / members.length) * 100) / 100;
+                    for (let j = 0; j < members.length; j++) {
+                        balance[members[j]] -= per;
+                        partyShareMap[members[j]] += per;
+                    }
+                }
+
+                // 計算個人費用（每個人的個人支出會在個人計算步驟顯示）
+                for (let i = 0; i < personal.length; i++) {
+                    let p = personal[i];
+                    let price2 = Math.floor(Number(p.price) * 100) / 100;
+                    balance[p.person] -= price2;
+                    personalTotals[p.person] += price2;
+                }
+
+                // 原始代付登記（用於明細與合併判斷）
+                for (let i = 0; i < advance.length; i++) {
+                    let a = advance[i];
+                    let price2 = Math.floor(Number(a.price) * 100) / 100;
+                    advancePaidMap[a.person] = (advancePaidMap[a.person] || 0) + price2;
+                }
+
+                // 新增：若代付指定了 members，先把每位分攤者扣款（每人份額）
+                for (let i = 0; i < advance.length; i++) {
+                    let a = advance[i];
+                    let members = (a.members && a.members.length) ? a.members : people.slice();
+                    if (!members || members.length === 0) continue;
+                   let per = Math.floor(((Number(a.price) || 0) / members.length) * 100) / 100;
+                    for (let m of members) {
+                        if (typeof balance[m] !== 'undefined') {
+                            balance[m] -= per;
+                        }
+                    }
+                }
+
+                // 把付款人標記（payer）加入 balance（仍保留原有行為）
+                for (let i = 0; i < party.length; i++) {
+                    let item = party[i];
+                    if (item.payer && item.payer !== '') {
+                        if (consolidateAdvance && primaryPayer && item.payer !== primaryPayer) {
+                            let price2 = Math.floor(item.price * 100) / 100;
+                            balance[item.payer] -= price2;
+                            balance[primaryPayer] += price2;
+                        } else {
+                            let price2 = Math.floor(item.price * 100) / 100;
+                            balance[item.payer] += price2;
+                        }
+                    }
+                }
+                for (let i = 0; i < personal.length; i++) {
+                    let p = personal[i];
+                    if (p.payer && p.payer !== '') {
+                        if (consolidateAdvance && primaryPayer && p.payer !== primaryPayer) {
+                            let price2 = Math.floor(p.price * 100) / 100;
+                            balance[p.payer] -= price2;
+                            balance[primaryPayer] += price2;
+                        } else {
+                            let price2 = Math.floor(p.price * 100) / 100;
+                            balance[p.payer] += price2;
+                        }
+                    }
+                }
+                for (let i = 0; i < advance.length; i++) {
+                    let a = advance[i];
+                    if (consolidateAdvance && primaryPayer && a.person !== primaryPayer) {
+                        let price2 = Math.floor(a.price * 100) / 100;
+                        balance[a.person] -= price2;
+                        balance[primaryPayer] += price2;
+                    } else {
+                        let price2 = Math.floor(a.price * 100) / 100;
+                        balance[a.person] += price2;
+                    }
+                }
+
+                // 準備債權/債務陣列（將作為配對來源）
+                let creditors = [];
+                let debtors = [];
+                for (let p in balance) {
+                    if (balance[p] > 0) creditors.push({ p: p, amt: balance[p] });
+                    if (balance[p] < 0) debtors.push({ p: p, amt: -balance[p] });
+                }
+                // 排序（大額優先）
+                creditors.sort((a, b) => b.amt - a.amt);
+                debtors.sort((a, b) => b.amt - a.amt);
+
+                // 優先處理「有明確付款人 (payer)」的定向付款
+                // 收集定向付款的「明細項目」並保留配對邏輯
+                // directedMap: { debtorName: { payerName: { items: [{desc, amt}], total } } }
+                let directedMap = {};
+                // 新增: 支援 type（'party'|'personal'|'advance'）以便顯示排序
+                function addDirectedItem(debtor, payer, desc, amt, type) {
+                    if (!directedMap[debtor]) directedMap[debtor] = {};
+                    if (!directedMap[debtor][payer]) directedMap[debtor][payer] = { items: [], total: 0 };
+                    directedMap[debtor][payer].items.push({ desc: desc, amt: Number(amt) || 0, type: type || 'personal' });
+                    directedMap[debtor][payer].total += Number(amt) || 0;
+                }
+                // 個人費用：先收集明細（用原價），再進行配對扣款
+                for (let i = 0; i < personal.length; i++) {
+                    let it = personal[i];
+                    if (it.payer && it.payer !== '' && it.person !== it.payer) {
+                        // 收集：個人品項描述 + 原價
+                        addDirectedItem(it.person, it.payer, it.item || '(項目)', Number(it.price) || 0, 'personal');
+                        // 同時保持原本的配對機制（以避免改變實際結算）
+                        let debtorObj = debtors.find(d => d.p === it.person);
+                        let creditorObj = creditors.find(c => c.p === it.payer);
+                        if (!debtorObj || debtorObj.amt <= 0) continue;
+                        if (!creditorObj) {
+                            let amt = balance[it.payer] > 0 ? balance[it.payer] : 0;
+                            creditorObj = { p: it.payer, amt: amt };
+                            creditors.push(creditorObj);
+                        }
+                        let ask = Number(it.price) || 0;
+                        let pay = Math.min(debtorObj.amt, ask, creditorObj.amt);
+                        if (pay > 0) {
+                            debtorObj.amt -= pay;
+                            creditorObj.amt -= pay;
+                        }
+                    }
+                }
+                // 派對項目：每人成員份額 -> payer（若有指定付款人）
+                for (let i = 0; i < party.length; i++) {
+                    let it = party[i];
+                    if (it.payer && it.payer !== '') {
+                        let members = it.members && it.members.length ? it.members : people.slice();
+                        let per = Math.floor((it.price / members.length) * 100) / 100;
+                        for (let m of members) {
+                            if (m === it.payer) continue;
+                            // 收集該成員對此付款人的「品項(每人份)」
+                            addDirectedItem(m, it.payer, it.item || '(派對項目)', per, 'party');
+                            // 仍執行配對扣款（以保持 balance 行為）
+                            let debtorObj = debtors.find(d => d.p === m);
+                            let creditorObj = creditors.find(c => c.p === it.payer);
+                            if (!debtorObj || debtorObj.amt <= 0) continue;
+                            if (!creditorObj) {
+                                let amt = balance[it.payer] > 0 ? balance[it.payer] : 0;
+                                creditorObj = { p: it.payer, amt: amt };
+                                creditors.push(creditorObj);
+                            }
+                            let pay = Math.min(debtorObj.amt, per, creditorObj.amt);
+                            if (pay > 0) {
+                                debtorObj.amt -= pay;
+                                creditorObj.amt -= pay;
+                            }
+                        }
+                    }
+                }
+
+                // 代付（advance）：依模式產生細項與配對
+                for (let i = 0; i < advance.length; i++) {
+                    let a = advance[i];
+                    // 忽略不存在或金額為 0 的項目
+                    if (!a || (Number(a.price) || 0) === 0) continue;
+                    let members = (a.members && a.members.length) ? a.members : people.slice();
+                   let per = Math.floor(((Number(a.price) || 0) / members.length) * 100) / 100;
+                    if (consolidateAdvance && primaryPayer) {
+                        // 合併模式：把代付的分攤改為「每人 → 主要付錢人」
+                        for (let m of members) {
+                            if (m === primaryPayer) continue; // 主要付錢人不欠自己
+                            addDirectedItem(m, primaryPayer, a.item || '(代出費用)', per);
+                            // 配對扣款（以保持 balance 行為）
+                            let debtorObj = debtors.find(d => d.p === m);
+                            let creditorObj = creditors.find(c => c.p === primaryPayer);
+                            if (!debtorObj || debtorObj.amt <= 0) continue;
+                            if (!creditorObj) {
+                                let amt = balance[primaryPayer] > 0 ? balance[primaryPayer] : 0;
+                                creditorObj = { p: primaryPayer, amt: amt };
+                                creditors.push(creditorObj);
+                            }
+                            let pay = Math.min(debtorObj.amt, per, creditorObj.amt);
+                            if (pay > 0) {
+                                debtorObj.amt -= pay;
+                                creditorObj.amt -= pay;
+                            }
+                        }
+
+                        // 再用原代付者實際已代付金額調整他對主要付錢人的欠款（抵扣）
+                        if (a.person && a.person !== primaryPayer) {
+                            const debtor = a.person;
+                            const payer = primaryPayer;
+                            const paidAmt = Number(a.price) || 0;
+
+                            // 若已有 debtor -> payer 條目，先用 paidAmt 抵扣該條目
+                            if (directedMap[debtor] && directedMap[debtor][payer]) {
+                                directedMap[debtor][payer].total -= paidAmt;
+                                directedMap[debtor][payer].items.push({ desc: '(代出抵扣)', amt: -paidAmt, type: 'advance' });
+
+                                // 若抵扣後 total <= 0，表示主要付錢人需補回差額給原代付者
+                                if (directedMap[debtor][payer].total <= 0) {
+                                    const surplus = -directedMap[debtor][payer].total;
+                                    // 移除原債務條目
+                                    delete directedMap[debtor][payer];
+                                    // 建立反向補償：主要付錢人 -> 原代付者
+                                    if (!directedMap[payer]) directedMap[payer] = {};
+                                    if (!directedMap[payer][debtor]) directedMap[payer][debtor] = { items: [], total: 0 };
+                                    directedMap[payer][debtor].items.push({ desc: a.item + ' (代出補償)', amt: surplus, type: 'advance' });
+                                    directedMap[payer][debtor].total += surplus;
+                                }
+                            } else {
+                                // 若原本沒有 debtor -> payer 條目，直接建立主要付錢人 -> 原代付者 補償項
+                                if (!directedMap[payer]) directedMap[payer] = {};
+                                if (!directedMap[payer][debtor]) directedMap[payer][debtor] = { items: [], total: 0 };
+                                directedMap[payer][debtor].items.push({ desc: a.item + ' (代出補償)', amt: paidAmt });
+                                directedMap[payer][debtor].total += paidAmt;
+                            }
+                        }
+                    } else {
+                        // 原始模式：維持「每人 → 代付者」的顯示與配對行為
+                        for (let m of members) {
+                            if (m === a.person) continue;
+                                addDirectedItem(m, a.person, a.item || '(代出費用)', per, 'advance');
+                            let debtorObj = debtors.find(d => d.p === m);
+                            let creditorObj = creditors.find(c => c.p === a.person);
+                            if (!debtorObj || debtorObj.amt <= 0) continue;
+                            if (!creditorObj) {
+                                let amt = balance[a.person] > 0 ? balance[a.person] : 0;
+                                creditorObj = { p: a.person, amt: amt };
+                                creditors.push(creditorObj);
+                            }
+                            let pay = Math.min(debtorObj.amt, per, creditorObj.amt);
+                            if (pay > 0) {
+                                debtorObj.amt -= pay;
+                                creditorObj.amt -= pay;
+                            }
+                        }
+                    }
+                }
+
+                // 移除已為 0 的債權/債務
+                creditors = creditors.filter(c => c.amt > 0);
+                debtors = debtors.filter(d => d.amt > 0);
+
+                // 接著執行一般配對（貪婪配對）
+                let pairLines = [];
+                for (let i = 0; i < debtors.length; i++) {
+                    let d = debtors[i];
+                    for (let j = 0; j < creditors.length; j++) {
+                        let c = creditors[j];
+                        if (d.amt > 0 && c.amt > 0) {
+                            let pay = Math.min(d.amt, c.amt);
+                            pairLines.push(`${d.p} → ${c.p} ${pay}`);
+                            d.amt -= pay;
+                            c.amt -= pay;
+                        }
+                    }
+                }
+
+                // 準備結果文字（原有顯示 + 新增定向配對顯示）
+                let text = "----- 結算 -----\n";
+                for (let p in balance) text += p + " : " + (Math.floor(balance[p] * 100) / 100).toFixed(2) + "\n";
+
+                text += "\n----- 派對分攤明細 -----\n";
+                let sortedParty = party.slice().sort(function(a, b) {
+                    const ca = (a.cat || '').toString();
+                    const cb = (b.cat || '').toString();
+                    let cmp = ca.localeCompare(cb, 'zh-Hant-TW');
+                    if (cmp !== 0) return cmp;
+                    return (a.item || '').toString().localeCompare((b.item || ''), 'zh-Hant-TW');
+                });
+                for (let i = 0; i < sortedParty.length; i++) {
+                    let it = sortedParty[i];
+                    let members = it.members && it.members.length ? it.members : people.slice();
+                   let per = Math.floor((it.price / members.length) * 100) / 100;
+                   text += `${it.cat || ''} ${it.item} : ${(Math.floor(it.price * 100) / 100).toFixed(2)} / ${members.length}人 = ${per.toFixed(2)} 每人\n`;
+                }
+
+                text += "\n----- 個人費用 -----\n";
+                for (let person of people) {
+                   if ((personalTotals[person] || 0) > 0) text += `${person} : ${(Math.floor(personalTotals[person] * 100) / 100).toFixed(2)}\n`;
+                }
+
+                text += "\n----- 原始代付 -----\n";
+                for (let person of people) {
+                   if ((advancePaidMap[person] || 0) > 0) text += `${person} 代付 : ${(Math.floor(advancePaidMap[person] * 100) / 100).toFixed(2)}\n`;
+                }
+
+                if (consolidateAdvance && primaryPayer) {
+                    let totalTransferredToPrimary = 0;
+                    for (let person of people) {
+                       if (person !== primaryPayer) totalTransferredToPrimary += (advancePaidMap[person] || 0);
+                    }
+                   if (totalTransferredToPrimary > 0) text += `\n（合併代付）主要付錢人：${primaryPayer} ，其他人代付總和 = ${(Math.floor(totalTransferredToPrimary * 100) / 100).toFixed(2)}\n`;
+                }
+
+                // 計算每人「應付代付」：依每筆 advance 的 members 平均分攤，若合併模式則分攤對象為主要付錢人，否則為原代付人
+                let advanceShareOwed = {};
+                for (let p of people) advanceShareOwed[p] = 0;
+                for (let i = 0; i < advance.length; i++) {
+                    let a = advance[i];
+                    if (!a || (Number(a.price) || 0) === 0) return;
+                    let members = (a.members && a.members.length) ? a.members : people.slice();
+                    if (!members || members.length === 0) continue;
+                   let per = Math.floor(((Number(a.price) || 0) / members.length) * 100) / 100;
+                    // 合併時所有人的代付視為要還給主要付錢人
+                    let recipient = (consolidateAdvance && primaryPayer) ? primaryPayer : a.person;
+                    for (let m of members) {
+                        // 若是受款人（主要付錢人或原代付者）則不算在應付清單
+                        if (m === recipient) continue;
+                        if (typeof advanceShareOwed[m] !== 'undefined') advanceShareOwed[m] += per;
+                    }
+                }
+
+                // 只顯示「大項目」與金額，並加入「應付代付」欄位（僅顯示此人依代付分攤應付的金額）
+                text += "\n----- 個人計算步驟（僅顯示大項目） -----\n";
+                for (let person of people) {
+                    let partyShare = partyShareMap[person] || 0;
+                    let personalAmt = personalTotals[person] || 0;
+                    let advPaid = advancePaidMap[person] || 0;
+                    let advReceived = 0;
+                    if (consolidateAdvance && primaryPayer && person === primaryPayer) {
+                        let totalT = 0;
+                        for (let q of people) if (q !== primaryPayer) totalT += (advancePaidMap[q] || 0);
+                        advReceived = totalT;
+                    }
+                    let owed = advanceShareOwed[person] || 0;
+                    // 計算每人總價（此處定義為：派對分攤 + 個人費用 + 應付代付）
+                    let totalDue = Math.floor(((partyShare || 0) + (personalAmt || 0) + (owed || 0)) * 100) / 100;
+                    let line = `${person} : 派對 ${(Math.floor(partyShare * 100) / 100).toFixed(2)} , 個人 ${(Math.floor(personalAmt * 100) / 100).toFixed(2)} , 自己代付 ${(Math.floor(advPaid * 100) / 100).toFixed(2)}`;
+                    if (advReceived > 0) {
+                        line += ` , 收到代付 ${(Math.floor(advReceived * 100) / 100).toFixed(2)}`;
+                    }
+                    line += ` , 應付代付 ${(Math.floor(owed * 100) / 100).toFixed(2)}`;
+                    // 新增：顯示每人的總價
+                    line += ` , 總價 ${(totalDue).toFixed(2)}`;
+                    text += line + "\n";
+                }
+                text += "\n(※ 上方「應付代付」為各人依代付分攤應付之合計；下方「個人費用細項」為逐項合併/抵扣後的結果)\n";
+
+                // 顯示定向配對（合併同一債務人→同一付款人的多筆項目，並列出每項及合計）
+                if (Object.keys(directedMap).length > 0) {
+                    // 先把 directedMap 的雙向條目（A->B 與 B->A）合併並互相抵銷 (netting)
+                    // 建立以 pairKey (sorted names) 為單位的聚合物件
+                    // pairAgg[key] = { a, b, items: [ {desc, amt_signed, type} ], total: signedSum }
+                    let pairAgg = {};
+                    for (let debtor in directedMap) {
+                        for (let payer in directedMap[debtor]) {
+                            let entry = directedMap[debtor][payer];
+                            let names = [debtor, payer].slice().sort();
+                            let key = names.join('||');
+                            if (!pairAgg[key]) pairAgg[key] = { a: names[0], b: names[1], items: [], total: 0 };
+
+                            // 這個 direction 是 debtor -> payer
+                            let sign = (debtor === pairAgg[key].a) ? 1 : -1; // 若 debtor 為 a，表示加正；若 debtor 為 b，表示為負
+                            for (let it of entry.items) {
+                                let desc = (it.desc || '').trim();
+                                let amt = Math.floor((Number(it.amt) || 0) * 100) / 100;
+                                // push item with sign and preserve type
+                                pairAgg[key].items.push({ desc: desc, amt: sign * amt, type: it.type || 'personal' });
+                                pairAgg[key].total += sign * amt;
+                            }
+                        }
+                    }
+
+                    // 顯示合併後結果：若 net 為正，顯示 a -> b；若負則顯示 b -> a，並列出每項的淨額（依類型排序：派對>個人>代出）
+                    text += "\n----- 個人費用細項 -----\n";
+
+                    // 類型排序權重（數字愈小愈先顯示）
+                    const typeOrder = { 'party': 0, 'personal': 1, 'advance': 2 };
+
+                    for (let pk in pairAgg) {
+                        let node = pairAgg[pk];
+                        // 合併同樣 desc & type 的項目
+                        const merged = {};
+                        for (let it of node.items) {
+                            const keyDesc = (it.type || '') + '||' + it.desc;
+                            merged[keyDesc] = (merged[keyDesc] || 0) + it.amt;
+                        }
+
+                        // 轉成陣列並過濾 0
+                        let partsArr = Object.keys(merged)
+                            .map(k => {
+                                const [t, d] = k.split('||');
+                                return { desc: d, amt: Math.floor(merged[k] * 100) / 100, type: t };
+                            })
+                            .filter(x => x.amt !== 0)
+                            // 依 typeOrder 再依絕對值大小排序
+                            .sort((x, y) => {
+                                const to = (typeOrder[x.type] || 99) - (typeOrder[y.type] || 99);
+                                if (to !== 0) return to;
+                                return Math.abs(y.amt) - Math.abs(x.amt);
+                            });
+
+                        let net = Math.floor(node.total * 100) / 100;
+                        let from = net >= 0 ? node.a : node.b;
+                        let to = net >= 0 ? node.b : node.a;
+                        let absNet = Math.abs(net);
+
+                        if (partsArr.length === 0) {
+                            text += `\n${from} → ${to}\n  (已抵銷項目) = $${absNet.toFixed(2)}\n`;
+                        } else {
+                            // 轉換成顯示字串，保留種類順序
+                            let partsStr = partsArr.map(x => {
+                                const sign = (x.amt >= 0) ? '' : '-';
+                                return `( ${x.desc} ${sign}$${Math.abs(x.amt).toFixed(2)} )`;
+                            }).join(' + ');
+                            text += `\n${from} → ${to}\n  ${partsStr} = $${absNet.toFixed(2)}\n`;
+                        }
+                    }
+                }
+
+                // 列出配對結束後仍有剩餘的債務或債權（未分配）
+                let remainingLines = [];
+                for (let i = 0; i < debtors.length; i++) {
+                    if (debtors[i].amt > 0) remainingLines.push(debtors[i].p + " 尚欠 " + (Math.floor(debtors[i].amt * 100) / 100).toFixed(2));
+                }
+                for (let i = 0; i < creditors.length; i++) {
+                    if (creditors[i].amt > 0) remainingLines.push(creditors[i].p + " 尚收 " + (Math.floor(creditors[i].amt * 100) / 100).toFixed(2));
+                }
+
+                result.textContent = text;
+            }
+
+            function exportLine() {
+                // 重新計算並複製整份結果文字到剪貼簿（支援 navigator.clipboard 與 fallback）
+                calculate();
+                const text = result.textContent || '';
+                if (!text) {
+                    alert('無可複製內容');
+                    return;
+                }
+                // 先嘗試使用現代 Clipboard API
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function () {
+                        alert('已複製全部文字');
+                    }).catch(function (err) {
+                        // 若失敗，使用 fallback
+                        fallbackCopyText(text);
+                    });
+                } else {
+                    // fallback
+                    fallbackCopyText(text);
+                }
+                function fallbackCopyText(str) {
+                    const ta = document.createElement('textarea');
+                    ta.value = str;
+                    // 避免影響頁面布局
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try {
+                        const ok = document.execCommand('copy');
+                        if (ok) {
+                            alert('已複製全部文字');
+                        } else {
+                            alert('複製失敗，請手動複製文字');
+                        }
+                    } catch (e) {
+                        alert('複製失敗，請手動複製文字');
+                    }
+                    document.body.removeChild(ta);
+                }
+            }
+
+            function resetAll() {
+                if (!confirm("確定清空?")) {
+                    return;
+                }
+                people = [];
+                party = [];
+                personal = [];
+                advance = [];
+                save();
+                render();
+                clearResult();
+            }
+
+            function onGroupPersonChange(el) {
+                let val = el.value;
+                if (el.checked) {
+                    if (!groupSelectedPeople.includes(val)) groupSelectedPeople.push(val);
+                } else {
+                    groupSelectedPeople = groupSelectedPeople.filter(p => p !== val);
+                }
+            }
+
+            function groupPeople() {
+                clearResult();
+                let name = groupName.value.trim();
+                if (!name) {
+                    alert('請輸入群組名稱');
+                    return;
+                }
+                // 修正: 用 groupSelectedPeople 取得已勾選人員
+                let selected = groupSelectedPeople.slice();
+                if (selected.length === 0) {
+                    alert('請至少選擇一位成員');
+                    return;
+                }
+                groups.push({ name: name, members: selected });
+                groupName.value = '';
+                groupSelectedPeople = [];
+                save();
+                render();
+            }
+
+            // 群組選定人全清除
+            function clearGroupSelection() {
+                clearResult();
+                groupSelectedPeople = [];
+                save();
+                render();
+            }
+
+            function editGroup(idx) {
+                editGroupIndex = idx;
+                render();
+            }
+
+            function toggleGroupMember(groupIdx, person) {
+                clearResult();
+                let group = groups[groupIdx];
+                let idx = group.members.indexOf(person);
+                if (idx >= 0) {
+                    group.members.splice(idx, 1);
+                } else {
+                    group.members.push(person);
+                }
+                render();
+            }
+
+            function saveGroupEdit() {
+                save();
+                editGroupIndex = null;
+                render();
+            }
+
+            function cancelGroupEdit() {
+                editGroupIndex = null;
+                render();
+            }
+
+            function deleteGroup(idx) {
+                if (!confirm('確定要刪除這個群組嗎？')) return;
+                groups.splice(idx, 1);
+                save();
+                render();
+            }
+
+            // 新增解析模式狀態與手動列暫存
+            let parseMode = localStorage.parseMode || 'auto'; // 'auto' or 'manual'
+            let manualRows = []; // {cat, item, price, membersCsv, type}
+
+            // 將現有 party / personal / advance 資料組成 manualRows（供一般模式編輯）
+            function buildManualRowsFromData() {
+                const rows = [];
+                // 派對項目（保留 cat, item, price, membersCsv）
+                for (let p of party) {
+                    rows.push({
+                        cat: p.cat || '',
+                        item: p.item || '',
+                        price: p.price || '',
+                        membersCsv: (p.members && p.members.length) ? p.members.join(',') : '',
+                        type: 'party'
+                    });
+                }
+                // 個人費用（membersCsv 第一個為 person）
+                for (let it of personal) {
+                    rows.push({
+                        cat: '',
+                        item: it.item || '',
+                        price: it.price || '',
+                        membersCsv: it.person || '',
+                        type: 'personal'
+                    });
+                }
+                // 代付（membersCsv 第一個放代付人，之後為分攤成員；與 saveManualRows 的解析邏輯相容）
+                for (let a of advance) {
+                    let members = (a.members && a.members.length) ? a.members.slice() : people.slice();
+                    let membersCsv = '';
+                    if (a.person) {
+                        // 若 members 包含代付人，保留順序但不重複
+                        const uniqueMembers = [a.person].concat(members.filter(m => m !== a.person));
+                        membersCsv = uniqueMembers.join(',');
+                    } else {
+                        membersCsv = members.join(',');
+                    }
+                    rows.push({
+                        cat: '',
+                        item: a.item || '',
+                        price: a.price || '',
+                        membersCsv: membersCsv,
+                        type: 'advance'
+                    });
+                }
+                // 若沒有任何項目，保留一列空白可編輯
+                if (rows.length === 0) rows.push({ cat: '', item: '', price: '', membersCsv: '', type: 'party' });
+                manualRows = rows;
+            }
+
+            // 切換模式
+            function toggleParseMode() {
+                parseMode = (parseMode === 'auto') ? 'manual' : 'auto';
+                localStorage.parseMode = parseMode;
+                updateParseModeUI();
+
+                // 當切到一般模式時，將現有 party / personal / advance 資料帶入 manualRows（可編輯）
+                if (parseMode === 'manual') {
+                    buildManualRowsFromData();
+                    renderManualRows();
+                }
+            }
+
+            function updateParseModeUI() {
+                const autoBox = document.getElementById('autoParseBox');
+                const manualBox = document.getElementById('manualParseBox');
+                const btn = document.getElementById('toggleParseModeBtn');
+                if (parseMode === 'manual') {
+                    autoBox.style.display = 'none';
+                    manualBox.style.display = '';
+                    btn.textContent = '切換到自動模式';
+                } else {
+                    autoBox.style.display = '';
+                    manualBox.style.display = 'none';
+                    btn.textContent = '切換到一般模式';
+                }
+            }
+
+            // 渲染 manualRows 到 DOM
+            function renderManualRows() {
+                const tbody = document.getElementById('manualRowsBody');
+                tbody.innerHTML = '';
+                for (let i = 0; i < manualRows.length; i++) {
+                    const r = manualRows[i];
+                    const tr = document.createElement('tr');
+                    // 使用模板字面量避免複雜跳脫與拼接錯誤
+                    tr.innerHTML = `
+                        <td style="border:1px solid #ccc; padding:6px;">
+                            <input type="text" value="${escapeHtml(r.cat)}" onchange="manualRowChange(${i}, 'cat', this.value)">
+                        </td>
+                        <td style="border:1px solid #ccc; padding:6px;">
+                            <input type="text" value="${escapeHtml(r.item)}" onchange="manualRowChange(${i}, 'item', this.value)">
+                        </td>
+                        <td style="border:1px solid #ccc; padding:6px;">
+                            <input type="number" value="${escapeHtml(r.price)}" onchange="manualRowChange(${i}, 'price', this.value)">
+                        </td>
+                        <td style="border:1px solid #ccc; padding:6px;">
+                            <input type="text" value="${escapeHtml(r.membersCsv)}" onchange="manualRowChange(${i}, 'membersCsv', this.value)" placeholder="例如: 小明,小華">
+                        </td>
+                        <td style="border:1px solid #ccc; padding:6px;">
+                            <select onchange="manualRowChange(${i}, 'type', this.value)">
+                                <option value="party" ${r.type === 'party' ? 'selected' : ''}>派對費用</option>
+                                <option value="personal" ${r.type === 'personal' ? 'selected' : ''}>個人費用</option>
+                                <option value="advance" ${r.type === 'advance' ? 'selected' : ''}>代出費用</option>
+                            </select>
+                        </td>
+                        <td style="border:1px solid #ccc; padding:6px; text-align:center;">
+                            <button onclick="removeManualRow(${i})" class="btn">刪除</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+                updateAddRowButtonState();
+            }
+
+            function manualRowChange(idx, key, val) {
+                manualRows[idx][key] = val;
+                // 即時變動會影響計算，清空結果提示使用者須重新計算
+                clearResult();
+            }
+
+            function addManualRow() {
+                clearResult();
+                if (manualRows.length >= 50) { alert('最多可新增50列'); return; }
+                manualRows.push({ cat: '', item: '', price: '', membersCsv: '', type: 'party' });
+                renderManualRows();
+            }
+
+            function removeManualRow(idx) {
+                clearResult();
+                manualRows.splice(idx, 1);
+                if (manualRows.length === 0) manualRows.push({ cat: '', item: '', price: '', membersCsv: '', type: 'party' });
+                renderManualRows();
+            }
+
+            function saveManualRows() {
+                clearResult();
+                // 驗證並依類型寫回相對應陣列（派對費用直接替換，個人/代出直接覆蓋）
+                const newParty = [];
+                const newPersonal = [];
+                const newAdvance = [];
+                for (let i = 0; i < manualRows.length; i++) {
+                    const r = manualRows[i];
+                    if ((!r.cat || r.cat.trim() === '') && (!r.item || r.item.trim() === '') && (!r.price || r.price === '') && (!r.membersCsv || r.membersCsv.trim() === '')) {
+                        // skip 全空列
+                        continue;
+                    }
+                    const priceVal = r.price === '' ? 0 : Math.round(Number(r.price));
+                    const members = (r.membersCsv && r.membersCsv.trim() !== '') ? r.membersCsv.split(/[\s,，]+/).map(s => s.trim()).filter(Boolean) : people.slice();
+
+                    if (!r.type || r.type === 'party') {
+                        // 派對費用：members 作為分攤對象
+                        newParty.push({
+                            cat: r.cat || '未分類',
+                            item: r.item || '',
+                            price: priceVal,
+                            payer: primaryPayer || '', // 預設付款人帶入主要付錢人（若有）
+                            members: members
+                        });
+                    } else if (r.type === 'personal') {
+                        // 個人費用：membersCsv 的第一個當成 person（若空就跳過）
+                        const person = members.length ? members[0] : null;
+                        if (person) {
+                            newPersonal.push({
+                                person: person,
+                                item: r.item || '',
+                                price: priceVal,
+                                payer: primaryPayer || person // 若有主要付錢人則預設為主要付錢人，否則為本人
+                            });
+                        }
+                    } else if (r.type === 'advance') {
+                        // 代出費用：membersCsv 的第一個當成代付人（若空就跳過）
+                        const person = members.length ? members[0] : null;
+                        if (person) {
+                            newAdvance.push({
+                                person: person,
+                                item: r.item || '',
+                                price: priceVal,
+                                members: (members.length ? members : people.slice()), // 若有指定則用，否則預設全部
+                                custom: false
+                            });
+                        }
+                    }
+                }
+
+                // 派對/個人/代出都直接覆蓋，避免重複
+                party = newParty;
+                personal = newPersonal;
+                advance = newAdvance;
+
+                save();
+                render();
+                alert('已儲存（派對/個人/代出費用）');
+            }
+
+            // 控制新增列按鈕狀態
+            function updateAddRowButtonState() {
+                const btn = document.querySelector('#manualParseBox button[onclick="addManualRow()"]');
+                if (!btn) return;
+                btn.disabled = manualRows.length >= 50;
+            }
+
+            // escapeHtml 簡單函式避免注入
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
+            // 頁面載入時更新 UI 狀態
+            (function initParseMode() {
+                if (!localStorage.parseMode) localStorage.parseMode = 'auto';
+                parseMode = localStorage.parseMode || 'auto';
+                updateParseModeUI();
+                if (parseMode === 'manual') {
+                    // 預先將現有 party/personal/advance 帶入以便編輯
+                    buildManualRowsFromData();
+                    renderManualRows();
+                }
+            })();
+
+            // 若 localStorage 有主要付錢人，先把未指定的付款人帶入預設
+            applyPrimaryPayerDefaults();
+            render();
+        </script>
+    </div>
+</body>
+
+</html>
