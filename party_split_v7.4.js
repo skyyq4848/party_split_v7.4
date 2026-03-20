@@ -440,6 +440,39 @@ function parseText() {
     render();
 }
 
+// 載入示範範例到解析區（供 index.html 按鈕呼叫）
+function loadExample() {
+    const sample = `--------------- 雞蛋糕費用 ---------------
+牛奶糖 $33
+乳酪 $121
+雞蛋 $99
+牛奶 $40
+奶油 $30
+
+--------------- 飲料費用 ---------------
+藍天 胭脂歐蕾 $78 溫無糖
+藍天 熟成榛果歐蕾 $80 微冰無糖
+藍天 胭脂紅茶 $55 微冰無糖
+藍天 熟成榛果歐蕾 $80 少冰無糖
+麻煩 熟成歐蕾 $75 常溫無糖
+沒角 熟成歐蕾 $150 去冰半糖
+yuna 金蜜歐蕾 $70 中杯 去冰無糖
+手手 春芽冷露 $65 去冰無糖
+闆娘 春檸綠茶 $65 去冰無糖
+阿文 胭脂歐蕾 $78 微冰微糖
+
+--------------- 點心費用 ---------------
+藍天 出 大布丁 167元
+闆娘 出 海鮮大拼盤 500元
+沒角 出 生乳捲 210元`;
+    const el = document.getElementById('importText');
+    if (el) {
+        el.value = sample;
+    } else {
+        console.warn('loadExample: 找不到 #importText 元素');
+    }
+}
+
 function deleteParty(i) {
     clearResult();
     party.splice(i, 1);
