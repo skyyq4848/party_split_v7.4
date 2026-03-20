@@ -887,11 +887,9 @@ function calculate() {
     }
     text += "\n(※ 上方「應付代付」為各人依代付分攤應付之合計；下方「個人費用細項」為逐項合併/抵扣後的結果)\n";
 
-    // 顯示定向配對（合併同一債務人→同一付款人的多筆項目，並列出每項及合計）
+    // 顯示定向配對（合併同一債務人→同一付款人的多筆項目，並以表格列出每筆明細與合計）
+    let detailHtml = '';
     if (Object.keys(directedMap).length > 0) {
-        // 先把 directedMap 的雙向條目（A->B 與 B->A）合併並互相抵銷 (netting)
-        // 建立以 pairKey (sorted names) 為單位的聚合物件
-        // pairAgg[key] = { a, b, items: [ {desc, amt_signed, type} ], total: signedSum }
         let pairAgg = {};
         for (let debtor in directedMap) {
             for (let payer in directedMap[debtor]) {
@@ -899,13 +897,10 @@ function calculate() {
                 let names = [debtor, payer].slice().sort();
                 let key = names.join('||');
                 if (!pairAgg[key]) pairAgg[key] = { a: names[0], b: names[1], items: [], total: 0 };
-
-                // 這個 direction 是 debtor -> payer
-                let sign = (debtor === pairAgg[key].a) ? 1 : -1; // 若 debtor 為 a，表示加正；若 debtor 為 b，表示為負
+                let sign = (debtor === pairAgg[key].a) ? 1 : -1;
                 for (let it of entry.items) {
                     let desc = (it.desc || '').trim();
                     let amt = Math.floor((Number(it.amt) || 0) * 100) / 100;
-                    // push item with sign and preserve type
                     pairAgg[key].items.push({ desc: desc, amt: sign * amt, type: it.type || 'personal' });
                     pairAgg[key].total += sign * amt;
                 }
@@ -914,35 +909,26 @@ function calculate() {
 
         // 顯示合併後結果：若 net 為正，顯示 a -> b；若負則顯示 b -> a，並列出每項的淨額（依類型排序：派對>個人>代出）
         // 我們改以 HTML 表格呈現「個人費用細項」，並保留先前的純文字摘要在上方
+        detailHtml += '<div style="margin-top:12px;">';
+        detailHtml += '<h3 style="margin:8px 0 6px 0;">個人費用細項</h3>';
+        detailHtml += '<div class="table-box"><table><thead><tr><th>給錢</th><th>收錢</th><th>品項</th><th>類型</th><th style="text-align:right">金額</th></tr></thead><tbody>';
 
-        // 類型排序權重（數字愈小愈先顯示）
         const typeOrder = { 'party': 0, 'personal': 1, 'advance': 2 };
-
         // 建立表格 HTML（標頭）
         let detailTableHtml = '<div style="margin-top:12px;">';
         detailTableHtml += '<h3 style="margin:6px 0 8px 0;">個人費用細項（表格）</h3>';
-        detailTableHtml += '<div style="overflow:auto;border:1px solid #e6e9ee;border-radius:8px;padding:6px;background:#fff;">';
         detailTableHtml += '<table style="width:100%;border-collapse:collapse;"><thead><tr>' +
             '<th style="padding:8px;border-bottom:1px solid #eef2f6;">債務人</th>' +
             '<th style="padding:8px;border-bottom:1px solid #eef2f6;">收款人</th>' +
-            '<th style="padding:8px;border-bottom:1px solid #eef2f6;">類型</th>' +
-            '<th style="padding:8px;border-bottom:1px solid #eef2f6;">品項說明</th>' +
-            '<th style="padding:8px;border-bottom:1px solid #eef2f6; text-align:right;">金額</th>' +
-            '</tr></thead><tbody>';
-
-        // 先排序 pairAgg 的鍵以穩定輸出順序（依人名排序）
-        const pairKeys = Object.keys(pairAgg).sort((a,b) => a.localeCompare(b, 'zh-Hant-TW'));
 
         for (let pk of pairKeys) {
+        for (let pk in pairAgg) {
             let node = pairAgg[pk];
-            // 合併同樣 desc & type 的項目
             const merged = {};
             for (let it of node.items) {
                 const keyDesc = (it.type || '') + '||' + it.desc;
                 merged[keyDesc] = (merged[keyDesc] || 0) + it.amt;
             }
-
-            // 轉成陣列並過濾 0
             let partsArr = Object.keys(merged)
                 .map(k => {
                     const [t, d] = k.split('||');
@@ -965,17 +951,31 @@ function calculate() {
                 // 顯示一列說明（已抵銷）
                 detailTableHtml += `<tr><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(from)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(to)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">--</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">已抵銷項目</td><td style="padding:8px;border-bottom:1px solid #eef2f6;text-align:right;">${absNet.toFixed(2)}</td></tr>`;
             } else {
-                // 每個 partsArr 條目分別為一列
-                for (let pa of partsArr) {
-                    const typeLabel = (pa.type === 'party') ? '派對費用' : (pa.type === 'personal') ? '個人費用' : '代出費用';
-                    detailTableHtml += `<tr><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(from)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(to)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">${typeLabel}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(pa.desc)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;text-align:right;">${pa.amt.toFixed(2)}</td></tr>`;
+                for (let part of partsArr) {
+                    pairRows.push({ from: from, to: to, desc: part.desc, type: part.type, amt: part.amt });
                 }
-                // 加入該 pair 的合計列
-                detailTableHtml += `<tr style="background:#fafafa;"><td colspan="4" style="padding:8px;border-bottom:1px solid #eef2f6; text-align:right; font-weight:700;">小計 ${escapeHtml(from)} → ${escapeHtml(to)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;text-align:right; font-weight:700;">${absNet.toFixed(2)}</td></tr>`;
+                pairRows.push({ from: from, to: to, desc: '合計', type: '總計', amt: absNet, isTotal: true });
             }
         }
 
-        detailTableHtml += '</tbody></table></div></div>';
+        // 依債務人分組，並在每個新債務人開始時插入標頭列
+        const grouped = {};
+        for (let r of pairRows) {
+            if (!grouped[r.from]) grouped[r.from] = [];
+        }
+
+        const fromNames = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'zh-Hant-TW'));
+        for (let fn of fromNames) {
+            // 每換一個人就插入一個深色標頭列
+            detailHtml += `<tr style="background:#f3f4f6;"><td colspan="5"><h4>${escapeHtml(fn)}</h4></td></tr>`;
+                if (row.isSummary) {
+                    detailHtml += `<tr><td>${escapeHtml(row.from)}</td><td>${escapeHtml(row.to)}</td><td>${escapeHtml(row.desc)}</td><td></td><td style="text-align:right">${(row.amt).toFixed(2)}</td></tr>`;
+                } else if (row.isTotal) {
+                    detailHtml += `<tr style="font-weight:700"><td>${escapeHtml(row.from)}</td><td>${escapeHtml(row.to)}</td><td colspan="2">${escapeHtml(row.desc)}</td><td style="text-align:right">${(row.amt).toFixed(2)}</td></tr>`;
+                } else {
+                    const amtDisplay = (row.amt >= 0 ? '' : '-') + '$' + Math.abs(row.amt).toFixed(2);
+                    detailHtml += `<tr><td>${escapeHtml(row.from)}</td><td>${escapeHtml(row.to)}</td><td>${escapeHtml(row.desc)}</td><td>${escapeHtml(row.type)}</td><td style="text-align:right">${amtDisplay}</td></tr>`;
+        detailHtml += '</tbody></table></div></div>';
     }
 
     // 列出配對結束後仍有剩餘的債務或債權（未分配）
@@ -987,12 +987,17 @@ function calculate() {
         if (creditors[i].amt > 0) remainingLines.push(creditors[i].p + " 尚收 " + (Math.floor(creditors[i].amt * 100) / 100).toFixed(2));
     }
 
-    // 把純文字摘要放在 <pre>，並在下方附上結構化表格（若有）以提升可讀性
-    try {
-        result.innerHTML = '<div style="margin-bottom:12px;"><pre style="white-space:pre-wrap;margin:0;">' + escapeHtml(text) + '</pre></div>' + (typeof detailTableHtml !== 'undefined' ? detailTableHtml : '');
-    } catch (e) {
-        // 若因某種原因無法使用 innerHTML（理論上不會發生），回退到 textContent
-        result.textContent = text;
+    // 將文字結果與 HTML 明細合併輸出
+    const resEl = document.getElementById('result');
+    let preHtml = '<pre style="white-space:pre-wrap;font-family:monospace;font-size:13px;">' + escapeHtml(text);
+    if (remainingLines.length > 0) {
+        preHtml += '\n\n' + escapeHtml(remainingLines.join('\n'));
+    }
+    preHtml += '</pre>';
+    if (detailHtml && detailHtml.length > 0) {
+        resEl.innerHTML = preHtml + detailHtml;
+    } else {
+        resEl.innerHTML = preHtml;
     }
 }
 
