@@ -907,21 +907,13 @@ function calculate() {
             }
         }
 
-        // 顯示合併後結果：若 net 為正，顯示 a -> b；若負則顯示 b -> a，並列出每項的淨額（依類型排序：派對>個人>代出）
-        // 我們改以 HTML 表格呈現「個人費用細項」，並保留先前的純文字摘要在上方
         detailHtml += '<div style="margin-top:12px;">';
         detailHtml += '<h3 style="margin:8px 0 6px 0;">個人費用細項</h3>';
         detailHtml += '<div class="table-box"><table><thead><tr><th>給錢</th><th>收錢</th><th>品項</th><th>類型</th><th style="text-align:right">金額</th></tr></thead><tbody>';
 
         const typeOrder = { 'party': 0, 'personal': 1, 'advance': 2 };
-        // 建立表格 HTML（標頭）
-        let detailTableHtml = '<div style="margin-top:12px;">';
-        detailTableHtml += '<h3 style="margin:6px 0 8px 0;">個人費用細項（表格）</h3>';
-        detailTableHtml += '<table style="width:100%;border-collapse:collapse;"><thead><tr>' +
-            '<th style="padding:8px;border-bottom:1px solid #eef2f6;">債務人</th>' +
-            '<th style="padding:8px;border-bottom:1px solid #eef2f6;">收款人</th>' +
-
-        for (let pk of pairKeys) {
+        // 建立每對 pair 的合併項目，並轉為列資料
+        const pairRows = [];
         for (let pk in pairAgg) {
             let node = pairAgg[pk];
             const merged = {};
@@ -935,7 +927,6 @@ function calculate() {
                     return { desc: d, amt: Math.floor(merged[k] * 100) / 100, type: t };
                 })
                 .filter(x => x.amt !== 0)
-                // 依 typeOrder 再依絕對值大小排序
                 .sort((x, y) => {
                     const to = (typeOrder[x.type] || 99) - (typeOrder[y.type] || 99);
                     if (to !== 0) return to;
@@ -948,8 +939,7 @@ function calculate() {
             let absNet = Math.abs(net);
 
             if (partsArr.length === 0) {
-                // 顯示一列說明（已抵銷）
-                detailTableHtml += `<tr><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(from)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">${escapeHtml(to)}</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">--</td><td style="padding:8px;border-bottom:1px solid #eef2f6;">已抵銷項目</td><td style="padding:8px;border-bottom:1px solid #eef2f6;text-align:right;">${absNet.toFixed(2)}</td></tr>`;
+                pairRows.push({ from: from, to: to, desc: '(已抵銷項目)', type: '', amt: absNet, isSummary: true });
             } else {
                 for (let part of partsArr) {
                     pairRows.push({ from: from, to: to, desc: part.desc, type: part.type, amt: part.amt });
@@ -962,12 +952,14 @@ function calculate() {
         const grouped = {};
         for (let r of pairRows) {
             if (!grouped[r.from]) grouped[r.from] = [];
+            grouped[r.from].push(r);
         }
 
         const fromNames = Object.keys(grouped).sort((a, b) => a.localeCompare(b, 'zh-Hant-TW'));
         for (let fn of fromNames) {
             // 每換一個人就插入一個深色標頭列
             detailHtml += `<tr style="background:#f3f4f6;"><td colspan="5"><h4>${escapeHtml(fn)}</h4></td></tr>`;
+            for (let row of grouped[fn]) {
                 if (row.isSummary) {
                     detailHtml += `<tr><td>${escapeHtml(row.from)}</td><td>${escapeHtml(row.to)}</td><td>${escapeHtml(row.desc)}</td><td></td><td style="text-align:right">${(row.amt).toFixed(2)}</td></tr>`;
                 } else if (row.isTotal) {
@@ -975,6 +967,9 @@ function calculate() {
                 } else {
                     const amtDisplay = (row.amt >= 0 ? '' : '-') + '$' + Math.abs(row.amt).toFixed(2);
                     detailHtml += `<tr><td>${escapeHtml(row.from)}</td><td>${escapeHtml(row.to)}</td><td>${escapeHtml(row.desc)}</td><td>${escapeHtml(row.type)}</td><td style="text-align:right">${amtDisplay}</td></tr>`;
+                }
+            }
+        }
         detailHtml += '</tbody></table></div></div>';
     }
 
