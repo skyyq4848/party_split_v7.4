@@ -1,358 +1,98 @@
 <!DOCTYPE html>
-<html>
-
+<html class="light" lang="en">
 <head>
-    <meta charset="utf-8">
-    <title> 派對分帳神器 v7.4</title>
-    <style>
-        :root {
-            --bg: #f6f8fb;
-            --card: #ffffff;
-            --muted: #6b7280;
-            --accent: #2563eb;
-            --accent-2: #06b6d4;
-            --danger: #ef4444;
-            --radius: 10px;
-        }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            font-family: "Noto Sans TC", Arial, Helvetica, sans-serif;
-            margin: 0;
-            background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
-            color: #111827;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .app {
-            max-width: 1100px;
-            margin: 28px auto;
-            padding: 20px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-
-        .title {
-            display: flex;
-            gap: 12px;
-            align-items: baseline;
-        }
-
-        .title h1 {
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: 0.2px;
-        }
-
-        .title .sub {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-            padding: 18px;
-            margin-bottom: 18px;
-            border: 1px solid rgba(15, 23, 42, 0.03);
-        }
-
-        input[type="text"],
-        input[type="number"],
-        textarea,
-        select {
-            border: 1px solid #e6e9ee;
-            padding: 10px 12px;
-            border-radius: 8px;
-            background: #fff;
-            outline: none;
-            transition: box-shadow .12s, border-color .12s;
-            font-size: 14px;
-        }
-
-        input:focus,
-        textarea:focus,
-        select:focus {
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
-            border-color: var(--accent);
-        }
-
-        button {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform .06s ease, box-shadow .08s ease, opacity .08s;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
-        }
-
-        button.secondary {
-            background: #fff;
-            color: var(--accent);
-            border: 1px solid #e6e9ee;
-            box-shadow: none;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--muted);
-            border: 1px dashed #e6e9ee;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        ul#peopleList,
-        ul#groupList {
-            list-style: none;
-            padding-left: 0;
-            margin: 8px 0 0 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        ul#peopleList li,
-        ul#groupList li {
-            background: #f8fafc;
-            padding: 8px 10px;
-            border-radius: 999px;
-            color: #0f172a;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(2, 6, 23, 0.03);
-        }
-
-        ul#peopleList li button {
-            background: transparent;
-            color: var(--danger);
-            border: none;
-            padding: 0 6px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .member-box {
-            gap: 8px;
-        }
-
-        .member-box label {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: linear-gradient(180deg, #f3f7ff, #ffffff);
-            border: 1px solid rgba(37, 99, 235, 0.08);
-            color: #0f172a;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .member-box input {
-            margin-right: 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: transparent;
-        }
-
-        th,
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #eef2f6;
-            text-align: left;
-        }
-
-        thead th {
-            background: transparent;
-            color: var(--muted);
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        tbody tr:nth-child(odd) {
-            background: rgba(15, 23, 42, 0.02);
-        }
-
-        .table-box {
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .result {
-            white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 13px;
-            color: #0b1220;
-        }
-
-        /* Small screens */
-        @media(max-width:720px) {
-            .app {
-                padding: 12px;
-            }
-
-            .title h1 {
-                font-size: 18px;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-
-        .biginput {
-            border: 1px solid #ccc;
-            padding: 10px 15px;
-            border-radius: 60px;
-            outline: none;
-            transition: all 0.3s;
-            width: 80%;
-            box-sizing: border-box;
-        }
-
-        /* 折疊區塊樣式 */
-        details.fold-section {
-            margin-bottom: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            border-radius: 8px;
-            background: #fff;
-            overflow: hidden;
-        }
-
-        details.fold-section summary {
-            cursor: pointer;
-            padding: 10px 14px;
-            font-weight: 700;
-            background: linear-gradient(180deg, #fafafe, #ffffff);
-            list-style: none;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        details.fold-section[open] summary {
-            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-        }
-
-        details.fold-section .fold-body {
-            padding: 10px 14px;
-        }
-
-        details.fold-section summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .fold-summary-title {
-            display: inline-block;
-        }
-
-        .fold-summary-chevron {
-            font-size: 14px;
-            color: var(--muted);
-            margin-left: 8px;
-        }
-
-        /* 小型說明彈出 (驚嘆號) - 改為浮層以避免展開時推版 */
-        details.help-box {
-            position: relative;
-            display: inline-block;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        details.help-box summary {
-            width: 28px;
-            height: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            list-style: none;
-            padding: 0;
-            outline: none;
-        }
-
-        details.help-box summary::-webkit-details-marker {
-            display: none;
-        }
-
-        /* 預設隱藏幫助內容，展開時顯示為絕對定位的浮層，不會推動版面 */
-        details.help-box .help-body {
-            display: none;
-            position: absolute;
-            top: 38px;
-            right: 0;
-            width: 420px;
-            max-width: calc(100vw - 32px);
-            background: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.06);
-            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
-            border-radius: 8px;
-            padding: 12px;
-            z-index: 1200;
-            font-size: 13px;
-            color: #111827;
-            box-sizing: border-box;
-            max-height: 60vh;
-            overflow: auto;
-        }
-
-        details.help-box[open] .help-body {
-            display: block;
-        }
-
-        details.help-box .help-body p {
-            margin: 6px 0;
-            line-height: 1.4;
-        }
-
-        details.help-box .help-body code {
-            background: #f3f4f6;
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: normal;
-        }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Social Ledger - Test</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#ef8fe5",
+              "inverse-on-surface": "#9a9d9f",
+              "surface-variant": "#d9dde0",
+              "outline": "#747779",
+              "secondary-fixed-dim": "#48d4f3",
+              "on-tertiary": "#ffeef8",
+              "on-error-container": "#570008",
+              "on-secondary-fixed-variant": "#005969",
+              "tertiary-container": "#fe9cf4",
+              "secondary": "#006576",
+              "error-container": "#fb5151",
+              "on-primary-fixed": "#000000",
+              "primary": "#0050d4",
+              "surface-container-high": "#dfe3e6",
+              "surface-bright": "#f5f7f9",
+              "inverse-primary": "#618bff",
+              "on-background": "#2c2f31",
+              "secondary-dim": "#005867",
+              "primary-container": "#7b9cff",
+              "tertiary": "#8e3a8a",
+              "on-tertiary-fixed": "#480049",
+              "on-primary-fixed-variant": "#00266e",
+              "surface": "#f5f7f9",
+              "on-tertiary-container": "#661466",
+              "surface-container-highest": "#d9dde0",
+              "background": "#f5f7f9",
+              "surface-dim": "#d0d5d8",
+              "primary-fixed-dim": "#658eff",
+              "on-secondary-fixed": "#003a45",
+              "on-tertiary-fixed-variant": "#711f6f",
+              "tertiary-fixed": "#fe9cf4",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#eef1f3",
+              "on-surface": "#2c2f31",
+              "outline-variant": "#abadaf",
+              "error-dim": "#9f0519",
+              "inverse-surface": "#0b0f10",
+              "error": "#b31b25",
+              "primary-fixed": "#7b9cff",
+              "on-surface-variant": "#595c5e",
+              "secondary-container": "#65e1ff",
+              "surface-container": "#e5e9eb",
+              "on-error": "#ffefee",
+              "on-secondary-container": "#004f5d",
+              "on-primary-container": "#001e5a",
+              "surface-tint": "#0050d4",
+              "secondary-fixed": "#65e1ff",
+              "on-primary": "#f1f2ff",
+              "tertiary-dim": "#802d7d",
+              "primary-dim": "#0046bb",
+              "on-secondary": "#def7ff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
 </head>
+<body class="bg-surface text-on-surface font-body min-h-screen pb-32">
 
-<body>
-    <div class="app">
+<!-- Inserted app content from index.html -->
+<div class="app">
         <div class="header">
             <div class="title">
             <h1>派對分帳神器 v7.4</h1>
@@ -572,7 +312,10 @@
             </div>
         </details>
 
-        <script src="party_split_v7.4.js"></script>
+        
     </div>
+    
+    <script src="party_split_v7.4.js"></script>
+
 </body>
 </html>
