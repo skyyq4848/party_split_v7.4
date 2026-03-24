@@ -1,1100 +1,1338 @@
 <!-- Member & Group Setup -->
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Social Ledger - Member Setup</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "tertiary-fixed-dim": "#ef8fe5",
-              "inverse-on-surface": "#9a9d9f",
-              "surface-variant": "#d9dde0",
-              "outline": "#747779",
-              "secondary-fixed-dim": "#48d4f3",
-              "on-tertiary": "#ffeef8",
-              "on-error-container": "#570008",
-              "on-secondary-fixed-variant": "#005969",
-              "tertiary-container": "#fe9cf4",
-              "secondary": "#006576",
-              "error-container": "#fb5151",
-              "on-primary-fixed": "#000000",
-              "primary": "#0050d4",
-              "surface-container-high": "#dfe3e6",
-              "surface-bright": "#f5f7f9",
-              "inverse-primary": "#618bff",
-              "on-background": "#2c2f31",
-              "secondary-dim": "#005867",
-              "primary-container": "#7b9cff",
-              "tertiary": "#8e3a8a",
-              "on-tertiary-fixed": "#480049",
-              "on-primary-fixed-variant": "#00266e",
-              "surface": "#f5f7f9",
-              "on-tertiary-container": "#661466",
-              "surface-container-highest": "#d9dde0",
-              "background": "#f5f7f9",
-              "surface-dim": "#d0d5d8",
-              "primary-fixed-dim": "#658eff",
-              "on-secondary-fixed": "#003a45",
-              "on-tertiary-fixed-variant": "#711f6f",
-              "tertiary-fixed": "#fe9cf4",
-              "surface-container-lowest": "#ffffff",
-              "surface-container-low": "#eef1f3",
-              "on-surface": "#2c2f31",
-              "outline-variant": "#abadaf",
-              "error-dim": "#9f0519",
-              "inverse-surface": "#0b0f10",
-              "error": "#b31b25",
-              "primary-fixed": "#7b9cff",
-              "on-surface-variant": "#595c5e",
-              "secondary-container": "#65e1ff",
-              "surface-container": "#e5e9eb",
-              "on-error": "#ffefee",
-              "on-secondary-container": "#004f5d",
-              "on-primary-container": "#001e5a",
-              "surface-tint": "#0050d4",
-              "secondary-fixed": "#65e1ff",
-              "on-primary": "#f1f2ff",
-              "tertiary-dim": "#802d7d",
-              "primary-dim": "#0046bb",
-              "on-secondary": "#def7ff"
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Social Ledger - Member Setup</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#ef8fe5",
+                        "inverse-on-surface": "#9a9d9f",
+                        "surface-variant": "#d9dde0",
+                        "outline": "#747779",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-tertiary": "#ffeef8",
+                        "on-error-container": "#570008",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-container": "#fe9cf4",
+                        "secondary": "#006576",
+                        "error-container": "#fb5151",
+                        "on-primary-fixed": "#000000",
+                        "primary": "#0050d4",
+                        "surface-container-high": "#dfe3e6",
+                        "surface-bright": "#f5f7f9",
+                        "inverse-primary": "#618bff",
+                        "on-background": "#2c2f31",
+                        "secondary-dim": "#005867",
+                        "primary-container": "#7b9cff",
+                        "tertiary": "#8e3a8a",
+                        "on-tertiary-fixed": "#480049",
+                        "on-primary-fixed-variant": "#00266e",
+                        "surface": "#f5f7f9",
+                        "on-tertiary-container": "#661466",
+                        "surface-container-highest": "#d9dde0",
+                        "background": "#f5f7f9",
+                        "surface-dim": "#d0d5d8",
+                        "primary-fixed-dim": "#658eff",
+                        "on-secondary-fixed": "#003a45",
+                        "on-tertiary-fixed-variant": "#711f6f",
+                        "tertiary-fixed": "#fe9cf4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eef1f3",
+                        "on-surface": "#2c2f31",
+                        "outline-variant": "#abadaf",
+                        "error-dim": "#9f0519",
+                        "inverse-surface": "#0b0f10",
+                        "error": "#b31b25",
+                        "primary-fixed": "#7b9cff",
+                        "on-surface-variant": "#595c5e",
+                        "secondary-container": "#65e1ff",
+                        "surface-container": "#e5e9eb",
+                        "on-error": "#ffefee",
+                        "on-secondary-container": "#004f5d",
+                        "on-primary-container": "#001e5a",
+                        "surface-tint": "#0050d4",
+                        "secondary-fixed": "#65e1ff",
+                        "on-primary": "#f1f2ff",
+                        "tertiary-dim": "#802d7d",
+                        "primary-dim": "#0046bb",
+                        "on-secondary": "#def7ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Manrope"],
-              "label": ["Manrope"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
+        }
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+</head>
+
 <body class="bg-surface text-on-surface font-body min-h-screen pb-32">
-<!-- Top Navigation Shell -->
-<header class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none flex items-center justify-between px-6 py-4 w-full">
-<div class="flex items-center gap-4">
-<button class="flex items-center justify-center p-2 text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 rounded-full">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-plus-jakarta text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">The Social Ledger</h1>
-</div>
-<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/20">
-<img alt="User Profile" class="h-full w-full object-cover" data-alt="Close up portrait of a smiling woman with stylish hair and natural lighting in an outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsRQyMfvnXIcxJqjTYRTGcum6OZNLA28rllDYaaxSVr2ReKoxIsa6MKGhs7PvskL2mVD6-EFVW5DMg6FwIGeeOmqm3nxXbArOJ1Gs9JhLf0G95WqPHqy1_biwIoWDNosyCXyr58lBoJyL3gB7X0Md3g43lnpJjrB7KozXCG-lfgQgSzR2wusQ33r0xqtrngPQGY395T1gdx0EHI22gpR6ufM5_p0gDlweCajuuuaQZ3SC2Pz3LNckom93PjXC2_Vz_j4rSri9s9nQ"/>
-</div>
-</header>
-<main class="max-w-4xl mx-auto px-6 pt-8">
-<!-- Hero Section -->
-<section class="mb-10">
-<span class="text-primary font-bold tracking-widest text-xs uppercase font-label mb-2 block">Step 1 of 4</span>
-<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4">Who's at the table?</h2>
-<p class="text-on-surface-variant text-lg max-w-xl">Add the people joining the event. You can add them one by one or paste a list from your contacts.</p>
-</section>
-<!-- Bento Grid Layout for Inputs -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-<!-- Individual Add Card -->
-<div class="md:col-span-5 bg-surface-container-lowest rounded-xl p-8 shadow-sm transition-all hover:shadow-md">
-<div class="flex items-center gap-3 mb-6">
-<div class="bg-primary/10 p-3 rounded-full text-primary">
-<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
-</div>
-<h3 class="font-headline text-xl font-bold">Add One</h3>
-</div>
-<div class="space-y-4">
-<div class="relative">
-<input class="w-full bg-surface-container-high border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/50" placeholder="Full Name" type="text"/>
-</div>
-<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+    <!-- Top Navigation Shell -->
+    <header
+        class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none flex items-center justify-between px-6 py-4 w-full">
+        <div class="flex items-center gap-4">
+            <button
+                class="flex items-center justify-center p-2 text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 rounded-full">
+                <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+            </button>
+            <h1 class="font-plus-jakarta text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">The Social
+                Ledger</h1>
+        </div>
+        <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary/20">
+            <img alt="User Profile" class="h-full w-full object-cover"
+                data-alt="Close up portrait of a smiling woman with stylish hair and natural lighting in an outdoor setting"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsRQyMfvnXIcxJqjTYRTGcum6OZNLA28rllDYaaxSVr2ReKoxIsa6MKGhs7PvskL2mVD6-EFVW5DMg6FwIGeeOmqm3nxXbArOJ1Gs9JhLf0G95WqPHqy1_biwIoWDNosyCXyr58lBoJyL3gB7X0Md3g43lnpJjrB7KozXCG-lfgQgSzR2wusQ33r0xqtrngPQGY395T1gdx0EHI22gpR6ufM5_p0gDlweCajuuuaQZ3SC2Pz3LNckom93PjXC2_Vz_j4rSri9s9nQ" />
+        </div>
+    </header>
+    <main class="max-w-4xl mx-auto px-6 pt-8">
+        <!-- Hero Section -->
+        <section class="mb-10">
+            <span class="text-primary font-bold tracking-widest text-xs uppercase font-label mb-2 block">Step 1 of
+                4</span>
+            <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4">Who's at
+                the table?</h2>
+            <p class="text-on-surface-variant text-lg max-w-xl">Add the people joining the event. You can add them one
+                by one or paste a list from your contacts.</p>
+        </section>
+        <!-- Bento Grid Layout for Inputs -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Individual Add Card -->
+            <div
+                class="md:col-span-5 bg-surface-container-lowest rounded-xl p-8 shadow-sm transition-all hover:shadow-md">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-primary/10 p-3 rounded-full text-primary">
+                        <span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                    </div>
+                    <h3 class="font-headline text-xl font-bold">Add One</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="relative">
+                        <input
+                            class="w-full bg-surface-container-high border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/50"
+                            placeholder="Full Name" type="text" />
+                    </div>
+                    <button
+                        class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-full shadow-lg shadow-primary/20 active:scale-95 transition-transform">
                         Add to List
                     </button>
-</div>
-</div>
-<!-- Bulk Import Card -->
-<div class="md:col-span-7 bg-surface-container-lowest rounded-xl p-8 shadow-sm transition-all hover:shadow-md">
-<div class="flex items-center gap-3 mb-6">
-<div class="bg-secondary/10 p-3 rounded-full text-secondary">
-<span class="material-symbols-outlined" data-icon="group_add">group_add</span>
-</div>
-<h3 class="font-headline text-xl font-bold">Bulk Import</h3>
-</div>
-<div class="space-y-4">
-<textarea class="w-full bg-surface-container-high border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/50 resize-none" placeholder="Paste names separated by commas or new lines..." rows="3"></textarea>
-<div class="flex justify-end">
-<button class="px-8 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-full active:scale-95 transition-transform">
+                </div>
+            </div>
+            <!-- Bulk Import Card -->
+            <div
+                class="md:col-span-7 bg-surface-container-lowest rounded-xl p-8 shadow-sm transition-all hover:shadow-md">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-secondary/10 p-3 rounded-full text-secondary">
+                        <span class="material-symbols-outlined" data-icon="group_add">group_add</span>
+                    </div>
+                    <h3 class="font-headline text-xl font-bold">Bulk Import</h3>
+                </div>
+                <div class="space-y-4">
+                    <textarea
+                        class="w-full bg-surface-container-high border-none rounded-xl py-4 px-5 text-on-surface focus:ring-2 focus:ring-primary/40 transition-all placeholder:text-on-surface-variant/50 resize-none"
+                        placeholder="Paste names separated by commas or new lines..." rows="3"></textarea>
+                    <div class="flex justify-end">
+                        <button
+                            class="px-8 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-full active:scale-95 transition-transform">
                             Import Names
                         </button>
-</div>
-</div>
-</div>
-<!-- Participants Canvas -->
-<div class="md:col-span-12 bg-surface-container-low rounded-xl p-8">
-<div class="flex justify-between items-end mb-8">
-<div>
-<h3 class="font-headline text-2xl font-bold mb-1">Participants</h3>
-<p class="text-on-surface-variant font-label text-sm uppercase tracking-wide">6 members added</p>
-</div>
-<button class="text-primary font-bold flex items-center gap-1 hover:underline">
-<span class="material-symbols-outlined text-sm" data-icon="delete_sweep">delete_sweep</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Participants Canvas -->
+            <div class="md:col-span-12 bg-surface-container-low rounded-xl p-8">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h3 class="font-headline text-2xl font-bold mb-1">Participants</h3>
+                        <p class="text-on-surface-variant font-label text-sm uppercase tracking-wide">6 members added
+                        </p>
+                    </div>
+                    <button class="text-primary font-bold flex items-center gap-1 hover:underline">
+                        <span class="material-symbols-outlined text-sm" data-icon="delete_sweep">delete_sweep</span>
                         Clear All
                     </button>
-</div>
-<!-- Chips Container -->
-<div class="flex flex-wrap gap-3">
-<!-- Participant Chip -->
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="Close up of a man with curly hair smiling in bright daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxgt7YjH_hUJrGIPzXwcqUOSGyWfnRdiYboS7FvYnC-SmhWSj_-rh0RErtSRyTO9qNQT6YLzlNuEYA3jmx9MdgGumklsJSzLA4E0WQLude_t0kpE3AxRBYfmcjQxD2oMcPo6J0-Pd_G5Tw-Lt0wkRyABlvNTNzG8ibZJUOqdAr7B-PwergiDBYij-SL-0XhFhW15hco9qImwZhRELN-UAVfT57QRvf3jo2_XC4R2XdvLicGF3MUbT5K1i2C8w5ml7QB3SB0Cjwijs"/>
-<span>Julian Casablancas</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[10px] text-white">AH</div>
-<span>Albert Hammond</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<img class="w-6 h-6 rounded-full object-cover" data-alt="Portrait of a woman with braided hair wearing a colorful scarf in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs-MPmJVbIlXmBha8ZFZCX78UDFEnmX-iX7zLGnbAysYTO3Ud6qZlpICpo-1nFD_VlbG5jnqP7jBgrkoylyXSlUzOutE1zrIWQk8rxjswkEcKFKxrEzb8bn6vFHJYQWrRqTCbPkdPwJ7cR1Hxa4cVBmvdM0MxaGyE2LlhkeuBdEnqS-M6muEir5atZvbWOgLqMfDVXmWzfEguF477icmRrchjPndv5WFviWB4N040PL_TcuCZYN1oVqfoAZNDbp9QiVYPijPN745s"/>
-<span>Fab Moretti</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<div class="w-6 h-6 rounded-full bg-tertiary flex items-center justify-center text-[10px] text-white">NV</div>
-<span>Nick Valensi</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<div class="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-[10px] text-white">NF</div>
-<span>Nikolai Fraiture</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-<div class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
-<div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white">RR</div>
-<span>Rick Rubin</span>
-<button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100" data-icon="close">close</button>
-</div>
-</div>
-</div>
-<!-- Grouping Section -->
-<div class="md:col-span-12 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20">
-<div class="flex items-center gap-3 mb-6">
-<div class="bg-tertiary/10 p-3 rounded-full text-tertiary">
-<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
-</div>
-<div>
-<h3 class="font-headline text-xl font-bold">Form a Group</h3>
-<p class="text-on-surface-variant text-sm">Create subgroups for easier bill allocation later.</p>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<!-- Create Group Form -->
-<div class="space-y-4">
-<input class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-tertiary/40 transition-all" placeholder="Group Name (e.g. 'The Roommates')" type="text"/>
-<div class="p-4 bg-surface rounded-xl border border-dashed border-outline-variant/40">
-<p class="text-xs font-label text-on-surface-variant uppercase mb-3">Select Members</p>
-<div class="flex flex-wrap gap-2">
-<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Julian</button>
-<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Albert</button>
-<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Fab</button>
-<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Nick</button>
-</div>
-</div>
-<button class="w-full py-3 bg-tertiary text-on-tertiary font-bold rounded-full active:scale-95 transition-transform">
+                </div>
+                <!-- Chips Container -->
+                <div class="flex flex-wrap gap-3">
+                    <!-- Participant Chip -->
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <img class="w-6 h-6 rounded-full object-cover"
+                            data-alt="Close up of a man with curly hair smiling in bright daylight"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxgt7YjH_hUJrGIPzXwcqUOSGyWfnRdiYboS7FvYnC-SmhWSj_-rh0RErtSRyTO9qNQT6YLzlNuEYA3jmx9MdgGumklsJSzLA4E0WQLude_t0kpE3AxRBYfmcjQxD2oMcPo6J0-Pd_G5Tw-Lt0wkRyABlvNTNzG8ibZJUOqdAr7B-PwergiDBYij-SL-0XhFhW15hco9qImwZhRELN-UAVfT57QRvf3jo2_XC4R2XdvLicGF3MUbT5K1i2C8w5ml7QB3SB0Cjwijs" />
+                        <span>Julian Casablancas</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <div
+                            class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[10px] text-white">
+                            AH</div>
+                        <span>Albert Hammond</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <img class="w-6 h-6 rounded-full object-cover"
+                            data-alt="Portrait of a woman with braided hair wearing a colorful scarf in soft studio lighting"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs-MPmJVbIlXmBha8ZFZCX78UDFEnmX-iX7zLGnbAysYTO3Ud6qZlpICpo-1nFD_VlbG5jnqP7jBgrkoylyXSlUzOutE1zrIWQk8rxjswkEcKFKxrEzb8bn6vFHJYQWrRqTCbPkdPwJ7cR1Hxa4cVBmvdM0MxaGyE2LlhkeuBdEnqS-M6muEir5atZvbWOgLqMfDVXmWzfEguF477icmRrchjPndv5WFviWB4N040PL_TcuCZYN1oVqfoAZNDbp9QiVYPijPN745s" />
+                        <span>Fab Moretti</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <div
+                            class="w-6 h-6 rounded-full bg-tertiary flex items-center justify-center text-[10px] text-white">
+                            NV</div>
+                        <span>Nick Valensi</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <div
+                            class="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-[10px] text-white">
+                            NF</div>
+                        <span>Nikolai Fraiture</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 bg-secondary-fixed-dim/20 text-on-secondary-fixed-variant px-4 py-2 rounded-full font-bold border border-secondary-fixed-dim/30">
+                        <div
+                            class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white">
+                            RR</div>
+                        <span>Rick Rubin</span>
+                        <button class="material-symbols-outlined text-sm opacity-60 hover:opacity-100"
+                            data-icon="close">close</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Grouping Section -->
+            <div class="md:col-span-12 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/20">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-tertiary/10 p-3 rounded-full text-tertiary">
+                        <span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline text-xl font-bold">Form a Group</h3>
+                        <p class="text-on-surface-variant text-sm">Create subgroups for easier bill allocation later.
+                        </p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Create Group Form -->
+                    <div class="space-y-4">
+                        <input
+                            class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-tertiary/40 transition-all"
+                            placeholder="Group Name (e.g. 'The Roommates')" type="text" />
+                        <div class="p-4 bg-surface rounded-xl border border-dashed border-outline-variant/40">
+                            <p class="text-xs font-label text-on-surface-variant uppercase mb-3">Select Members</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button
+                                    class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Julian</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Albert</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Fab</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-full border border-outline-variant/40 text-sm font-medium hover:bg-surface-container-high transition-colors">Nick</button>
+                            </div>
+                        </div>
+                        <button
+                            class="w-full py-3 bg-tertiary text-on-tertiary font-bold rounded-full active:scale-95 transition-transform">
                             Create Group
                         </button>
-</div>
-<!-- Existing Groups -->
-<div class="space-y-3">
-<p class="text-xs font-label text-on-surface-variant uppercase">Current Groups</p>
-<div class="flex flex-col gap-3">
-<div class="bg-surface-container-high/50 p-4 rounded-xl flex justify-between items-center group hover:bg-surface-container-high transition-colors">
-<div class="flex items-center gap-3">
-<div class="flex -space-x-2">
-<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-primary flex items-center justify-center text-[8px] text-white">JC</div>
-<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-secondary flex items-center justify-center text-[8px] text-white">AH</div>
-</div>
-<div>
-<h4 class="font-bold text-sm">Management</h4>
-<p class="text-xs text-on-surface-variant">2 members</p>
-</div>
-</div>
-<button class="material-symbols-outlined text-error opacity-0 group-hover:opacity-100 transition-opacity" data-icon="delete">delete</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-<!-- Floating Action Button (FAB) for Next Step -->
-<div class="fixed bottom-24 right-8 z-50">
-<button class="group flex items-center gap-3 bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-full shadow-[0_12_32_rgba(44,47,49,0.2)] hover:shadow-[0_16_40_rgba(44,47,49,0.3)] transition-all active:scale-90">
-<span class="font-headline font-bold text-lg">Next: Bill Entry</span>
-<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
-</button>
-</div>
-<!-- Bottom Navigation Shell -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] z-50 rounded-t-3xl">
-<div class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform">
-<span class="material-symbols-outlined" data-icon="group_add">group_add</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Setup</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Entry</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
-<span class="material-symbols-outlined" data-icon="rule">rule</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Review</span>
-</div>
-<div class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
-<span class="material-symbols-outlined" data-icon="payments">payments</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Result</span>
-</div>
-</nav>
-</body></html>
+                    </div>
+                    <!-- Existing Groups -->
+                    <div class="space-y-3">
+                        <p class="text-xs font-label text-on-surface-variant uppercase">Current Groups</p>
+                        <div class="flex flex-col gap-3">
+                            <div
+                                class="bg-surface-container-high/50 p-4 rounded-xl flex justify-between items-center group hover:bg-surface-container-high transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                            class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-primary flex items-center justify-center text-[8px] text-white">
+                                            JC</div>
+                                        <div
+                                            class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-secondary flex items-center justify-center text-[8px] text-white">
+                                            AH</div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm">Management</h4>
+                                        <p class="text-xs text-on-surface-variant">2 members</p>
+                                    </div>
+                                </div>
+                                <button
+                                    class="material-symbols-outlined text-error opacity-0 group-hover:opacity-100 transition-opacity"
+                                    data-icon="delete">delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Floating Action Button (FAB) for Next Step -->
+    <div class="fixed bottom-24 right-8 z-50">
+        <button
+            class="group flex items-center gap-3 bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 rounded-full shadow-[0_12_32_rgba(44,47,49,0.2)] hover:shadow-[0_16_40_rgba(44,47,49,0.3)] transition-all active:scale-90">
+            <span class="font-headline font-bold text-lg">Next: Bill Entry</span>
+            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform"
+                data-icon="arrow_forward">arrow_forward</span>
+        </button>
+    </div>
+    <!-- Bottom Navigation Shell -->
+    <nav
+        class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] z-50 rounded-t-3xl">
+        <div
+            class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined" data-icon="group_add">group_add</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Setup</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Entry</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined" data-icon="rule">rule</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Review</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 dark:hover:text-blue-200 active:scale-90 transition-transform">
+            <span class="material-symbols-outlined" data-icon="payments">payments</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Result</span>
+        </div>
+    </nav>
+</body>
+
+</html>
 
 <!-- Bill Parsing & Entry -->
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Bill Entry | The Social Ledger</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "tertiary-fixed-dim": "#ef8fe5",
-              "inverse-on-surface": "#9a9d9f",
-              "surface-variant": "#d9dde0",
-              "outline": "#747779",
-              "secondary-fixed-dim": "#48d4f3",
-              "on-tertiary": "#ffeef8",
-              "on-error-container": "#570008",
-              "on-secondary-fixed-variant": "#005969",
-              "tertiary-container": "#fe9cf4",
-              "secondary": "#006576",
-              "error-container": "#fb5151",
-              "on-primary-fixed": "#000000",
-              "primary": "#0050d4",
-              "surface-container-high": "#dfe3e6",
-              "surface-bright": "#f5f7f9",
-              "inverse-primary": "#618bff",
-              "on-background": "#2c2f31",
-              "secondary-dim": "#005867",
-              "primary-container": "#7b9cff",
-              "tertiary": "#8e3a8a",
-              "on-tertiary-fixed": "#480049",
-              "on-primary-fixed-variant": "#00266e",
-              "surface": "#f5f7f9",
-              "on-tertiary-container": "#661466",
-              "surface-container-highest": "#d9dde0",
-              "background": "#f5f7f9",
-              "surface-dim": "#d0d5d8",
-              "primary-fixed-dim": "#658eff",
-              "on-secondary-fixed": "#003a45",
-              "on-tertiary-fixed-variant": "#711f6f",
-              "tertiary-fixed": "#fe9cf4",
-              "surface-container-lowest": "#ffffff",
-              "surface-container-low": "#eef1f3",
-              "on-surface": "#2c2f31",
-              "outline-variant": "#abadaf",
-              "error-dim": "#9f0519",
-              "inverse-surface": "#0b0f10",
-              "error": "#b31b25",
-              "primary-fixed": "#7b9cff",
-              "on-surface-variant": "#595c5e",
-              "secondary-container": "#65e1ff",
-              "surface-container": "#e5e9eb",
-              "on-error": "#ffefee",
-              "on-secondary-container": "#004f5d",
-              "on-primary-container": "#001e5a",
-              "surface-tint": "#0050d4",
-              "secondary-fixed": "#65e1ff",
-              "on-primary": "#f1f2ff",
-              "tertiary-dim": "#802d7d",
-              "primary-dim": "#0046bb",
-              "on-secondary": "#def7ff"
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Bill Entry | The Social Ledger</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#ef8fe5",
+                        "inverse-on-surface": "#9a9d9f",
+                        "surface-variant": "#d9dde0",
+                        "outline": "#747779",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-tertiary": "#ffeef8",
+                        "on-error-container": "#570008",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-container": "#fe9cf4",
+                        "secondary": "#006576",
+                        "error-container": "#fb5151",
+                        "on-primary-fixed": "#000000",
+                        "primary": "#0050d4",
+                        "surface-container-high": "#dfe3e6",
+                        "surface-bright": "#f5f7f9",
+                        "inverse-primary": "#618bff",
+                        "on-background": "#2c2f31",
+                        "secondary-dim": "#005867",
+                        "primary-container": "#7b9cff",
+                        "tertiary": "#8e3a8a",
+                        "on-tertiary-fixed": "#480049",
+                        "on-primary-fixed-variant": "#00266e",
+                        "surface": "#f5f7f9",
+                        "on-tertiary-container": "#661466",
+                        "surface-container-highest": "#d9dde0",
+                        "background": "#f5f7f9",
+                        "surface-dim": "#d0d5d8",
+                        "primary-fixed-dim": "#658eff",
+                        "on-secondary-fixed": "#003a45",
+                        "on-tertiary-fixed-variant": "#711f6f",
+                        "tertiary-fixed": "#fe9cf4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eef1f3",
+                        "on-surface": "#2c2f31",
+                        "outline-variant": "#abadaf",
+                        "error-dim": "#9f0519",
+                        "inverse-surface": "#0b0f10",
+                        "error": "#b31b25",
+                        "primary-fixed": "#7b9cff",
+                        "on-surface-variant": "#595c5e",
+                        "secondary-container": "#65e1ff",
+                        "surface-container": "#e5e9eb",
+                        "on-error": "#ffefee",
+                        "on-secondary-container": "#004f5d",
+                        "on-primary-container": "#001e5a",
+                        "surface-tint": "#0050d4",
+                        "secondary-fixed": "#65e1ff",
+                        "on-primary": "#f1f2ff",
+                        "tertiary-dim": "#802d7d",
+                        "primary-dim": "#0046bb",
+                        "on-secondary": "#def7ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Manrope"],
-              "label": ["Manrope"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
+        }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        body { font-family: 'Manrope', sans-serif; }
-        h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         .glass-header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
         }
+
         .signature-gradient {
             background: linear-gradient(135deg, #0050d4 0%, #7b9cff 100%);
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
 <body class="bg-surface text-on-surface min-h-screen pb-32">
-<!-- TopAppBar -->
-<nav class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
-<div class="flex items-center justify-between px-6 py-4 w-full">
-<div class="flex items-center gap-4">
-<button class="text-blue-600 dark:text-blue-400 active:scale-95 duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full">
-<span class="material-symbols-outlined">arrow_back</span>
-</button>
-<h1 class="text-xl font-black text-slate-900 dark:text-slate-50 tracking-tight font-plus-jakarta">The Social Ledger</h1>
-</div>
-<div class="h-10 w-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-white shadow-sm">
-<img alt="User Profile" data-alt="close-up portrait of a stylish young professional with a friendly expression in a minimalist studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy5ETiAD8chnUDNs31CnSwQ2DW6mI6o5UELt7i1PZV4weqorUUaqWxHqBQeno6se_zwiGL42WWm4D1FRVgSlL0gjhup8Vap8Mzi2MtlcM0J9Qz5wc4d8uPHRbEwQho4orxEfct0JNay1hlewkjSb_XTKJ0b8VtLosq0DPgcOfsXpongt8g197WSNSP6UfaQ2fNQoGsSgFSc05_LYjsttc15Ru6NsIbsSR3lroeYQz5B4ouK77X5g9H3AxpoAWxMm-xCHcbQ00Byng"/>
-</div>
-</div>
-</nav>
-<main class="max-w-5xl mx-auto px-6 pt-10">
-<!-- Hero Header -->
-<header class="mb-12">
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-<div>
-<span class="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">Step 2 of 4</span>
-<h2 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-2">Capture the Moment</h2>
-<p class="text-on-surface-variant text-lg">Paste your bill or enter items manually to start the split.</p>
-</div>
-<!-- Toggle Mode -->
-<div class="flex p-1.5 bg-surface-container-high rounded-full w-fit">
-<button class="px-6 py-2 rounded-full text-sm font-bold transition-all bg-surface-container-lowest text-primary shadow-sm">
+    <!-- TopAppBar -->
+    <nav class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
+        <div class="flex items-center justify-between px-6 py-4 w-full">
+            <div class="flex items-center gap-4">
+                <button
+                    class="text-blue-600 dark:text-blue-400 active:scale-95 duration-200 hover:bg-slate-100 dark:hover:bg-slate-800 p-2 rounded-full">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1 class="text-xl font-black text-slate-900 dark:text-slate-50 tracking-tight font-plus-jakarta">The
+                    Social Ledger</h1>
+            </div>
+            <div
+                class="h-10 w-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-white shadow-sm">
+                <img alt="User Profile"
+                    data-alt="close-up portrait of a stylish young professional with a friendly expression in a minimalist studio setting"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy5ETiAD8chnUDNs31CnSwQ2DW6mI6o5UELt7i1PZV4weqorUUaqWxHqBQeno6se_zwiGL42WWm4D1FRVgSlL0gjhup8Vap8Mzi2MtlcM0J9Qz5wc4d8uPHRbEwQho4orxEfct0JNay1hlewkjSb_XTKJ0b8VtLosq0DPgcOfsXpongt8g197WSNSP6UfaQ2fNQoGsSgFSc05_LYjsttc15Ru6NsIbsSR3lroeYQz5B4ouK77X5g9H3AxpoAWxMm-xCHcbQ00Byng" />
+            </div>
+        </div>
+    </nav>
+    <main class="max-w-5xl mx-auto px-6 pt-10">
+        <!-- Hero Header -->
+        <header class="mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <span class="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">Step 2 of 4</span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-2">Capture the
+                        Moment</h2>
+                    <p class="text-on-surface-variant text-lg">Paste your bill or enter items manually to start the
+                        split.</p>
+                </div>
+                <!-- Toggle Mode -->
+                <div class="flex p-1.5 bg-surface-container-high rounded-full w-fit">
+                    <button
+                        class="px-6 py-2 rounded-full text-sm font-bold transition-all bg-surface-container-lowest text-primary shadow-sm">
                         AI Parser
                     </button>
-<button class="px-6 py-2 rounded-full text-sm font-bold transition-all text-on-surface-variant hover:text-on-surface">
+                    <button
+                        class="px-6 py-2 rounded-full text-sm font-bold transition-all text-on-surface-variant hover:text-on-surface">
                         Manual Entry
                     </button>
-</div>
-</div>
-</header>
-<!-- Main Content Area: AI Parser (Default) -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Large Text Area Section -->
-<div class="lg:col-span-2">
-<div class="bg-surface-container-lowest rounded-3xl p-8 shadow-[0_12px_32px_rgba(44,47,49,0.06)] group">
-<div class="flex items-center justify-between mb-6">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-<h3 class="font-bold text-xl">Paste Bill Content</h3>
-</div>
-<span class="text-xs text-on-surface-variant font-medium">Supports OCR text &amp; receipt pastes</span>
-</div>
-<div class="relative">
-<textarea class="w-full h-80 bg-surface-container-low rounded-2xl p-6 text-on-surface placeholder:text-outline-variant border-none focus:ring-2 focus:ring-primary/40 transition-all resize-none font-mono text-sm" placeholder="Example:
+                </div>
+            </div>
+        </header>
+        <!-- Main Content Area: AI Parser (Default) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Large Text Area Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-surface-container-lowest rounded-3xl p-8 shadow-[0_12px_32px_rgba(44,47,49,0.06)] group">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                            <h3 class="font-bold text-xl">Paste Bill Content</h3>
+                        </div>
+                        <span class="text-xs text-on-surface-variant font-medium">Supports OCR text &amp; receipt
+                            pastes</span>
+                    </div>
+                    <div class="relative">
+                        <textarea
+                            class="w-full h-80 bg-surface-container-low rounded-2xl p-6 text-on-surface placeholder:text-outline-variant border-none focus:ring-2 focus:ring-primary/40 transition-all resize-none font-mono text-sm"
+                            placeholder="Example:
 2x Truffle Pasta - $48.00
 1x Cabernet Sauvignon - $115.00
 Service Charge 10%..."></textarea>
-<!-- Floating Hint -->
-<div class="absolute bottom-4 right-4 flex items-center gap-2 bg-white/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/40">
-<span class="material-symbols-outlined text-sm text-primary">content_paste</span>
-<span class="text-xs font-bold text-on-surface-variant">Command + V</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Contextual Sidebar / Tips -->
-<div class="space-y-6">
-<div class="bg-primary-container/10 rounded-3xl p-8">
-<h4 class="font-bold text-lg text-on-primary-container mb-4">Magic Parsing</h4>
-<ul class="space-y-4">
-<li class="flex gap-4 items-start">
-<div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined text-primary text-sm">receipt</span>
-</div>
-<p class="text-sm text-on-surface-variant leading-relaxed">Simply copy the text from your digital receipt or e-mail.</p>
-</li>
-<li class="flex gap-4 items-start">
-<div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-<span class="material-symbols-outlined text-primary text-sm">group</span>
-</div>
-<p class="text-sm text-on-surface-variant leading-relaxed">Our AI identifies itemized costs and taxes automatically.</p>
-</li>
-</ul>
-</div>
-<!-- Secondary Action -->
-<div class="bg-surface-container-low rounded-3xl p-8 overflow-hidden relative group">
-<div class="relative z-10">
-<h4 class="font-bold text-lg mb-2">Camera Scan</h4>
-<p class="text-sm text-on-surface-variant mb-6">Take a photo of a physical receipt to skip typing.</p>
-<button class="w-full bg-surface-container-lowest py-3 rounded-xl font-bold text-primary flex items-center justify-center gap-2 hover:bg-white transition-colors">
-<span class="material-symbols-outlined">photo_camera</span>
+                        <!-- Floating Hint -->
+                        <div
+                            class="absolute bottom-4 right-4 flex items-center gap-2 bg-white/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/40">
+                            <span class="material-symbols-outlined text-sm text-primary">content_paste</span>
+                            <span class="text-xs font-bold text-on-surface-variant">Command + V</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Contextual Sidebar / Tips -->
+            <div class="space-y-6">
+                <div class="bg-primary-container/10 rounded-3xl p-8">
+                    <h4 class="font-bold text-lg text-on-primary-container mb-4">Magic Parsing</h4>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4 items-start">
+                            <div
+                                class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-primary text-sm">receipt</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant leading-relaxed">Simply copy the text from your
+                                digital receipt or e-mail.</p>
+                        </li>
+                        <li class="flex gap-4 items-start">
+                            <div
+                                class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-primary text-sm">group</span>
+                            </div>
+                            <p class="text-sm text-on-surface-variant leading-relaxed">Our AI identifies itemized costs
+                                and taxes automatically.</p>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Secondary Action -->
+                <div class="bg-surface-container-low rounded-3xl p-8 overflow-hidden relative group">
+                    <div class="relative z-10">
+                        <h4 class="font-bold text-lg mb-2">Camera Scan</h4>
+                        <p class="text-sm text-on-surface-variant mb-6">Take a photo of a physical receipt to skip
+                            typing.</p>
+                        <button
+                            class="w-full bg-surface-container-lowest py-3 rounded-xl font-bold text-primary flex items-center justify-center gap-2 hover:bg-white transition-colors">
+                            <span class="material-symbols-outlined">photo_camera</span>
                             Open Camera
                         </button>
-</div>
-<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-9xl">camera</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Hidden Manual Mode Preview (Conceptual) -->
-<!-- Note: This would typically be toggled via JS, but rendering here as part of the visual structure -->
-<div class="mt-16 border-t-2 border-dashed border-surface-container-high pt-16">
-<div class="flex items-center justify-between mb-8">
-<h3 class="text-2xl font-bold">Manual Entry Preview</h3>
-<button class="text-primary font-bold flex items-center gap-2 text-sm">
-<span class="material-symbols-outlined text-sm">add</span>
+                    </div>
+                    <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-9xl">camera</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Hidden Manual Mode Preview (Conceptual) -->
+        <!-- Note: This would typically be toggled via JS, but rendering here as part of the visual structure -->
+        <div class="mt-16 border-t-2 border-dashed border-surface-container-high pt-16">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-2xl font-bold">Manual Entry Preview</h3>
+                <button class="text-primary font-bold flex items-center gap-2 text-sm">
+                    <span class="material-symbols-outlined text-sm">add</span>
                     Add New Row
                 </button>
-</div>
-<div class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.06)]">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low">
-<th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Category</th>
-<th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Item</th>
-<th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Price</th>
-<th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Splitters</th>
-<th class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Type</th>
-<th class="px-6 py-4"></th>
-</tr>
-</thead>
-<tbody class="divide-y divide-surface-container-low">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-5">
-<span class="bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase px-3 py-1 rounded-full">Party</span>
-</td>
-<td class="px-6 py-5 font-bold text-on-surface">Wagyu Sliders (4x)</td>
-<td class="px-6 py-5 text-primary font-bold">$124.00</td>
-<td class="px-6 py-5">
-<div class="flex -space-x-2">
-<div class="h-8 w-8 rounded-full border-2 border-white bg-secondary-fixed-dim flex items-center justify-center text-[10px] font-bold">JD</div>
-<div class="h-8 w-8 rounded-full border-2 border-white bg-tertiary-fixed-dim flex items-center justify-center text-[10px] font-bold">SM</div>
-<div class="h-8 w-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-[10px] font-bold">AJ</div>
-</div>
-</td>
-<td class="px-6 py-5">
-<span class="text-xs font-medium text-on-surface-variant">Equally</span>
-</td>
-<td class="px-6 py-5 text-right">
-<button class="text-outline-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors">
-<td class="px-6 py-5">
-<span class="bg-surface-container-high text-on-surface-variant text-[10px] font-black uppercase px-3 py-1 rounded-full">Personal</span>
-</td>
-<td class="px-6 py-5 font-bold text-on-surface">Negroni Sbagliato</td>
-<td class="px-6 py-5 text-primary font-bold">$18.00</td>
-<td class="px-6 py-5">
-<div class="h-8 w-8 rounded-full border-2 border-white bg-tertiary-fixed-dim flex items-center justify-center text-[10px] font-bold">SM</div>
-</td>
-<td class="px-6 py-5">
-<span class="text-xs font-medium text-on-surface-variant">Solo</span>
-</td>
-<td class="px-6 py-5 text-right">
-<button class="text-outline-variant hover:text-error transition-colors">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</main>
-<!-- Bottom Action Bar (Capped CTA) -->
-<div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-lg px-6 z-40">
-<button class="w-full signature-gradient text-on-primary py-5 rounded-full font-extrabold text-lg shadow-[0_12px_32px_rgba(0,80,212,0.25)] flex items-center justify-center gap-3 active:scale-95 transition-transform">
-<span>Analyze &amp; Review</span>
-<span class="material-symbols-outlined">arrow_forward</span>
-</button>
-</div>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] z-50">
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">group_add</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Setup</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Entry</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">rule</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Review</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">payments</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Result</span>
-</a>
-</nav>
-</body></html>
+            </div>
+            <div
+                class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.06)]">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low">
+                                <th
+                                    class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+                                    Category</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+                                    Item</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+                                    Price</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+                                    Splitters</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+                                    Type</th>
+                                <th class="px-6 py-4"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-surface-container-low">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                <td class="px-6 py-5">
+                                    <span
+                                        class="bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase px-3 py-1 rounded-full">Party</span>
+                                </td>
+                                <td class="px-6 py-5 font-bold text-on-surface">Wagyu Sliders (4x)</td>
+                                <td class="px-6 py-5 text-primary font-bold">$124.00</td>
+                                <td class="px-6 py-5">
+                                    <div class="flex -space-x-2">
+                                        <div
+                                            class="h-8 w-8 rounded-full border-2 border-white bg-secondary-fixed-dim flex items-center justify-center text-[10px] font-bold">
+                                            JD</div>
+                                        <div
+                                            class="h-8 w-8 rounded-full border-2 border-white bg-tertiary-fixed-dim flex items-center justify-center text-[10px] font-bold">
+                                            SM</div>
+                                        <div
+                                            class="h-8 w-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-[10px] font-bold">
+                                            AJ</div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <span class="text-xs font-medium text-on-surface-variant">Equally</span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <button class="text-outline-variant hover:text-error transition-colors">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                <td class="px-6 py-5">
+                                    <span
+                                        class="bg-surface-container-high text-on-surface-variant text-[10px] font-black uppercase px-3 py-1 rounded-full">Personal</span>
+                                </td>
+                                <td class="px-6 py-5 font-bold text-on-surface">Negroni Sbagliato</td>
+                                <td class="px-6 py-5 text-primary font-bold">$18.00</td>
+                                <td class="px-6 py-5">
+                                    <div
+                                        class="h-8 w-8 rounded-full border-2 border-white bg-tertiary-fixed-dim flex items-center justify-center text-[10px] font-bold">
+                                        SM</div>
+                                </td>
+                                <td class="px-6 py-5">
+                                    <span class="text-xs font-medium text-on-surface-variant">Solo</span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <button class="text-outline-variant hover:text-error transition-colors">
+                                        <span class="material-symbols-outlined">delete</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Bottom Action Bar (Capped CTA) -->
+    <div class="fixed bottom-24 left-1/2 -translate-x-1/2 w-full max-w-lg px-6 z-40">
+        <button
+            class="w-full signature-gradient text-on-primary py-5 rounded-full font-extrabold text-lg shadow-[0_12px_32px_rgba(0,80,212,0.25)] flex items-center justify-center gap-3 active:scale-95 transition-transform">
+            <span>Analyze &amp; Review</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+    </div>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] z-50">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform"
+            href="#">
+            <span class="material-symbols-outlined">group_add</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Setup</span>
+        </a>
+        <a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform"
+            href="#">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Entry</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform"
+            href="#">
+            <span class="material-symbols-outlined">rule</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Review</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 active:scale-90 transition-transform"
+            href="#">
+            <span class="material-symbols-outlined">payments</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Result</span>
+        </a>
+    </nav>
+</body>
+
+</html>
 
 <!-- Settlement Summary -->
 <!DOCTYPE html>
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Social Ledger - Settlement Result</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "tertiary-fixed-dim": "#ef8fe5",
-              "inverse-on-surface": "#9a9d9f",
-              "surface-variant": "#d9dde0",
-              "outline": "#747779",
-              "secondary-fixed-dim": "#48d4f3",
-              "on-tertiary": "#ffeef8",
-              "on-error-container": "#570008",
-              "on-secondary-fixed-variant": "#005969",
-              "tertiary-container": "#fe9cf4",
-              "secondary": "#006576",
-              "error-container": "#fb5151",
-              "on-primary-fixed": "#000000",
-              "primary": "#0050d4",
-              "surface-container-high": "#dfe3e6",
-              "surface-bright": "#f5f7f9",
-              "inverse-primary": "#618bff",
-              "on-background": "#2c2f31",
-              "secondary-dim": "#005867",
-              "primary-container": "#7b9cff",
-              "tertiary": "#8e3a8a",
-              "on-tertiary-fixed": "#480049",
-              "on-primary-fixed-variant": "#00266e",
-              "surface": "#f5f7f9",
-              "on-tertiary-container": "#661466",
-              "surface-container-highest": "#d9dde0",
-              "background": "#f5f7f9",
-              "surface-dim": "#d0d5d8",
-              "primary-fixed-dim": "#658eff",
-              "on-secondary-fixed": "#003a45",
-              "on-tertiary-fixed-variant": "#711f6f",
-              "tertiary-fixed": "#fe9cf4",
-              "surface-container-lowest": "#ffffff",
-              "surface-container-low": "#eef1f3",
-              "on-surface": "#2c2f31",
-              "outline-variant": "#abadaf",
-              "error-dim": "#9f0519",
-              "inverse-surface": "#0b0f10",
-              "error": "#b31b25",
-              "primary-fixed": "#7b9cff",
-              "on-surface-variant": "#595c5e",
-              "secondary-container": "#65e1ff",
-              "surface-container": "#e5e9eb",
-              "on-error": "#ffefee",
-              "on-secondary-container": "#004f5d",
-              "on-primary-container": "#001e5a",
-              "surface-tint": "#0050d4",
-              "secondary-fixed": "#65e1ff",
-              "on-primary": "#f1f2ff",
-              "tertiary-dim": "#802d7d",
-              "primary-dim": "#0046bb",
-              "on-secondary": "#def7ff"
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Social Ledger - Settlement Result</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#ef8fe5",
+                        "inverse-on-surface": "#9a9d9f",
+                        "surface-variant": "#d9dde0",
+                        "outline": "#747779",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-tertiary": "#ffeef8",
+                        "on-error-container": "#570008",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-container": "#fe9cf4",
+                        "secondary": "#006576",
+                        "error-container": "#fb5151",
+                        "on-primary-fixed": "#000000",
+                        "primary": "#0050d4",
+                        "surface-container-high": "#dfe3e6",
+                        "surface-bright": "#f5f7f9",
+                        "inverse-primary": "#618bff",
+                        "on-background": "#2c2f31",
+                        "secondary-dim": "#005867",
+                        "primary-container": "#7b9cff",
+                        "tertiary": "#8e3a8a",
+                        "on-tertiary-fixed": "#480049",
+                        "on-primary-fixed-variant": "#00266e",
+                        "surface": "#f5f7f9",
+                        "on-tertiary-container": "#661466",
+                        "surface-container-highest": "#d9dde0",
+                        "background": "#f5f7f9",
+                        "surface-dim": "#d0d5d8",
+                        "primary-fixed-dim": "#658eff",
+                        "on-secondary-fixed": "#003a45",
+                        "on-tertiary-fixed-variant": "#711f6f",
+                        "tertiary-fixed": "#fe9cf4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eef1f3",
+                        "on-surface": "#2c2f31",
+                        "outline-variant": "#abadaf",
+                        "error-dim": "#9f0519",
+                        "inverse-surface": "#0b0f10",
+                        "error": "#b31b25",
+                        "primary-fixed": "#7b9cff",
+                        "on-surface-variant": "#595c5e",
+                        "secondary-container": "#65e1ff",
+                        "surface-container": "#e5e9eb",
+                        "on-error": "#ffefee",
+                        "on-secondary-container": "#004f5d",
+                        "on-primary-container": "#001e5a",
+                        "surface-tint": "#0050d4",
+                        "secondary-fixed": "#65e1ff",
+                        "on-primary": "#f1f2ff",
+                        "tertiary-dim": "#802d7d",
+                        "primary-dim": "#0046bb",
+                        "on-secondary": "#def7ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px" },
+                },
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Manrope"],
-              "label": ["Manrope"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px"},
-          },
-        },
-      }
+        }
     </script>
-<style>
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-      .glass-card {
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-      }
-      .signature-gradient {
-        background: linear-gradient(135deg, #0050d4 0%, #7b9cff 100%);
-      }
-      .receipt-edge {
-        mask-image: linear-gradient(to bottom, black calc(100% - 10px), transparent 100%),
-                    radial-gradient(circle at 10px 100%, black 10px, transparent 10px);
-        mask-size: 100% 100%, 20px 20px;
-        mask-repeat: no-repeat, repeat-x;
-        mask-position: 0 0, 0 100%;
-      }
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .signature-gradient {
+            background: linear-gradient(135deg, #0050d4 0%, #7b9cff 100%);
+        }
+
+        .receipt-edge {
+            mask-image: linear-gradient(to bottom, black calc(100% - 10px), transparent 100%),
+                radial-gradient(circle at 10px 100%, black 10px, transparent 10px);
+            mask-size: 100% 100%, 20px 20px;
+            mask-repeat: no-repeat, repeat-x;
+            mask-position: 0 0, 0 100%;
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
 <body class="bg-surface font-body text-on-surface min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-50 w-full shadow-sm dark:shadow-none">
-<div class="flex items-center justify-between px-6 py-4 w-full">
-<button class="text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 p-2 rounded-full">
-<span class="material-symbols-outlined">arrow_back</span>
-</button>
-<h1 class="font-plus-jakarta text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">The Social Ledger</h1>
-<div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/10">
-<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional portrait of a man with a friendly smile, clean studio lighting, soft neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhJpBRhBQbX4DoXU-KonesMOjxeeYwKXJ3Tsv-hDtColgO0--vHvBkt8v_Hv_QHV-a435duBZNB77npiwC-aXCdQlfriZSDRLHVbT4vgNXmTwUKbDKfrsa0Sxa83IC-Hl3Wz_1Q3-X2QtbcBezc0C5ysvJkgHeMbLvQjxB4gYAfVF4BXaNaMaAnpyRZcr-nElL-SSifIMFaxMyNan3ysUvkY8ybnXznIZWTebhp-2NnsLswvTvUKuWste5R5FAqf-YFlgOatBx63g"/>
-</div>
-</div>
-</header>
-<main class="max-w-2xl mx-auto px-6 py-8">
-<!-- Result Header -->
-<div class="text-center mb-10">
-<span class="text-primary font-bold tracking-widest text-[10px] uppercase block mb-2">Final Settlement</span>
-<h2 class="font-headline text-4xl font-extrabold text-on-surface mb-2">Who owes whom</h2>
-<p class="text-on-surface-variant font-medium">The Party Ledger is balanced.</p>
-</div>
-<!-- Receipt Card -->
-<div class="bg-surface-container-lowest rounded-3xl shadow-[0_12px_32px_rgba(44,47,49,0.06)] overflow-hidden mb-12 relative">
-<!-- Receipt Top Decoration -->
-<div class="h-2 w-full bg-primary/10"></div>
-<div class="p-8">
-<!-- Person 1: The Payer -->
-<div class="mb-10">
-<div class="flex items-center justify-between mb-6">
-<div class="flex items-center gap-4">
-<div class="w-14 h-14 rounded-2xl bg-secondary-fixed-dim flex items-center justify-center">
-<span class="material-symbols-outlined text-on-secondary-container text-2xl" style="font-variation-settings: 'FILL' 1;">person</span>
-</div>
-<div>
-<h3 class="font-headline text-xl font-bold">Alex Rivera</h3>
-<p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Needs to receive</p>
-</div>
-</div>
-<div class="text-right">
-<span class="font-headline text-3xl font-black text-primary">$428.50</span>
-</div>
-</div>
-<!-- Breakdown Table -->
-<div class="bg-surface-container-low rounded-2xl p-5 space-y-4">
-<div class="flex justify-between items-center text-sm">
-<span class="text-on-surface-variant">Party Share (Split)</span>
-<span class="font-bold text-on-surface">$120.00</span>
-</div>
-<div class="flex justify-between items-center text-sm">
-<span class="text-on-surface-variant">Personal Items</span>
-<span class="font-bold text-on-surface">$45.50</span>
-</div>
-<div class="flex justify-between items-center text-sm">
-<span class="text-on-surface-variant text-primary font-bold">Total Advanced</span>
-<span class="font-bold text-primary">+$594.00</span>
-</div>
-</div>
-</div>
-<!-- Settlement Path Arrows -->
-<div class="flex justify-center my-6">
-<div class="h-8 w-[2px] bg-outline-variant/20 relative">
-<span class="material-symbols-outlined absolute -bottom-4 -left-[11px] text-outline-variant/40">expand_more</span>
-</div>
-</div>
-<!-- Person 2: The Ower -->
-<div class="mb-8 p-6 bg-surface-bright rounded-2xl border-2 border-dashed border-outline-variant/20">
-<div class="flex items-center justify-between mb-4">
-<div class="flex items-center gap-3">
-<img class="w-10 h-10 rounded-full object-cover" data-alt="close-up portrait of a woman with vibrant energy and soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXfAACR6sxNRC4QkoqUdB1ZbPBYB7nR1QNfifuL1A6U9fK2lnmwKfIwc8jW1S6raC3gRH2hU8ZCz27spVEzubUq5JfoQR0Kn2GfUANC0tKQpTAVsWVdfOx9J_PhzMJ_paW2V7Ssh4xj8CW-Jq8f3JZ6tkVD_etGnYDCwcuak4Tt2emj2a59WqxkIoKB-egGRhahG_RvbETePtUKJol19Wjivx9W2jtDFHl6gf8-HffgCZLR-C-okrC1TyXJTqQI7tw_CBhmAgaGJA"/>
-<div>
-<h4 class="font-bold text-on-surface">Jordan Smith</h4>
-<p class="text-[10px] text-on-surface-variant font-medium">Owes Alex Rivera</p>
-</div>
-</div>
-<span class="font-headline text-lg font-bold text-error">$214.25</span>
-</div>
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<img class="w-10 h-10 rounded-full object-cover" data-alt="portrait of a man in casual attire, warm lighting, minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5xOvyxA8ZSMINQPVqzTlpaMVPIZUSSzmGVaY16YTE3kUcSUnZydGj2jprQen0pGqAjf276DlwBIfi3mUt1eEF13MUV_lJezsAIFhYMcJSi2oPqlSXrdQzo3yormG4HvjW4s3FpoN77VXvktlp65obGgkX4oj6IkherWNynnGKN6PlYbW6ebGBimppfjHQQ1fAIW_fvuVGH-1u_FeD1VoxMep4c2fzILhMa6Irn35B3W85ElI04cf5L5rzYhvIo-cj5IztqsK08fk"/>
-<div>
-<h4 class="font-bold text-on-surface">Casey Chen</h4>
-<p class="text-[10px] text-on-surface-variant font-medium">Owes Alex Rivera</p>
-</div>
-</div>
-<span class="font-headline text-lg font-bold text-error">$214.25</span>
-</div>
-</div>
-<!-- Dash Divider -->
-<div class="border-t-2 border-dashed border-outline-variant/20 my-8"></div>
-<!-- Final Action Section -->
-<div class="space-y-4">
-<button class="w-full signature-gradient text-on-primary font-headline font-bold py-5 rounded-3xl flex items-center justify-center gap-3 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined">content_copy</span>
+    <!-- TopAppBar -->
+    <header
+        class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl sticky top-0 z-50 w-full shadow-sm dark:shadow-none">
+        <div class="flex items-center justify-between px-6 py-4 w-full">
+            <button
+                class="text-blue-600 dark:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200 p-2 rounded-full">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <h1 class="font-plus-jakarta text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">The Social
+                Ledger</h1>
+            <div class="w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/10">
+                <img alt="User Profile" class="w-full h-full object-cover"
+                    data-alt="professional portrait of a man with a friendly smile, clean studio lighting, soft neutral background"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhJpBRhBQbX4DoXU-KonesMOjxeeYwKXJ3Tsv-hDtColgO0--vHvBkt8v_Hv_QHV-a435duBZNB77npiwC-aXCdQlfriZSDRLHVbT4vgNXmTwUKbDKfrsa0Sxa83IC-Hl3Wz_1Q3-X2QtbcBezc0C5ysvJkgHeMbLvQjxB4gYAfVF4BXaNaMaAnpyRZcr-nElL-SSifIMFaxMyNan3ysUvkY8ybnXznIZWTebhp-2NnsLswvTvUKuWste5R5FAqf-YFlgOatBx63g" />
+            </div>
+        </div>
+    </header>
+    <main class="max-w-2xl mx-auto px-6 py-8">
+        <!-- Result Header -->
+        <div class="text-center mb-10">
+            <span class="text-primary font-bold tracking-widest text-[10px] uppercase block mb-2">Final
+                Settlement</span>
+            <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-2">Who owes whom</h2>
+            <p class="text-on-surface-variant font-medium">The Party Ledger is balanced.</p>
+        </div>
+        <!-- Receipt Card -->
+        <div
+            class="bg-surface-container-lowest rounded-3xl shadow-[0_12px_32px_rgba(44,47,49,0.06)] overflow-hidden mb-12 relative">
+            <!-- Receipt Top Decoration -->
+            <div class="h-2 w-full bg-primary/10"></div>
+            <div class="p-8">
+                <!-- Person 1: The Payer -->
+                <div class="mb-10">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-secondary-fixed-dim flex items-center justify-center">
+                                <span class="material-symbols-outlined text-on-secondary-container text-2xl"
+                                    style="font-variation-settings: 'FILL' 1;">person</span>
+                            </div>
+                            <div>
+                                <h3 class="font-headline text-xl font-bold">Alex Rivera</h3>
+                                <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Needs
+                                    to receive</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-headline text-3xl font-black text-primary">$428.50</span>
+                        </div>
+                    </div>
+                    <!-- Breakdown Table -->
+                    <div class="bg-surface-container-low rounded-2xl p-5 space-y-4">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Party Share (Split)</span>
+                            <span class="font-bold text-on-surface">$120.00</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant">Personal Items</span>
+                            <span class="font-bold text-on-surface">$45.50</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-on-surface-variant text-primary font-bold">Total Advanced</span>
+                            <span class="font-bold text-primary">+$594.00</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Settlement Path Arrows -->
+                <div class="flex justify-center my-6">
+                    <div class="h-8 w-[2px] bg-outline-variant/20 relative">
+                        <span
+                            class="material-symbols-outlined absolute -bottom-4 -left-[11px] text-outline-variant/40">expand_more</span>
+                    </div>
+                </div>
+                <!-- Person 2: The Ower -->
+                <div class="mb-8 p-6 bg-surface-bright rounded-2xl border-2 border-dashed border-outline-variant/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <img class="w-10 h-10 rounded-full object-cover"
+                                data-alt="close-up portrait of a woman with vibrant energy and soft natural lighting"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXfAACR6sxNRC4QkoqUdB1ZbPBYB7nR1QNfifuL1A6U9fK2lnmwKfIwc8jW1S6raC3gRH2hU8ZCz27spVEzubUq5JfoQR0Kn2GfUANC0tKQpTAVsWVdfOx9J_PhzMJ_paW2V7Ssh4xj8CW-Jq8f3JZ6tkVD_etGnYDCwcuak4Tt2emj2a59WqxkIoKB-egGRhahG_RvbETePtUKJol19Wjivx9W2jtDFHl6gf8-HffgCZLR-C-okrC1TyXJTqQI7tw_CBhmAgaGJA" />
+                            <div>
+                                <h4 class="font-bold text-on-surface">Jordan Smith</h4>
+                                <p class="text-[10px] text-on-surface-variant font-medium">Owes Alex Rivera</p>
+                            </div>
+                        </div>
+                        <span class="font-headline text-lg font-bold text-error">$214.25</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img class="w-10 h-10 rounded-full object-cover"
+                                data-alt="portrait of a man in casual attire, warm lighting, minimalist background"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5xOvyxA8ZSMINQPVqzTlpaMVPIZUSSzmGVaY16YTE3kUcSUnZydGj2jprQen0pGqAjf276DlwBIfi3mUt1eEF13MUV_lJezsAIFhYMcJSi2oPqlSXrdQzo3yormG4HvjW4s3FpoN77VXvktlp65obGgkX4oj6IkherWNynnGKN6PlYbW6ebGBimppfjHQQ1fAIW_fvuVGH-1u_FeD1VoxMep4c2fzILhMa6Irn35B3W85ElI04cf5L5rzYhvIo-cj5IztqsK08fk" />
+                            <div>
+                                <h4 class="font-bold text-on-surface">Casey Chen</h4>
+                                <p class="text-[10px] text-on-surface-variant font-medium">Owes Alex Rivera</p>
+                            </div>
+                        </div>
+                        <span class="font-headline text-lg font-bold text-error">$214.25</span>
+                    </div>
+                </div>
+                <!-- Dash Divider -->
+                <div class="border-t-2 border-dashed border-outline-variant/20 my-8"></div>
+                <!-- Final Action Section -->
+                <div class="space-y-4">
+                    <button
+                        class="w-full signature-gradient text-on-primary font-headline font-bold py-5 rounded-3xl flex items-center justify-center gap-3 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined">content_copy</span>
                         Copy Result to Clipboard
                     </button>
-<button class="w-full bg-surface-container-high text-on-surface font-headline font-bold py-5 rounded-3xl flex items-center justify-center gap-3 hover:bg-surface-container-highest active:scale-[0.98] transition-all">
-<span class="material-symbols-outlined">restart_alt</span>
+                    <button
+                        class="w-full bg-surface-container-high text-on-surface font-headline font-bold py-5 rounded-3xl flex items-center justify-center gap-3 hover:bg-surface-container-highest active:scale-[0.98] transition-all">
+                        <span class="material-symbols-outlined">restart_alt</span>
                         Restart
                     </button>
-</div>
-</div>
-<!-- Receipt Bottom Zigzag -->
-<div class="flex justify-center mt-4">
-<div class="w-full h-4" style="background-image: radial-gradient(circle at 10px 15px, transparent 10px, #ffffff 10px); background-size: 20px 20px;"></div>
-</div>
-</div>
-<!-- Social Share Context -->
-<div class="grid grid-cols-2 gap-4 mb-12">
-<div class="bg-secondary-container p-6 rounded-3xl">
-<span class="material-symbols-outlined text-on-secondary-container mb-3">share_reviews</span>
-<p class="text-on-secondary-container font-bold text-sm">Export as PDF</p>
-</div>
-<div class="bg-tertiary-container p-6 rounded-3xl">
-<span class="material-symbols-outlined text-on-tertiary-container mb-3">send_to_mobile</span>
-<p class="text-on-tertiary-container font-bold text-sm">Send to Group</p>
-</div>
-</div>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)]">
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1">group_add</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Setup</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1">receipt_long</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Entry</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1">rule</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Review</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 transition-transform active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">payments</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Result</span>
-</a>
-</nav>
-</body></html>
+                </div>
+            </div>
+            <!-- Receipt Bottom Zigzag -->
+            <div class="flex justify-center mt-4">
+                <div class="w-full h-4"
+                    style="background-image: radial-gradient(circle at 10px 15px, transparent 10px, #ffffff 10px); background-size: 20px 20px;">
+                </div>
+            </div>
+        </div>
+        <!-- Social Share Context -->
+        <div class="grid grid-cols-2 gap-4 mb-12">
+            <div class="bg-secondary-container p-6 rounded-3xl">
+                <span class="material-symbols-outlined text-on-secondary-container mb-3">share_reviews</span>
+                <p class="text-on-secondary-container font-bold text-sm">Export as PDF</p>
+            </div>
+            <div class="bg-tertiary-container p-6 rounded-3xl">
+                <span class="material-symbols-outlined text-on-tertiary-container mb-3">send_to_mobile</span>
+                <p class="text-on-tertiary-container font-bold text-sm">Send to Group</p>
+            </div>
+        </div>
+    </main>
+    <!-- BottomNavBar -->
+    <nav
+        class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-50 rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)]">
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined mb-1">group_add</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Setup</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined mb-1">receipt_long</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Entry</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-transform active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined mb-1">rule</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Review</span>
+        </a>
+        <a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 transition-transform active:scale-90"
+            href="#">
+            <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">payments</span>
+            <span class="text-[10px] font-medium font-manrope uppercase tracking-wider">Result</span>
+        </a>
+    </nav>
+</body>
+
+</html>
 
 <!-- Expense Review -->
 <!DOCTYPE html>
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "tertiary-fixed-dim": "#ef8fe5",
-              "inverse-on-surface": "#9a9d9f",
-              "surface-variant": "#d9dde0",
-              "outline": "#747779",
-              "secondary-fixed-dim": "#48d4f3",
-              "on-tertiary": "#ffeef8",
-              "on-error-container": "#570008",
-              "on-secondary-fixed-variant": "#005969",
-              "tertiary-container": "#fe9cf4",
-              "secondary": "#006576",
-              "error-container": "#fb5151",
-              "on-primary-fixed": "#000000",
-              "primary": "#0050d4",
-              "surface-container-high": "#dfe3e6",
-              "surface-bright": "#f5f7f9",
-              "inverse-primary": "#618bff",
-              "on-background": "#2c2f31",
-              "secondary-dim": "#005867",
-              "primary-container": "#7b9cff",
-              "tertiary": "#8e3a8a",
-              "on-tertiary-fixed": "#480049",
-              "on-primary-fixed-variant": "#00266e",
-              "surface": "#f5f7f9",
-              "on-tertiary-container": "#661466",
-              "surface-container-highest": "#d9dde0",
-              "background": "#f5f7f9",
-              "surface-dim": "#d0d5d8",
-              "primary-fixed-dim": "#658eff",
-              "on-secondary-fixed": "#003a45",
-              "on-tertiary-fixed-variant": "#711f6f",
-              "tertiary-fixed": "#fe9cf4",
-              "surface-container-lowest": "#ffffff",
-              "surface-container-low": "#eef1f3",
-              "on-surface": "#2c2f31",
-              "outline-variant": "#abadaf",
-              "error-dim": "#9f0519",
-              "inverse-surface": "#0b0f10",
-              "error": "#b31b25",
-              "primary-fixed": "#7b9cff",
-              "on-surface-variant": "#595c5e",
-              "secondary-container": "#65e1ff",
-              "surface-container": "#e5e9eb",
-              "on-error": "#ffefee",
-              "on-secondary-container": "#004f5d",
-              "on-primary-container": "#001e5a",
-              "surface-tint": "#0050d4",
-              "secondary-fixed": "#65e1ff",
-              "on-primary": "#f1f2ff",
-              "tertiary-dim": "#802d7d",
-              "primary-dim": "#0046bb",
-              "on-secondary": "#def7ff"
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#ef8fe5",
+                        "inverse-on-surface": "#9a9d9f",
+                        "surface-variant": "#d9dde0",
+                        "outline": "#747779",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-tertiary": "#ffeef8",
+                        "on-error-container": "#570008",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-container": "#fe9cf4",
+                        "secondary": "#006576",
+                        "error-container": "#fb5151",
+                        "on-primary-fixed": "#000000",
+                        "primary": "#0050d4",
+                        "surface-container-high": "#dfe3e6",
+                        "surface-bright": "#f5f7f9",
+                        "inverse-primary": "#618bff",
+                        "on-background": "#2c2f31",
+                        "secondary-dim": "#005867",
+                        "primary-container": "#7b9cff",
+                        "tertiary": "#8e3a8a",
+                        "on-tertiary-fixed": "#480049",
+                        "on-primary-fixed-variant": "#00266e",
+                        "surface": "#f5f7f9",
+                        "on-tertiary-container": "#661466",
+                        "surface-container-highest": "#d9dde0",
+                        "background": "#f5f7f9",
+                        "surface-dim": "#d0d5d8",
+                        "primary-fixed-dim": "#658eff",
+                        "on-secondary-fixed": "#003a45",
+                        "on-tertiary-fixed-variant": "#711f6f",
+                        "tertiary-fixed": "#fe9cf4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eef1f3",
+                        "on-surface": "#2c2f31",
+                        "outline-variant": "#abadaf",
+                        "error-dim": "#9f0519",
+                        "inverse-surface": "#0b0f10",
+                        "error": "#b31b25",
+                        "primary-fixed": "#7b9cff",
+                        "on-surface-variant": "#595c5e",
+                        "secondary-container": "#65e1ff",
+                        "surface-container": "#e5e9eb",
+                        "on-error": "#ffefee",
+                        "on-secondary-container": "#004f5d",
+                        "on-primary-container": "#001e5a",
+                        "surface-tint": "#0050d4",
+                        "secondary-fixed": "#65e1ff",
+                        "on-primary": "#f1f2ff",
+                        "tertiary-dim": "#802d7d",
+                        "primary-dim": "#0046bb",
+                        "on-secondary": "#def7ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Manrope"],
-              "label": ["Manrope"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-          },
-        },
-      }
+        }
     </script>
-<style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
 <body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
-<div class="flex items-center justify-between px-6 py-4 w-full">
-<div class="flex items-center gap-4">
-<button class="text-blue-600 dark:text-blue-400 active:scale-95 duration-200">
-<span class="material-symbols-outlined">arrow_back</span>
-</button>
-<h1 class="font-headline text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">Review Ledger</h1>
-</div>
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
-<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a smiling young professional man with soft studio lighting and a clean neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QXjnAKgjO31PEeYWIFBYMo4A3wLdjMs6bxTldMtwIy4vkcTZwluLdA9B9KKgVr8a9SGs6kqnN407q6YwASl1v5etVaIWSVYV4NOYBF1JH7_oclh2b8MER2v45F64Y6LcNmGHkq71yjpW2qQQxKG-R3xHk0yNygPK4k6MH_LH7aXKwtR390fwe9n3-moh6uEP7kecdG0AShKUFjR_SPFlalB7GlxNj5R518UYHFCJGGx00HRAsa6vzDJNv6T7cfpzU8VsSBrZlVg"/>
-</div>
-</div>
-</header>
-<main class="flex-grow px-6 pt-8 pb-32 max-w-2xl mx-auto w-full">
-<!-- Hero Summary Section -->
-<section class="mb-10 text-center">
-<p class="font-label text-sm uppercase tracking-widest text-on-surface-variant mb-2">Current Tally</p>
-<h2 class="font-headline text-6xl font-extrabold text-on-surface tracking-tighter">$1,248.50</h2>
-<div class="mt-4 flex justify-center gap-2">
-<span class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold font-label tracking-wide">
+    <!-- TopAppBar -->
+    <header
+        class="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
+        <div class="flex items-center justify-between px-6 py-4 w-full">
+            <div class="flex items-center gap-4">
+                <button class="text-blue-600 dark:text-blue-400 active:scale-95 duration-200">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1 class="font-headline text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">Review
+                    Ledger</h1>
+            </div>
+            <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+                <img alt="User Profile" class="w-full h-full object-cover"
+                    data-alt="Close-up portrait of a smiling young professional man with soft studio lighting and a clean neutral background"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9QXjnAKgjO31PEeYWIFBYMo4A3wLdjMs6bxTldMtwIy4vkcTZwluLdA9B9KKgVr8a9SGs6kqnN407q6YwASl1v5etVaIWSVYV4NOYBF1JH7_oclh2b8MER2v45F64Y6LcNmGHkq71yjpW2qQQxKG-R3xHk0yNygPK4k6MH_LH7aXKwtR390fwe9n3-moh6uEP7kecdG0AShKUFjR_SPFlalB7GlxNj5R518UYHFCJGGx00HRAsa6vzDJNv6T7cfpzU8VsSBrZlVg" />
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow px-6 pt-8 pb-32 max-w-2xl mx-auto w-full">
+        <!-- Hero Summary Section -->
+        <section class="mb-10 text-center">
+            <p class="font-label text-sm uppercase tracking-widest text-on-surface-variant mb-2">Current Tally</p>
+            <h2 class="font-headline text-6xl font-extrabold text-on-surface tracking-tighter">$1,248.50</h2>
+            <div class="mt-4 flex justify-center gap-2">
+                <span
+                    class="inline-flex items-center px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold font-label tracking-wide">
                     8 ITEMS PARSED
                 </span>
-<span class="inline-flex items-center px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-bold font-label tracking-wide">
+                <span
+                    class="inline-flex items-center px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-xs font-bold font-label tracking-wide">
                     4 PARTICIPANTS
                 </span>
-</div>
-</section>
-<!-- Collapsible Sections Stack -->
-<div class="space-y-6">
-<!-- 1. Party Costs (Shared Equally) -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
-<button class="w-full flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors group">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
-</div>
-<div class="text-left">
-<h3 class="font-headline font-bold text-lg text-on-surface">Party Costs</h3>
-<p class="text-xs text-on-surface-variant font-medium">Split equally among everyone</p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-primary">$450.00</span>
-<span class="material-symbols-outlined text-outline-variant group-hover:rotate-180 transition-transform">expand_more</span>
-</div>
-</button>
-<div class="px-6 pb-6 space-y-4">
-<!-- Item Row -->
-<div class="flex items-center justify-between py-3 group/item">
-<div class="flex-grow">
-<div class="flex items-center gap-2">
-<span class="font-body font-semibold text-on-surface">Magnum Champagne</span>
-<span class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
-</div>
-<span class="text-xs text-on-surface-variant">Table Service • 2 units</span>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-on-surface">$380.00</span>
-<button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</div>
-<!-- Item Row -->
-<div class="flex items-center justify-between py-3 group/item">
-<div class="flex-grow">
-<div class="flex items-center gap-2">
-<span class="font-body font-semibold text-on-surface">Artisan Platter</span>
-<span class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
-</div>
-<span class="text-xs text-on-surface-variant">Appetizers</span>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-on-surface">$70.00</span>
-<button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- 2. Personal Costs -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
-<button class="w-full flex items-center justify-between p-6 bg-surface-container-low transition-colors group">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-xl bg-secondary-fixed-dim/20 flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-</div>
-<div class="text-left">
-<h3 class="font-headline font-bold text-lg text-on-surface">Personal Costs</h3>
-<p class="text-xs text-on-surface-variant font-medium">Assigned to specific individuals</p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-secondary">$198.50</span>
-<span class="material-symbols-outlined text-outline-variant rotate-180 transition-transform">expand_more</span>
-</div>
-</button>
-<div class="px-6 pb-6 space-y-4 pt-4">
-<!-- Item Row -->
-<div class="flex items-center justify-between py-3 group/item">
-<div class="flex-grow">
-<div class="flex items-center gap-2 mb-1">
-<span class="font-body font-semibold text-on-surface">Kobe Steak</span>
-<span class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-0.5 bg-secondary-fixed-dim text-on-secondary-fixed text-[10px] font-bold rounded uppercase">Marcus</span>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-on-surface">$125.00</span>
-<button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</div>
-<!-- Item Row -->
-<div class="flex items-center justify-between py-3 group/item">
-<div class="flex-grow">
-<div class="flex items-center gap-2 mb-1">
-<span class="font-body font-semibold text-on-surface">Single Malt Scotch</span>
-<span class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
-</div>
-<div class="flex gap-2">
-<span class="px-2 py-0.5 bg-secondary-fixed-dim text-on-secondary-fixed text-[10px] font-bold rounded uppercase">Elena</span>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-on-surface">$73.50</span>
-<button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
-<span class="material-symbols-outlined">delete</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-<!-- 3. Advances -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
-<button class="w-full flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors group">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
-</div>
-<div class="text-left">
-<h3 class="font-headline font-bold text-lg text-on-surface">Advances</h3>
-<p class="text-xs text-on-surface-variant font-medium">Paid by one, shared by others</p>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<span class="font-headline font-bold text-tertiary">$600.00</span>
-<span class="material-symbols-outlined text-outline-variant transition-transform">expand_more</span>
-</div>
-</button>
-<!-- Hidden state mockup -->
-</div>
-</div>
-<!-- Add Item Floating Utility -->
-<div class="mt-8 flex justify-center">
-<button class="flex items-center gap-2 text-primary font-bold font-label text-sm py-3 px-6 rounded-full hover:bg-primary/5 transition-colors">
-<span class="material-symbols-outlined">add_circle</span>
+            </div>
+        </section>
+        <!-- Collapsible Sections Stack -->
+        <div class="space-y-6">
+            <!-- 1. Party Costs (Shared Equally) -->
+            <div
+                class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
+                <button
+                    class="w-full flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings: 'FILL' 1;">group</span>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Party Costs</h3>
+                            <p class="text-xs text-on-surface-variant font-medium">Split equally among everyone</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline font-bold text-primary">$450.00</span>
+                        <span
+                            class="material-symbols-outlined text-outline-variant group-hover:rotate-180 transition-transform">expand_more</span>
+                    </div>
+                </button>
+                <div class="px-6 pb-6 space-y-4">
+                    <!-- Item Row -->
+                    <div class="flex items-center justify-between py-3 group/item">
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="font-body font-semibold text-on-surface">Magnum Champagne</span>
+                                <span
+                                    class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
+                            </div>
+                            <span class="text-xs text-on-surface-variant">Table Service • 2 units</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="font-headline font-bold text-on-surface">$380.00</span>
+                            <button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Item Row -->
+                    <div class="flex items-center justify-between py-3 group/item">
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-2">
+                                <span class="font-body font-semibold text-on-surface">Artisan Platter</span>
+                                <span
+                                    class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
+                            </div>
+                            <span class="text-xs text-on-surface-variant">Appetizers</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="font-headline font-bold text-on-surface">$70.00</span>
+                            <button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 2. Personal Costs -->
+            <div
+                class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
+                <button
+                    class="w-full flex items-center justify-between p-6 bg-surface-container-low transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-secondary-fixed-dim/20 flex items-center justify-center text-secondary">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings: 'FILL' 1;">person</span>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Personal Costs</h3>
+                            <p class="text-xs text-on-surface-variant font-medium">Assigned to specific individuals</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline font-bold text-secondary">$198.50</span>
+                        <span
+                            class="material-symbols-outlined text-outline-variant rotate-180 transition-transform">expand_more</span>
+                    </div>
+                </button>
+                <div class="px-6 pb-6 space-y-4 pt-4">
+                    <!-- Item Row -->
+                    <div class="flex items-center justify-between py-3 group/item">
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-body font-semibold text-on-surface">Kobe Steak</span>
+                                <span
+                                    class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-2 py-0.5 bg-secondary-fixed-dim text-on-secondary-fixed text-[10px] font-bold rounded uppercase">Marcus</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="font-headline font-bold text-on-surface">$125.00</span>
+                            <button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Item Row -->
+                    <div class="flex items-center justify-between py-3 group/item">
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-body font-semibold text-on-surface">Single Malt Scotch</span>
+                                <span
+                                    class="material-symbols-outlined text-sm text-outline-variant cursor-pointer">edit</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-2 py-0.5 bg-secondary-fixed-dim text-on-secondary-fixed text-[10px] font-bold rounded uppercase">Elena</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="font-headline font-bold text-on-surface">$73.50</span>
+                            <button class="text-error-dim opacity-0 group-hover/item:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 3. Advances -->
+            <div
+                class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_12px_32px_rgba(44,47,49,0.04)]">
+                <button
+                    class="w-full flex items-center justify-between p-6 hover:bg-surface-container-low transition-colors group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+                            <span class="material-symbols-outlined"
+                                style="font-variation-settings: 'FILL' 1;">payments</span>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Advances</h3>
+                            <p class="text-xs text-on-surface-variant font-medium">Paid by one, shared by others</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline font-bold text-tertiary">$600.00</span>
+                        <span
+                            class="material-symbols-outlined text-outline-variant transition-transform">expand_more</span>
+                    </div>
+                </button>
+                <!-- Hidden state mockup -->
+            </div>
+        </div>
+        <!-- Add Item Floating Utility -->
+        <div class="mt-8 flex justify-center">
+            <button
+                class="flex items-center gap-2 text-primary font-bold font-label text-sm py-3 px-6 rounded-full hover:bg-primary/5 transition-colors">
+                <span class="material-symbols-outlined">add_circle</span>
                 ADD MANUAL ITEM
             </button>
-</div>
-</main>
-<!-- Fixed Bottom Actions -->
-<div class="fixed bottom-0 left-0 w-full z-40">
-<!-- Glass Gradient Footer -->
-<div class="bg-white/90 backdrop-blur-2xl px-6 pb-10 pt-6 border-t border-outline-variant/10 shadow-[0_-12px_32px_rgba(44,47,49,0.06)]">
-<div class="max-w-2xl mx-auto flex flex-col gap-4">
-<button class="w-full py-5 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-extrabold text-lg shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+        </div>
+    </main>
+    <!-- Fixed Bottom Actions -->
+    <div class="fixed bottom-0 left-0 w-full z-40">
+        <!-- Glass Gradient Footer -->
+        <div
+            class="bg-white/90 backdrop-blur-2xl px-6 pb-10 pt-6 border-t border-outline-variant/10 shadow-[0_-12px_32px_rgba(44,47,49,0.06)]">
+            <div class="max-w-2xl mx-auto flex flex-col gap-4">
+                <button
+                    class="w-full py-5 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline font-extrabold text-lg shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
                     Calculate Results
                 </button>
-</div>
-</div>
-<!-- BottomNavBar (Shared Component) -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] pointer-events-auto">
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90" href="#">
-<span class="material-symbols-outlined">group_add</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Setup</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Entry</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rule</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Review</span>
-</a>
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90" href="#">
-<span class="material-symbols-outlined">payments</span>
-<span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Result</span>
-</a>
-</nav>
-</div>
-</body></html>
+            </div>
+        </div>
+        <!-- BottomNavBar (Shared Component) -->
+        <nav
+            class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-t-3xl shadow-[0_-12px_32px_rgba(44,47,49,0.06)] pointer-events-auto">
+            <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90"
+                href="#">
+                <span class="material-symbols-outlined">group_add</span>
+                <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Setup</span>
+            </a>
+            <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90"
+                href="#">
+                <span class="material-symbols-outlined">receipt_long</span>
+                <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Entry</span>
+            </a>
+            <a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-5 py-2 active:scale-90 transition-transform"
+                href="#">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rule</span>
+                <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Review</span>
+            </a>
+            <a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-blue-500 transition-colors active:scale-90"
+                href="#">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-[10px] font-medium font-manrope uppercase tracking-wider mt-1">Result</span>
+            </a>
+        </nav>
+    </div>
+</body>
+
+</html>
