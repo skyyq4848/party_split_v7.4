@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>派對分帳神器 - 新架構測試</title>
+    <style>
+        body {
+            font-family: "Noto Sans TC", Arial, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        h1 {
+            color: #2563eb;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .success {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 150px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 派對分帳神器 - 新架構測試</h1>
+
+    <!-- 測試 1: 狀態管理 -->
+    <div class="test-section">
+        <h2>測試 1: 狀態管理 (AppState)</h2>
+        <p>測試新增、刪除人員功能</p>
+
+        <input type="text" id="personName" placeholder="輸入人名">
+        <button onclick="testAddPerson()">新增人員</button>
+        <button onclick="testBatchAdd()">批次新增（小明,小華,小美）</button>
+        <button onclick="testDeletePerson()">刪除第一個人員</button>
+        <button onclick="testReset()">重置所有資料</button>
+
+        <h3>目前人員清單：</h3>
+        <pre id="peopleList">[]</pre>
+
+        <h3>完整狀態：</h3>
+        <pre id="fullState">{}</pre>
+    </div>
+
+    <!-- 測試 2: 帳單解析 -->
+    <div class="test-section">
+        <h2>測試 2: 帳單解析 (BillParser)</h2>
+        <p>測試自動解析文字帳單</p>
+
+        <button onclick="loadExample()">載入示範範例</button>
+        <button onclick="testParse()">解析帳單</button>
+        <button onclick="clearBill()">清空帳單</button>
+
+        <textarea id="billText" placeholder="在此輸入帳單內容..."></textarea>
+
+        <h3>解析結果：</h3>
+        <pre id="parseResult">{}</pre>
+    </div>
+
+    <!-- 測試 3: 計算引擎 -->
+    <div class="test-section">
+        <h2>測試 3: 計算引擎 (Calculator)</h2>
+        <p>測試結算計算</p>
+
+        <button onclick="testCalculate()">執行計算</button>
+        <button onclick="testWithPrimaryPayer()">設定主要付錢人後計算</button>
+
+        <h3>計算結果：</h3>
+        <pre id="calculateResult">{}</pre>
+    </div>
+
+    <!-- 測試 4: 工具函數 -->
+    <div class="test-section">
+        <h2>測試 4: 工具函數 (Utils)</h2>
+        <p>測試各種工具函數</p>
+
+        <input type="text" id="testInput" placeholder="測試輸入" value="85 * 3">
+        <button onclick="testParsePrice()">解析價格</button>
+        <button onclick="testNormalizeNames()">正規化人名（輸入：小明, 小華  小美）</button>
+        <button onclick="testEscapeHtml()">HTML 跳脫（輸入：<script>alert('XSS')</script>）</button>
+
+        <h3>測試結果：</h3>
+        <pre id="utilsResult"></pre>
+    </div>
+
+    <!-- 測試 5: 狀態訂閱 -->
+    <div class="test-section">
+        <h2>測試 5: 狀態訂閱</h2>
+        <p>測試觀察者模式</p>
+
+        <button onclick="testSubscribe()">啟動監聽</button>
+        <button onclick="testUnsubscribe()">停止監聽</button>
+        <button onclick="triggerStateChange()">觸發狀態變更</button>
+
+        <h3>監聽日誌：</h3>
+        <pre id="subscribeLog" style="max-height: 200px; overflow-y: auto;"></pre>
+    </div>
+
+    <script type="module">
+        // 匯入模組
+        import { AppState } from './src/state.js';
+        import { BillParser } from './src/parser.js';
+        import { Calculator } from './src/calculator.js';
+        import { parsePrice, normalizeNames, escapeHtml } from './src/utils.js';
+
+        // 建立全域實例（測試用）
+        window.state = new AppState();
+        window.parser = new BillParser(window.state);
+        window.calculator = new Calculator(window.state);
+        window.unsubscribe = null;
+
+        // 輔助函數
+        window.updateDisplay = function() {
+            document.getElementById('peopleList').textContent =
+                JSON.stringify(window.state.getPeople(), null, 2);
+            document.getElementById('fullState').textContent =
+                JSON.stringify(window.state.getState(), null, 2);
+        };
+
+        window.log = function(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            const className = isError ? 'error' : 'success';
+            element.innerHTML = `<span class="${className}">${message}</span>`;
+        };
+
+        // 測試 1: 狀態管理
+        window.testAddPerson = function() {
+            const name = document.getElementById('personName').value.trim();
+            if (!name) {
+                alert('請輸入人名');
+                return;
+            }
+
+            const result = window.state.addPerson(name);
+            if (result) {
+                document.getElementById('personName').value = '';
+                window.updateDisplay();
+                window.log('peopleList', `✅ 成功新增: ${name}`);
+            } else {
+                window.log('peopleList', `❌ 新增失敗: ${name} (可能重複或無效)`, true);
+            }
+        };
+
+        window.testBatchAdd = function() {
+            const names = ['小明', '小華', '小美'];
+            const count = window.state.addPeople(names);
+            window.updateDisplay();
+            window.log('peopleList', `✅ 成功新增 ${count} 人`);
+        };
+
+        window.testDeletePerson = function() {
+            const result = window.state.deletePerson(0);
+            window.updateDisplay();
+            if (result) {
+                window.log('peopleList', '✅ 成功刪除第一個人員');
+            } else {
+                window.log('peopleList', '❌ 刪除失敗', true);
+            }
+        };
+
+        window.testReset = function() {
+            if (confirm('確定要重置所有資料嗎？')) {
+                window.state.reset();
+                window.updateDisplay();
+                window.log('fullState', '✅ 已重置所有資料');
+            }
+        };
+
+        // 測試 2: 帳單解析
+        window.loadExample = function() {
+            document.getElementById('billText').value = BillParser.getExample();
+            window.log('parseResult', '✅ 已載入示範範例');
+        };
+
+        window.testParse = function() {
+            const text = document.getElementById('billText').value;
+            if (!text.trim()) {
+                alert('請先輸入帳單內容');
+                return;
+            }
+
+            try {
+                const result = window.parser.parse(text);
+                document.getElementById('parseResult').textContent =
+                    JSON.stringify(result, null, 2);
+                window.updateDisplay();
+                window.log('parseResult', '✅ 解析成功');
+            } catch (error) {
+                document.getElementById('parseResult').textContent = error.message;
+                window.log('parseResult', `❌ 解析失敗: ${error.message}`, true);
+            }
+        };
+
+        window.clearBill = function() {
+            document.getElementById('billText').value = '';
+            document.getElementById('parseResult').textContent = '{}';
+        };
+
+        // 測試 3: 計算引擎
+        window.testCalculate = function() {
+            try {
+                const result = window.calculator.calculate();
+                document.getElementById('calculateResult').textContent =
+                    JSON.stringify(result, null, 2);
+                window.log('calculateResult', '✅ 計算成功');
+            } catch (error) {
+                document.getElementById('calculateResult').textContent = error.message;
+                window.log('calculateResult', `❌ 計算失敗: ${error.message}`, true);
+            }
+        };
+
+        window.testWithPrimaryPayer = function() {
+            const people = window.state.getPeople();
+            if (people.length === 0) {
+                alert('請先新增人員');
+                return;
+            }
+
+            window.state.setPrimaryPayer(people[0]);
+            window.testCalculate();
+            window.log('calculateResult', `✅ 已設定主要付錢人: ${people[0]}`);
+        };
+
+        // 測試 4: 工具函數
+        window.testParsePrice = function() {
+            const input = document.getElementById('testInput').value;
+            const result = parsePrice(input);
+            document.getElementById('utilsResult').textContent =
+                `輸入: ${input}\n結果: ${result}`;
+        };
+
+        window.testNormalizeNames = function() {
+            const input = '小明, 小華  小美；阿文　闆娘';
+            const result = normalizeNames(input);
+            document.getElementById('utilsResult').textContent =
+                `輸入: ${input}\n結果: ${JSON.stringify(result, null, 2)}`;
+        };
+
+        window.testEscapeHtml = function() {
+            const input = '<script>alert("XSS")</script>';
+            const result = escapeHtml(input);
+            document.getElementById('utilsResult').textContent =
+                `輸入: ${input}\n結果: ${result}`;
+        };
+
+        // 測試 5: 狀態訂閱
+        window.testSubscribe = function() {
+            if (window.unsubscribe) {
+                window.log('subscribeLog', '⚠️ 已在監聽中', true);
+                return;
+            }
+
+            const logElement = document.getElementById('subscribeLog');
+            window.unsubscribe = window.state.subscribe((newState) => {
+                const timestamp = new Date().toLocaleTimeString('zh-TW');
+                const log = `[${timestamp}] 狀態已更新\n人員數: ${newState.people.length}\n`;
+                logElement.textContent = log + logElement.textContent;
+            });
+
+            window.log('subscribeLog', '✅ 監聽已啟動');
+        };
+
+        window.testUnsubscribe = function() {
+            if (window.unsubscribe) {
+                window.unsubscribe();
+                window.unsubscribe = null;
+                window.log('subscribeLog', '✅ 監聽已停止');
+            } else {
+                window.log('subscribeLog', '⚠️ 尚未啟動監聽', true);
+            }
+        };
+
+        window.triggerStateChange = function() {
+            const randomName = '測試_' + Math.floor(Math.random() * 1000);
+            window.state.addPerson(randomName);
+            window.updateDisplay();
+        };
+
+        // 初始化顯示
+        window.updateDisplay();
+        console.log('✅ 模組載入成功！');
+        console.log('可用的全域物件:', { state: window.state, parser: window.parser, calculator: window.calculator });
+    </script>
+</body>
+</html>

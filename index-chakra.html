@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>派對分帳神器 v7.4 | Chakra UI Style</title>
+    <style>
+        /* Chakra UI 設計系統 - CSS Variables */
+        :root {
+            /* Colors - Light Mode */
+            --chakra-colors-gray-50: #F7FAFC;
+            --chakra-colors-gray-100: #EDF2F7;
+            --chakra-colors-gray-200: #E2E8F0;
+            --chakra-colors-gray-300: #CBD5E0;
+            --chakra-colors-gray-400: #A0AEC0;
+            --chakra-colors-gray-500: #718096;
+            --chakra-colors-gray-600: #4A5568;
+            --chakra-colors-gray-700: #2D3748;
+            --chakra-colors-gray-800: #1A202C;
+            --chakra-colors-gray-900: #171923;
+
+            --chakra-colors-blue-50: #EBF8FF;
+            --chakra-colors-blue-100: #BEE3F8;
+            --chakra-colors-blue-500: #3182CE;
+            --chakra-colors-blue-600: #2C5282;
+            --chakra-colors-blue-700: #2A4365;
+
+            --chakra-colors-green-50: #F0FFF4;
+            --chakra-colors-green-500: #38A169;
+            --chakra-colors-green-600: #2F855A;
+
+            --chakra-colors-red-50: #FFF5F5;
+            --chakra-colors-red-500: #E53E3E;
+            --chakra-colors-red-600: #C53030;
+
+            --chakra-colors-purple-50: #FAF5FF;
+            --chakra-colors-purple-500: #805AD5;
+            --chakra-colors-purple-600: #6B46C1;
+
+            /* Spacing (Chakra's 4px base) */
+            --chakra-space-1: 0.25rem;  /* 4px */
+            --chakra-space-2: 0.5rem;   /* 8px */
+            --chakra-space-3: 0.75rem;  /* 12px */
+            --chakra-space-4: 1rem;     /* 16px */
+            --chakra-space-5: 1.25rem;  /* 20px */
+            --chakra-space-6: 1.5rem;   /* 24px */
+            --chakra-space-8: 2rem;     /* 32px */
+            --chakra-space-10: 2.5rem;  /* 40px */
+            --chakra-space-12: 3rem;    /* 48px */
+
+            /* Radii */
+            --chakra-radii-base: 0.25rem;
+            --chakra-radii-md: 0.375rem;
+            --chakra-radii-lg: 0.5rem;
+            --chakra-radii-xl: 0.75rem;
+
+            /* Shadows */
+            --chakra-shadows-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --chakra-shadows-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --chakra-shadows-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --chakra-shadows-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* Transitions */
+            --chakra-transition-duration-normal: 200ms;
+            --chakra-transition-duration-slow: 300ms;
+            --chakra-transition-easing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --chakra-colors-gray-50: #171923;
+            --chakra-colors-gray-100: #1A202C;
+            --chakra-colors-gray-200: #2D3748;
+            --chakra-colors-gray-700: #E2E8F0;
+            --chakra-colors-gray-800: #EDF2F7;
+            --chakra-colors-gray-900: #F7FAFC;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--chakra-colors-gray-50);
+            color: var(--chakra-colors-gray-800);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Container */
+        .chakra-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--chakra-space-8);
+        }
+
+        /* Header */
+        .chakra-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--chakra-space-8);
+            padding-bottom: var(--chakra-space-4);
+            border-bottom: 1px solid var(--chakra-colors-gray-200);
+        }
+
+        .chakra-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--chakra-colors-gray-800);
+            display: flex;
+            align-items: center;
+            gap: var(--chakra-space-3);
+        }
+
+        .chakra-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--chakra-space-1) var(--chakra-space-3);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: var(--chakra-radii-base);
+            background: var(--chakra-colors-purple-500);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            padding: var(--chakra-space-2) var(--chakra-space-4);
+            border: none;
+            border-radius: var(--chakra-radii-md);
+            background: var(--chakra-colors-gray-100);
+            color: var(--chakra-colors-gray-700);
+            cursor: pointer;
+            transition: all var(--chakra-transition-duration-normal) var(--chakra-transition-easing-ease-in-out);
+        }
+
+        .theme-toggle:hover {
+            background: var(--chakra-colors-gray-200);
+            transform: scale(1.05);
+        }
+
+        /* Card (Box in Chakra) */
+        .chakra-box {
+            background: white;
+            border-radius: var(--chakra-radii-lg);
+            box-shadow: var(--chakra-shadows-md);
+            padding: var(--chakra-space-6);
+            margin-bottom: var(--chakra-space-6);
+            transition: box-shadow var(--chakra-transition-duration-normal) var(--chakra-transition-easing-ease-in-out);
+        }
+
+        .chakra-box:hover {
+            box-shadow: var(--chakra-shadows-lg);
+        }
+
+        .chakra-box-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--chakra-colors-gray-700);
+            margin-bottom: var(--chakra-space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--chakra-space-2);
+        }
+
+        /* Input */
+        .chakra-input,
+        .chakra-textarea,
+        .chakra-select {
+            width: 100%;
+            padding: var(--chakra-space-3) var(--chakra-space-4);
+            font-size: 1rem;
+            border: 1px solid var(--chakra-colors-gray-300);
+            border-radius: var(--chakra-radii-md);
+            outline: none;
+            transition: all var(--chakra-transition-duration-normal) var(--chakra-transition-easing-ease-in-out);
+            background: white;
+            color: var(--chakra-colors-gray-800);
+        }
+
+        .chakra-input:focus,
+        .chakra-textarea:focus,
+        .chakra-select:focus {
+            border-color: var(--chakra-colors-blue-500);
+            box-shadow: 0 0 0 1px var(--chakra-colors-blue-500);
+        }
+
+        .chakra-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Button */
+        .chakra-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--chakra-space-2);
+            padding: var(--chakra-space-3) var(--chakra-space-6);
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--chakra-radii-md);
+            cursor: pointer;
+            transition: all var(--chakra-transition-duration-normal) var(--chakra-transition-easing-ease-in-out);
+            white-space: nowrap;
+        }
+
+        .chakra-button:active {
+            transform: scale(0.98);
+        }
+
+        .chakra-button-primary {
+            background: var(--chakra-colors-blue-500);
+            color: white;
+        }
+
+        .chakra-button-primary:hover {
+            background: var(--chakra-colors-blue-600);
+        }
+
+        .chakra-button-success {
+            background: var(--chakra-colors-green-500);
+            color: white;
+        }
+
+        .chakra-button-success:hover {
+            background: var(--chakra-colors-green-600);
+        }
+
+        .chakra-button-danger {
+            background: var(--chakra-colors-red-500);
+            color: white;
+        }
+
+        .chakra-button-danger:hover {
+            background: var(--chakra-colors-red-600);
+        }
+
+        .chakra-button-outline {
+            background: transparent;
+            border: 1px solid var(--chakra-colors-gray-300);
+            color: var(--chakra-colors-gray-700);
+        }
+
+        .chakra-button-outline:hover {
+            background: var(--chakra-colors-gray-100);
+        }
+
+        .chakra-button-ghost {
+            background: transparent;
+            color: var(--chakra-colors-gray-700);
+        }
+
+        .chakra-button-ghost:hover {
+            background: var(--chakra-colors-gray-100);
+        }
+
+        .chakra-button-sm {
+            padding: var(--chakra-space-2) var(--chakra-space-4);
+            font-size: 0.875rem;
+        }
+
+        /* Stack (Flex layouts) */
+        .chakra-stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--chakra-space-4);
+        }
+
+        .chakra-hstack {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--chakra-space-4);
+            flex-wrap: wrap;
+        }
+
+        /* Table */
+        .chakra-table-container {
+            overflow-x: auto;
+            border-radius: var(--chakra-radii-lg);
+            border: 1px solid var(--chakra-colors-gray-200);
+        }
+
+        .chakra-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .chakra-table thead {
+            background: var(--chakra-colors-gray-100);
+        }
+
+        .chakra-table th {
+            padding: var(--chakra-space-4);
+            text-align: left;
+            font-weight: 600;
+            color: var(--chakra-colors-gray-700);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .chakra-table td {
+            padding: var(--chakra-space-4);
+            border-top: 1px solid var(--chakra-colors-gray-200);
+            color: var(--chakra-colors-gray-800);
+        }
+
+        .chakra-table tbody tr:hover {
+            background: var(--chakra-colors-gray-50);
+        }
+
+        /* Tag (Label) */
+        .chakra-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--chakra-space-1) var(--chakra-space-3);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--chakra-radii-md);
+            background: var(--chakra-colors-gray-100);
+            color: var(--chakra-colors-gray-700);
+            white-space: nowrap;
+        }
+
+        .chakra-tag-blue {
+            background: var(--chakra-colors-blue-50);
+            color: var(--chakra-colors-blue-600);
+        }
+
+        .chakra-tag-green {
+            background: var(--chakra-colors-green-50);
+            color: var(--chakra-colors-green-600);
+        }
+
+        .chakra-tag-red {
+            background: var(--chakra-colors-red-50);
+            color: var(--chakra-colors-red-600);
+        }
+
+        /* List */
+        .chakra-list {
+            list-style: none;
+        }
+
+        .chakra-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--chakra-space-3);
+            border-radius: var(--chakra-radii-md);
+            transition: background var(--chakra-transition-duration-normal);
+        }
+
+        .chakra-list-item:hover {
+            background: var(--chakra-colors-gray-50);
+        }
+
+        /* Grid */
+        .chakra-grid {
+            display: grid;
+            gap: var(--chakra-space-6);
+        }
+
+        .chakra-grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* Divider */
+        .chakra-divider {
+            border: none;
+            border-top: 1px solid var(--chakra-colors-gray-200);
+            margin: var(--chakra-space-6) 0;
+        }
+
+        /* Alert */
+        .chakra-alert {
+            display: flex;
+            align-items: start;
+            gap: var(--chakra-space-3);
+            padding: var(--chakra-space-4);
+            border-radius: var(--chakra-radii-md);
+            border-left: 4px solid;
+        }
+
+        .chakra-alert-info {
+            background: var(--chakra-colors-blue-50);
+            border-color: var(--chakra-colors-blue-500);
+            color: var(--chakra-colors-blue-700);
+        }
+
+        .chakra-alert-success {
+            background: var(--chakra-colors-green-50);
+            border-color: var(--chakra-colors-green-500);
+            color: var(--chakra-colors-green-700);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chakra-container {
+                padding: var(--chakra-space-4);
+            }
+
+            .chakra-heading {
+                font-size: 1.5rem;
+            }
+
+            .chakra-hstack {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .chakra-button {
+                width: 100%;
+            }
+        }
+
+        /* Custom utility classes */
+        .text-muted {
+            color: var(--chakra-colors-gray-500);
+            font-size: 0.875rem;
+        }
+
+        .font-mono {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="chakra-container">
+        <!-- Header -->
+        <header class="chakra-header">
+            <div>
+                <h1 class="chakra-heading">
+                    🎉 派對分帳神器
+                    <span class="chakra-badge">v7.4 Chakra</span>
+                </h1>
+                <p class="text-muted">快速解析帳單、手動編輯與群組管理</p>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                🌙 切換主題
+            </button>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="chakra-grid chakra-grid-2">
+            <!-- 參加人員管理 -->
+            <div class="chakra-box">
+                <div class="chakra-box-header">
+                    👥 參加人員管理
+                </div>
+
+                <div class="chakra-stack">
+                    <div>
+                        <input
+                            type="text"
+                            class="chakra-input"
+                            id="personName"
+                            placeholder="輸入人名"
+                            style="margin-bottom: var(--chakra-space-2);"
+                        >
+                        <div class="chakra-hstack">
+                            <button class="chakra-button chakra-button-primary" onclick="addPerson()">
+                                ➕ 新增
+                            </button>
+                            <button class="chakra-button chakra-button-outline" onclick="showBatchInput()">
+                                📋 批次匯入
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="batchInputBox" style="display: none;">
+                        <textarea
+                            class="chakra-textarea"
+                            id="bulkPeople"
+                            placeholder="輸入多位人名（逗號、空白或換行分隔）&#10;例如：小明, 小華, 小美"
+                        ></textarea>
+                        <div class="chakra-hstack" style="margin-top: var(--chakra-space-2);">
+                            <button class="chakra-button chakra-button-success" onclick="importPeople()">
+                                ✓ 確認匯入
+                            </button>
+                            <button class="chakra-button chakra-button-ghost" onclick="hideBatchInput()">
+                                取消
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr class="chakra-divider">
+
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: var(--chakra-space-2);">
+                            目前人員 <span class="chakra-tag" id="peopleCount">0</span>
+                        </div>
+                        <ul class="chakra-list" id="peopleList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 群組管理 -->
+            <div class="chakra-box">
+                <div class="chakra-box-header">
+                    🏷️ 群組管理
+                </div>
+
+                <div class="chakra-stack">
+                    <div class="chakra-alert chakra-alert-info">
+                        <span>💡</span>
+                        <div>建立群組後，可快速套用到派對費用與代付項目</div>
+                    </div>
+
+                    <input
+                        type="text"
+                        class="chakra-input"
+                        id="groupName"
+                        placeholder="群組名稱（例如：朋友群）"
+                    >
+
+                    <div>
+                        <div style="font-weight: 500; margin-bottom: var(--chakra-space-2);">選擇成員：</div>
+                        <div id="groupSelectBox" style="display: flex; flex-wrap: wrap; gap: var(--chakra-space-2);"></div>
+                    </div>
+
+                    <div class="chakra-hstack">
+                        <button class="chakra-button chakra-button-success" onclick="groupPeople()">
+                            ✓ 建立群組
+                        </button>
+                        <button class="chakra-button chakra-button-ghost" onclick="clearGroupSelection()">
+                            清除選擇
+                        </button>
+                    </div>
+
+                    <hr class="chakra-divider">
+
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: var(--chakra-space-2);">
+                            已建立群組
+                        </div>
+                        <ul class="chakra-list" id="groupList"></ul>
+                    </div>
+
+                    <div id="groupEditBox" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 帳單解析 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                📝 帳單解析
+            </div>
+
+            <div class="chakra-stack">
+                <div class="chakra-hstack">
+                    <button class="chakra-button chakra-button-primary" onclick="loadExample()">
+                        📄 載入範例
+                    </button>
+                    <button class="chakra-button chakra-button-success" onclick="parseText()">
+                        ⚡ 解析帳單
+                    </button>
+                    <button class="chakra-button chakra-button-outline" onclick="clearAll()">
+                        🗑️ 清空
+                    </button>
+                </div>
+
+                <textarea
+                    class="chakra-textarea"
+                    id="importText"
+                    placeholder="在此貼上帳單內容...&#10;&#10;支援格式：&#10;• 個人費用：小明 珍奶 50元&#10;• 代付：小明 出 披薩 300元&#10;• 派對費用：雞排 80元"
+                    style="min-height: 200px;"
+                ></textarea>
+            </div>
+        </div>
+
+        <!-- 設定 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                ⚙️ 進階設定
+            </div>
+
+            <div class="chakra-grid chakra-grid-2">
+                <div class="chakra-stack">
+                    <label style="font-weight: 500;">主要付錢人</label>
+                    <select class="chakra-select" id="primaryPayerSelect" onchange="onPrimaryPayerChange()">
+                        <option value="">（未選擇）</option>
+                    </select>
+                    <p class="text-muted">設定後，新解析的費用會預設由此人付款</p>
+                </div>
+
+                <div class="chakra-stack">
+                    <label style="display: flex; align-items: center; gap: var(--chakra-space-2); cursor: pointer;">
+                        <input
+                            type="checkbox"
+                            id="consolidateAdvance"
+                            onchange="onConsolidateChange()"
+                            style="width: 1.2em; height: 1.2em; cursor: pointer;"
+                        >
+                        <span style="font-weight: 500;">合併代付至主要付錢人</span>
+                    </label>
+                    <p class="text-muted">勾選後，所有代付款項會統一向主要付錢人收取</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 派對費用 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                🎊 派對費用（分攤）
+            </div>
+
+            <div class="chakra-table-container">
+                <table class="chakra-table">
+                    <thead>
+                        <tr>
+                            <th>分類</th>
+                            <th>品項</th>
+                            <th>金額</th>
+                            <th>分攤對象</th>
+                            <th>付款人</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="partyTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 個人費用 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                👤 個人費用
+            </div>
+
+            <div class="chakra-table-container">
+                <table class="chakra-table">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>品項</th>
+                            <th>金額</th>
+                            <th>付款人</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="personalTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 代付項目 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                💰 代付項目
+            </div>
+
+            <div class="chakra-table-container">
+                <table class="chakra-table">
+                    <thead>
+                        <tr>
+                            <th>代付人</th>
+                            <th>品項</th>
+                            <th>金額</th>
+                            <th>分攤成員</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advanceTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 計算結果 -->
+        <div class="chakra-box">
+            <div class="chakra-box-header">
+                💵 結算結果
+            </div>
+
+            <div class="chakra-stack">
+                <div class="chakra-hstack">
+                    <button class="chakra-button chakra-button-primary" onclick="calculate()">
+                        🧮 開始計算
+                    </button>
+                    <button class="chakra-button chakra-button-success" onclick="exportLine()">
+                        📋 複製結果
+                    </button>
+                    <button class="chakra-button chakra-button-danger" onclick="resetAll()">
+                        🗑️ 重置所有資料
+                    </button>
+                </div>
+
+                <div id="result" class="font-mono" style="white-space: pre-wrap; padding: var(--chakra-space-4); background: var(--chakra-colors-gray-50); border-radius: var(--chakra-radii-md);"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./party_split_v7.4.js"></script>
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Batch input toggle
+        function showBatchInput() {
+            document.getElementById('batchInputBox').style.display = 'block';
+        }
+
+        function hideBatchInput() {
+            document.getElementById('batchInputBox').style.display = 'none';
+            document.getElementById('bulkPeople').value = '';
+        }
+
+        // Update people count
+        const originalRender = render;
+        render = function() {
+            originalRender();
+            document.getElementById('peopleCount').textContent = people.length;
+        };
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>
