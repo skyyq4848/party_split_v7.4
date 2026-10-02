@@ -3,7 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title> 派對分帳神器 v7.4</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>派對分帳神器 v7.5</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <style>
         :root {
             --bg: #f6f8fb;
@@ -13,6 +18,27 @@
             --accent-2: #06b6d4;
             --danger: #ef4444;
             --radius: 10px;
+            --text: #111827;
+            --border: #e6e9ee;
+            --input-bg: #fff;
+            --fold-bg: #fff;
+            --fold-header: linear-gradient(180deg, #fafafe, #ffffff);
+            --tag-bg: #f8fafc;
+            --table-stripe: rgba(15, 23, 42, 0.02);
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --muted: #94a3b8;
+            --text: #e2e8f0;
+            --border: #334155;
+            --input-bg: #1e293b;
+            --fold-bg: #1e293b;
+            --fold-header: linear-gradient(180deg, #1e293b, #1e293b);
+            --tag-bg: #334155;
+            --table-stripe: rgba(255, 255, 255, 0.03);
+            --danger: #f87171;
         }
 
         html,
@@ -23,8 +49,8 @@
         body {
             font-family: "Noto Sans TC", Arial, Helvetica, sans-serif;
             margin: 0;
-            background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
-            color: #111827;
+            background: var(--bg);
+            color: var(--text);
             -webkit-font-smoothing: antialiased;
         }
 
@@ -40,6 +66,7 @@
             justify-content: space-between;
             gap: 16px;
             margin-bottom: 18px;
+            flex-wrap: wrap;
         }
 
         .title {
@@ -65,17 +92,18 @@
             box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
             padding: 18px;
             margin-bottom: 18px;
-            border: 1px solid rgba(15, 23, 42, 0.03);
+            border: 1px solid var(--border);
         }
 
         input[type="text"],
         input[type="number"],
         textarea,
         select {
-            border: 1px solid #e6e9ee;
+            border: 1px solid var(--border);
             padding: 10px 12px;
             border-radius: 8px;
-            background: #fff;
+            background: var(--input-bg);
+            color: var(--text);
             outline: none;
             transition: box-shadow .12s, border-color .12s;
             font-size: 14px;
@@ -105,22 +133,37 @@
         }
 
         button.secondary {
-            background: #fff;
+            background: var(--input-bg);
             color: var(--accent);
-            border: 1px solid #e6e9ee;
+            border: 1px solid var(--border);
             box-shadow: none;
         }
 
         .btn-ghost {
             background: transparent;
             color: var(--muted);
-            border: 1px dashed #e6e9ee;
+            border: 1px dashed var(--border);
+        }
+
+        .btn-icon {
+            background: transparent;
+            color: var(--muted);
+            border: none;
+            padding: 6px 8px;
+            font-size: 18px;
+            box-shadow: none;
+        }
+
+        .btn-icon:hover {
+            color: var(--accent);
+            box-shadow: none;
         }
 
         .controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         ul#peopleList,
@@ -135,15 +178,15 @@
 
         ul#peopleList li,
         ul#groupList li {
-            background: #f8fafc;
+            background: var(--tag-bg);
             padding: 8px 10px;
             border-radius: 999px;
-            color: #0f172a;
+            color: var(--text);
             font-size: 13px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(2, 6, 23, 0.03);
+            border: 1px solid var(--border);
         }
 
         ul#peopleList li button {
@@ -165,9 +208,9 @@
             gap: 6px;
             padding: 6px 10px;
             border-radius: 999px;
-            background: linear-gradient(180deg, #f3f7ff, #ffffff);
-            border: 1px solid rgba(37, 99, 235, 0.08);
-            color: #0f172a;
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
             font-size: 13px;
             cursor: pointer;
         }
@@ -185,7 +228,7 @@
         th,
         td {
             padding: 10px 12px;
-            border-bottom: 1px solid #eef2f6;
+            border-bottom: 1px solid var(--border);
             text-align: left;
         }
 
@@ -197,23 +240,22 @@
         }
 
         tbody tr:nth-child(odd) {
-            background: rgba(15, 23, 42, 0.02);
+            background: var(--table-stripe);
         }
 
         .table-box {
             padding: 10px;
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--card);
         }
 
         .result {
             white-space: pre-wrap;
             font-family: monospace;
             font-size: 13px;
-            color: #0b1220;
+            color: var(--text);
         }
 
-        /* Small screens */
         @media(max-width:720px) {
             .app {
                 padding: 12px;
@@ -230,21 +272,22 @@
         }
 
         .biginput {
-            border: 1px solid #ccc;
+            border: 1px solid var(--border);
             padding: 10px 15px;
             border-radius: 60px;
             outline: none;
             transition: all 0.3s;
             width: 80%;
             box-sizing: border-box;
+            background: var(--input-bg);
+            color: var(--text);
         }
 
-        /* 折疊區塊樣式 */
         details.fold-section {
             margin-bottom: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            background: #fff;
+            background: var(--fold-bg);
             overflow: hidden;
         }
 
@@ -252,7 +295,7 @@
             cursor: pointer;
             padding: 10px 14px;
             font-weight: 700;
-            background: linear-gradient(180deg, #fafafe, #ffffff);
+            background: var(--fold-header);
             list-style: none;
             outline: none;
             display: flex;
@@ -261,7 +304,7 @@
         }
 
         details.fold-section[open] summary {
-            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+            box-shadow: inset 0 -1px 0 var(--border);
         }
 
         details.fold-section .fold-body {
@@ -282,7 +325,6 @@
             margin-left: 8px;
         }
 
-        /* 小型說明彈出 (驚嘆號) - 改為浮層以避免展開時推版 */
         details.help-box {
             position: relative;
             display: inline-block;
@@ -312,7 +354,6 @@
             display: none;
         }
 
-        /* 預設隱藏幫助內容，展開時顯示為絕對定位的浮層，不會推動版面 */
         details.help-box .help-body {
             display: none;
             position: absolute;
@@ -320,14 +361,14 @@
             right: 0;
             width: 420px;
             max-width: calc(100vw - 32px);
-            background: #fff;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: var(--card);
+            border: 1px solid var(--border);
             box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
             border-radius: 8px;
             padding: 12px;
             z-index: 1200;
             font-size: 13px;
-            color: #111827;
+            color: var(--text);
             box-sizing: border-box;
             max-height: 60vh;
             overflow: auto;
@@ -343,10 +384,46 @@
         }
 
         details.help-box .help-body code {
-            background: #f3f4f6;
+            background: var(--tag-bg);
             padding: 2px 6px;
             border-radius: 4px;
             white-space: normal;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            background: var(--tag-bg);
+            font-size: 13px;
+            gap: 8px;
+        }
+
+        .history-item .history-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .history-item .history-date {
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .template-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            background: var(--tag-bg);
+            font-size: 13px;
         }
     </style>
 </head>
@@ -355,7 +432,7 @@
     <div class="app">
         <div class="header">
             <div class="title">
-            <h1>派對分帳神器 v7.4</h1>
+            <h1>派對分帳神器 v7.5</h1>
             <div class="sub">快速解析帳單、手動編輯與群組管理</div>
                 <details class="help-box" aria-label="使用說明">
                     <summary title="使用說明">!</summary>
@@ -376,13 +453,49 @@
                 </details>
             </div>
             <div class="controls">
+                <button onclick="undoAction()" class="secondary" title="復原">↩ 復原</button>
                 <button onclick="calculate()">計算</button>
-                <button class="secondary" onclick="exportLine()">一鍵複製結果</button>
+                <button class="secondary" onclick="exportLine()">複製結果</button>
+                <button class="secondary" onclick="shareLine()">LINE 分享</button>
+                <button class="secondary" onclick="shareNative()">分享</button>
+                <button class="secondary" onclick="exportScreenshot()">截圖</button>
                 <button class="secondary" onclick="resetAll()">清空</button>
+                <button class="btn-icon" onclick="toggleDarkMode()" title="切換深色模式" id="darkModeBtn">🌙</button>
             </div>
         </div>
 
+        <!-- 歷史紀錄 -->
+        <details class="fold-section" id="historyDetails">
+            <summary>
+                <span class="fold-summary-title">歷史紀錄 / 存檔</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
+                    <input class="biginput" type="text" id="historyName" placeholder="輸入存檔名稱（如：10/2 火鍋聚餐）" style="flex:1; min-width:200px;">
+                    <button onclick="saveHistory()">存檔</button>
+                </div>
+                <div id="historyList"></div>
+            </div>
+        </details>
+
         <h2>參加人員</h2>
+
+        <!-- 常用人員範本 -->
+        <details class="fold-section" id="templateDetails">
+            <summary>
+                <span class="fold-summary-title">常用人員範本</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; align-items:center;">
+                    <input class="biginput" type="text" id="templateName" placeholder="範本名稱（如：每週固定咖）" style="flex:1; min-width:180px;">
+                    <button onclick="saveTemplate()">儲存目前人員為範本</button>
+                </div>
+                <div id="templateList"></div>
+            </div>
+        </details>
+
         <h3>新增人員</h3>
         <input class="biginput" id="personName" placeholder="輸入人員名稱">
         <button onclick="addPerson()">新增</button>
@@ -408,25 +521,81 @@
 
         <h2>帳單解析</h2>
 
-        <label>主要付錢人：
-            <select id="primaryPayerSelect" onchange="onPrimaryPayerChange()">
-                <option value="">（未選擇）</option>
-            </select>
-        </label>
+        <!-- AI 圖片掃描 -->
+        <details class="fold-section" id="scanDetails">
+            <summary>
+                <span class="fold-summary-title">AI 圖片掃描（本地模型）</span>
+                <span class="fold-summary-chevron">▾</span>
+            </summary>
+            <div class="fold-body">
+                <div style="margin-bottom:10px;">
+                    <label style="display:block; margin-bottom:6px; font-weight:600;">上傳帳單/收據圖片</label>
+                    <input type="file" id="scanCameraInput" accept="image/*" capture="environment" style="display:none;">
+                    <input type="file" id="scanFileInput" accept="image/*" style="display:none;">
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+                        <button class="secondary" onclick="document.getElementById('scanCameraInput').click()">拍照</button>
+                        <button class="secondary" onclick="document.getElementById('scanFileInput').click()">選擇檔案</button>
+                    </div>
+                    <div id="scanFileName" style="font-size:13px; color:var(--muted); margin-bottom:4px;"></div>
+                    <div id="scanPreview" style="max-width:300px; margin:8px 0; display:none;">
+                        <img id="scanPreviewImg" style="max-width:100%; border-radius:8px; border:1px solid var(--border);">
+                    </div>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <button onclick="scanImage()">掃描辨識</button>
+                    <span id="scanStatus" style="margin-left:10px; color:var(--muted); font-size:13px;"></span>
+                </div>
+                <details style="margin-top:8px;">
+                    <summary style="cursor:pointer; font-size:13px; color:var(--muted);">模型設定</summary>
+                    <div style="margin-top:6px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                        <label style="font-size:13px;">端點：
+                            <input type="text" id="scanEndpoint" value="http://localhost:11434" style="width:220px;" onchange="saveScanSettings()">
+                        </label>
+                        <label style="font-size:13px;">模型：
+                            <input type="text" id="scanModel" value="gemma4" style="width:140px;" onchange="saveScanSettings()">
+                        </label>
+                    </div>
+                </details>
+            </div>
+        </details>
 
-        <!-- 新增：模式切換按鈕 -->
+        <!-- 服務費 / 折扣 / 尾數處理 -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:12px; padding:10px 14px; background:var(--fold-bg); border:1px solid var(--border); border-radius:8px;">
+            <label>主要付錢人：
+                <select id="primaryPayerSelect" onchange="onPrimaryPayerChange()">
+                    <option value="">（未選擇）</option>
+                </select>
+            </label>
+            <label>服務費：
+                <input type="number" id="serviceCharge" value="0" min="0" max="100" step="1" style="width:60px;" onchange="clearResult()">
+                <span>%</span>
+            </label>
+            <label>折扣：
+                <input type="number" id="discountRate" value="0" min="0" max="100" step="1" style="width:60px;" onchange="clearResult()">
+                <span>%</span>
+            </label>
+            <label>尾數處理：
+                <select id="roundingMode" onchange="clearResult()">
+                    <option value="none">不處理</option>
+                    <option value="round">四捨五入</option>
+                    <option value="floor">無條件捨去</option>
+                    <option value="ceil">無條件進位</option>
+                </select>
+            </label>
+        </div>
+
+        <!-- 模式切換按鈕 -->
         <div style="margin-bottom:8px;margin-top: 15px;">
             <button id="toggleParseModeBtn" onclick="toggleParseMode()" class="btn">切換到一般模式</button>
         </div>
 
-        <!-- 自動解析區（原本的 textarea + 解析按鈕） -->
+        <!-- 自動解析區 -->
         <div id="autoParseBox">
-            <!-- 範例說明，可展開檢視 -->
             <details style="margin-bottom:8px;">
                 <summary style="cursor:pointer;font-weight:600;">示範範例（點擊展開/收合）</summary>
-                <pre style="white-space:pre-wrap;background:#f7fafc;padding:10px;border-radius:8px;border:1px solid #e6e9ee;margin-top:8px;font-size:13px;">
+                <pre style="white-space:pre-wrap;background:var(--tag-bg);padding:10px;border-radius:8px;border:1px solid var(--border);margin-top:8px;font-size:13px;">
                     --------------- 雞蛋糕費用 ---------------
-                    牛奶糖 $33 
+                    牛奶糖 $33
                     乳酪 $121
                     雞蛋 $99
                     牛奶 $40
@@ -460,19 +629,18 @@
                 <button class="secondary" onclick="loadExample()">載入示範範例</button>
             </div>
         </div>
-        <!-- loadExample() 已移至 party_split_v7.4.js -->
 
-        <!-- 手動一般模式編輯區（預設隱藏） -->
+        <!-- 手動一般模式編輯區 -->
         <div id="manualParseBox" style="display:none; margin-top:8px;">
             <table style="width:100%; border-collapse:collapse; margin-bottom:8px;">
                 <thead>
                     <tr>
-                        <th style="border:1px solid #ccc; padding:6px; width:15%;">分類</th>
-                        <th style="border:1px solid #ccc; padding:6px; width:45%;">品項</th>
-                        <th style="border:1px solid #ccc; padding:6px; width:15%;">價格</th>
-                        <th style="border:1px solid #ccc; padding:6px; width:20%;">分攤人（逗號分隔）</th>
-                        <th style="border:1px solid #ccc; padding:6px; width:20%;">分攤項目</th>
-                        <th style="border:1px solid #ccc; padding:6px; width:5%;">操作</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:15%;">分類</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:45%;">品項</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:15%;">價格</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:20%;">分攤人（逗號分隔）</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:20%;">分攤項目</th>
+                        <th style="border:1px solid var(--border); padding:6px; width:5%;">操作</th>
                     </tr>
                 </thead>
                 <tbody id="manualRowsBody"></tbody>
@@ -482,6 +650,7 @@
                 <button onclick="saveManualRows()" class="btn">儲存至派對費用</button>
             </div>
         </div>
+
         <!-- 折疊：派對費用 -->
         <details class="fold-section" id="partyDetails" open>
             <summary>
@@ -534,7 +703,6 @@
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <!-- 新增: 主要付錢人 & 合併代付選項 -->
                 <div style="margin-bottom:8px;">
                     <label style="margin-left:12px;">
                         <input type="checkbox" id="consolidateAdvance" onchange="onConsolidateChange()"> 把其他人的代付視為要還給主要付錢人
@@ -555,7 +723,7 @@
                 </table>
                 <div style="margin-top:8px;">
                     <button onclick="calculate()">計算</button>
-                    <button onclick="exportLine()">一鍵複製結果</button>
+                    <button onclick="exportLine()">複製結果</button>
                     <button onclick="resetAll()">清空</button>
                 </div>
             </div>

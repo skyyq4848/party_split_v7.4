@@ -60,7 +60,37 @@ function buildAdvanceMemberSelectHtml(n, a) {
 }
 // ===== end helpers =====
 
-function save() {
+// ===== Undo 系統 =====
+let undoStack = [];
+const UNDO_MAX = 30;
+
+function pushUndo() {
+    undoStack.push({
+        people: JSON.stringify(people),
+        party: JSON.stringify(party),
+        personal: JSON.stringify(personal),
+        advance: JSON.stringify(advance),
+        groups: JSON.stringify(groups)
+    });
+    if (undoStack.length > UNDO_MAX) undoStack.shift();
+}
+
+function undoAction() {
+    if (undoStack.length === 0) { alert('沒有可復原的操作'); return; }
+    var snap = undoStack.pop();
+    people = JSON.parse(snap.people);
+    party = JSON.parse(snap.party);
+    personal = JSON.parse(snap.personal);
+    advance = JSON.parse(snap.advance);
+    groups = JSON.parse(snap.groups);
+    save(true);
+    render();
+    clearResult();
+}
+// ===== end Undo =====
+
+function save(skipUndo) {
+    if (!skipUndo) pushUndo();
     localStorage.people = JSON.stringify(people);
     localStorage.party = JSON.stringify(party);
     localStorage.personal = JSON.stringify(personal);
@@ -396,19 +426,21 @@ function parseText() {
             }
         }
 
-        // 若含有 "出"（但沒有 /X人）則視為代出（advance），例如：藍天出 大布丁 167元
+        // 若含有 "出" 或 "代出"，且「出」前面是已知人名，才視為代出（advance）
         if (raw.includes("出")) {
-            let parts = raw.split("出");
-            let person = parts[0].trim();
-            let itemDesc = parts[1] ? parts[1].trim() : "";
-            advance.push({
-                person: person,
-                item: itemDesc,
-                price: Number(price) || 0,
-                members: people.slice(), // 預設分攤給全部人，使用者可再調整
-                custom: false
-            });
-            continue;
+            let advMatch = raw.match(/^(.+?)\s*(代出|出)\s+(.*)$/);
+            if (advMatch && people.includes(advMatch[1].trim())) {
+                let person = advMatch[1].trim();
+                let itemDesc = advMatch[3] ? advMatch[3].trim() : "";
+                advance.push({
+                    person: person,
+                    item: itemDesc,
+                    price: Number(price) || 0,
+                    members: people.slice(),
+                    custom: false
+                });
+                continue;
+            }
         }
 
         // 若第一個 token 為已知人名，視為個人費用（personal）
@@ -839,9 +871,31 @@ function calculate() {
         }
     }
 
+    // ===== 服務費 / 折扣 / 尾數處理 =====
+    var svcPct = Number((document.getElementById('serviceCharge') || {}).value) || 0;
+    var discPct = Number((document.getElementById('discountRate') || {}).value) || 0;
+    var roundMode = (document.getElementById('roundingMode') || {}).value || 'none';
+
+    if (svcPct > 0 || discPct > 0) {
+        var multiplier = (1 + svcPct / 100) * (1 - discPct / 100);
+        for (let p in balance) balance[p] = balance[p] * multiplier;
+    }
+
+    function applyRound(val) {
+        if (roundMode === 'round') return Math.round(val);
+        if (roundMode === 'floor') return Math.floor(val);
+        if (roundMode === 'ceil') return Math.ceil(val);
+        return Math.floor(val * 100) / 100;
+    }
+    for (let p in balance) balance[p] = applyRound(balance[p]);
+    // ===== end 服務費 / 折扣 / 尾數 =====
+
     // 準備結果文字（原有顯示 + 新增定向配對顯示）
     let text = "----- 結算 -----\n";
-    for (let p in balance) text += p + " : " + (Math.floor(balance[p] * 100) / 100).toFixed(2) + "\n";
+    if (svcPct > 0) text += "(已加服務費 " + svcPct + "%)\n";
+    if (discPct > 0) text += "(已扣折扣 " + discPct + "%)\n";
+    if (roundMode !== 'none') text += "(尾數處理：" + ({round:'四捨五入',floor:'無條件捨去',ceil:'無條件進位'}[roundMode]) + ")\n";
+    for (let p in balance) text += p + " : " + (balance[p]).toFixed(2) + "\n";
 
     text += "\n----- 派對分攤明細 -----\n";
     let sortedParty = party.slice().sort(function(a, b) {
@@ -1370,6 +1424,140 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;');
 }
 
+// ===== AI 圖片掃描功能 =====
+function saveScanSettings() {
+    localStorage.scanEndpoint = (document.getElementById('scanEndpoint') || {}).value || 'http://localhost:11434';
+    localStorage.scanModel = (document.getElementById('scanModel') || {}).value || 'gemma4';
+}
+
+function loadScanSettings() {
+    const ep = document.getElementById('scanEndpoint');
+    const md = document.getElementById('scanModel');
+    if (ep) ep.value = localStorage.scanEndpoint || 'http://localhost:11434';
+    if (md) md.value = localStorage.scanModel || 'gemma4';
+}
+
+let scanSelectedFile = null;
+
+function onScanFileSelected(input) {
+    if (!input.files || !input.files[0]) return;
+    scanSelectedFile = input.files[0];
+    const preview = document.getElementById('scanPreview');
+    const img = document.getElementById('scanPreviewImg');
+    const nameEl = document.getElementById('scanFileName');
+    if (nameEl) nameEl.textContent = scanSelectedFile.name;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        img.src = e.target.result;
+        preview.style.display = '';
+    };
+    reader.readAsDataURL(scanSelectedFile);
+}
+
+function scanImage() {
+    const statusEl = document.getElementById('scanStatus');
+    if (!scanSelectedFile) {
+        alert('請先拍照或選擇一張圖片');
+        return;
+    }
+
+    const file = scanSelectedFile;
+    const reader = new FileReader();
+    statusEl.textContent = '辨識中，請稍候...';
+
+    reader.onload = function (e) {
+        const base64Full = e.target.result;
+        const base64Data = base64Full.split(',')[1];
+
+        const endpoint = (document.getElementById('scanEndpoint') || {}).value || 'http://localhost:11434';
+        const model = (document.getElementById('scanModel') || {}).value || 'gemma4';
+
+        const prompt = `請辨識這張帳單或收據圖片中的所有品項與金額。
+
+嚴格規則（務必遵守）：
+1. 每行一個品項，格式固定為：品項名稱 $金額（例如：拿鐵咖啡 $120）
+2. 如果有明顯分類，用這個格式標示：--------------- 分類名稱費用 ---------------（注意：分類名稱後面一定要加「費用」二字，例如 --------------- 飲料費用 ---------------）
+3. 金額只用整數，不加千位逗號
+4. 直接輸出品項清單，第一行就是品項或分類標題，不要加任何前言、說明、總計、小計或備註
+5. 不確定的金額標 $0
+6. 不要輸出 markdown 格式（不要用 \`\`\` 包起來）`;
+
+        fetch(endpoint + '/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: model,
+                messages: [{
+                    role: 'user',
+                    content: prompt,
+                    images: [base64Data]
+                }],
+                stream: false
+            })
+        })
+        .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(function (data) {
+            let text = (data.message && data.message.content) || '';
+            if (!text.trim()) {
+                statusEl.textContent = '模型未回傳內容，請確認模型是否支援圖片辨識';
+                return;
+            }
+            text = cleanScanResult(text);
+            const importEl = document.getElementById('importText');
+            if (importEl) {
+                importEl.value = text;
+            }
+            statusEl.textContent = '辨識完成，請檢查解析區內容後按「解析」';
+        })
+        .catch(function (err) {
+            statusEl.textContent = '辨識失敗：' + err.message;
+            if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+                statusEl.textContent += '（請確認 Ollama 是否已啟動）';
+            }
+        });
+    };
+
+    reader.readAsDataURL(file);
+}
+
+(function initScanInputs() {
+    var cam = document.getElementById('scanCameraInput');
+    var file = document.getElementById('scanFileInput');
+    if (cam) cam.addEventListener('change', function () { onScanFileSelected(this); });
+    if (file) file.addEventListener('change', function () { onScanFileSelected(this); });
+})();
+
+function cleanScanResult(text) {
+    // 移除 thinking tags
+    text = text.replace(/<think>[\s\S]*?<\/think>/gi, '');
+    // 移除 markdown code block
+    text = text.replace(/```[\s\S]*?```/g, function (m) {
+        return m.replace(/^```[^\n]*\n?/, '').replace(/\n?```$/, '');
+    });
+    // 逐行清理
+    var lines = text.split('\n');
+    var cleaned = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line) { cleaned.push(''); continue; }
+        // 跳過常見 AI 前言/後語
+        if (/^(以下|以上|辨識結果|根據|這張|圖片中|備註|注意|總共|合計)/.test(line)) continue;
+        // 分類行沒有「費用」二字的話補上
+        if (/^-{3,}/.test(line) && !line.includes('費用')) {
+            var catName = line.replace(/-+/g, '').trim();
+            if (catName) line = '--------------- ' + catName + '費用 ---------------';
+        }
+        cleaned.push(line);
+    }
+    return cleaned.join('\n').trim();
+}
+
+loadScanSettings();
+// ===== end AI 圖片掃描 =====
+
 // 頁面載入時更新 UI 狀態
 (function initParseMode() {
     if (!localStorage.parseMode) localStorage.parseMode = 'auto';
@@ -1381,6 +1569,244 @@ function escapeHtml(str) {
         renderManualRows();
     }
 })();
+
+// ===== Enter 鍵支援 =====
+(function initEnterKeys() {
+    function onEnter(id, fn) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); fn(); }
+        });
+    }
+    onEnter('personName', addPerson);
+    onEnter('groupName', groupPeople);
+    onEnter('historyName', saveHistory);
+    onEnter('templateName', saveTemplate);
+})();
+// ===== end Enter 鍵 =====
+
+// ===== 深色模式 =====
+function toggleDarkMode() {
+    var html = document.documentElement;
+    var dark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', dark ? 'light' : 'dark');
+    localStorage.darkMode = dark ? 'light' : 'dark';
+    updateDarkModeBtn();
+}
+
+function updateDarkModeBtn() {
+    var btn = document.getElementById('darkModeBtn');
+    if (!btn) return;
+    btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+}
+
+(function initDarkMode() {
+    var saved = localStorage.darkMode;
+    if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    updateDarkModeBtn();
+})();
+// ===== end 深色模式 =====
+
+// ===== 歷史紀錄 / 存檔 =====
+function getHistoryList() {
+    try { return JSON.parse(localStorage.historyList || '[]'); } catch (e) { return []; }
+}
+
+function saveHistory() {
+    var nameEl = document.getElementById('historyName');
+    var name = (nameEl ? nameEl.value.trim() : '') || new Date().toLocaleString('zh-TW');
+    var list = getHistoryList();
+    list.unshift({
+        name: name,
+        date: new Date().toISOString(),
+        data: {
+            people: JSON.stringify(people),
+            party: JSON.stringify(party),
+            personal: JSON.stringify(personal),
+            advance: JSON.stringify(advance),
+            groups: JSON.stringify(groups),
+            primaryPayer: primaryPayer
+        }
+    });
+    if (list.length > 20) list = list.slice(0, 20);
+    localStorage.historyList = JSON.stringify(list);
+    if (nameEl) nameEl.value = '';
+    renderHistory();
+    alert('已存檔：' + name);
+}
+
+function loadHistory(idx) {
+    var list = getHistoryList();
+    var item = list[idx];
+    if (!item) return;
+    pushUndo();
+    people = JSON.parse(item.data.people);
+    party = JSON.parse(item.data.party);
+    personal = JSON.parse(item.data.personal);
+    advance = JSON.parse(item.data.advance);
+    groups = JSON.parse(item.data.groups);
+    primaryPayer = item.data.primaryPayer || '';
+    localStorage.primaryPayer = primaryPayer;
+    save(true);
+    render();
+    clearResult();
+    alert('已載入：' + item.name);
+}
+
+function deleteHistory(idx) {
+    var list = getHistoryList();
+    list.splice(idx, 1);
+    localStorage.historyList = JSON.stringify(list);
+    renderHistory();
+}
+
+function renderHistory() {
+    var container = document.getElementById('historyList');
+    if (!container) return;
+    var list = getHistoryList();
+    if (list.length === 0) {
+        container.innerHTML = '<div style="color:var(--muted);font-size:13px;">尚無存檔紀錄</div>';
+        return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+        var d = new Date(list[i].date);
+        var dateStr = d.toLocaleString('zh-TW', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+        html += '<div class="history-item">';
+        html += '<span class="history-name">' + escapeHtml(list[i].name) + '</span>';
+        html += '<span class="history-date">' + dateStr + '</span>';
+        html += '<button class="secondary" style="padding:4px 8px;font-size:12px;" onclick="loadHistory(' + i + ')">載入</button>';
+        html += '<button class="secondary" style="padding:4px 8px;font-size:12px;color:var(--danger);" onclick="deleteHistory(' + i + ')">刪除</button>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+renderHistory();
+// ===== end 歷史紀錄 =====
+
+// ===== 常用人員範本 =====
+function getTemplateList() {
+    try { return JSON.parse(localStorage.templateList || '[]'); } catch (e) { return []; }
+}
+
+function saveTemplate() {
+    if (people.length === 0) { alert('目前沒有人員可儲存'); return; }
+    var nameEl = document.getElementById('templateName');
+    var name = (nameEl ? nameEl.value.trim() : '') || '範本 ' + (getTemplateList().length + 1);
+    var list = getTemplateList();
+    list.push({ name: name, people: people.slice() });
+    localStorage.templateList = JSON.stringify(list);
+    if (nameEl) nameEl.value = '';
+    renderTemplates();
+    alert('已儲存範本：' + name);
+}
+
+function loadTemplate(idx) {
+    var list = getTemplateList();
+    var item = list[idx];
+    if (!item) return;
+    pushUndo();
+    var added = 0;
+    for (var i = 0; i < item.people.length; i++) {
+        if (!people.includes(item.people[i])) {
+            people.push(item.people[i]);
+            added++;
+        }
+    }
+    save(true);
+    render();
+    alert('已載入範本「' + item.name + '」，新增 ' + added + ' 位人員');
+}
+
+function deleteTemplate(idx) {
+    var list = getTemplateList();
+    list.splice(idx, 1);
+    localStorage.templateList = JSON.stringify(list);
+    renderTemplates();
+}
+
+function renderTemplates() {
+    var container = document.getElementById('templateList');
+    if (!container) return;
+    var list = getTemplateList();
+    if (list.length === 0) {
+        container.innerHTML = '<div style="color:var(--muted);font-size:13px;">尚無人員範本</div>';
+        return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+        html += '<div class="template-item">';
+        html += '<span style="flex:1;"><b>' + escapeHtml(list[i].name) + '</b> — ' + escapeHtml(list[i].people.join(', ')) + '</span>';
+        html += '<button class="secondary" style="padding:4px 8px;font-size:12px;" onclick="loadTemplate(' + i + ')">載入</button>';
+        html += '<button class="secondary" style="padding:4px 8px;font-size:12px;color:var(--danger);" onclick="deleteTemplate(' + i + ')">刪除</button>';
+        html += '</div>';
+    }
+    container.innerHTML = html;
+}
+renderTemplates();
+// ===== end 人員範本 =====
+
+// ===== LINE 分享 =====
+function shareLine() {
+    calculate();
+    var text = (document.getElementById('result') || {}).textContent || '';
+    if (!text.trim()) { alert('請先計算結果'); return; }
+    var url = 'https://line.me/R/share?text=' + encodeURIComponent(text);
+    window.open(url, '_blank');
+}
+// ===== end LINE =====
+
+// ===== 原生分享 (Web Share API) =====
+function shareNative() {
+    calculate();
+    var text = (document.getElementById('result') || {}).textContent || '';
+    if (!text.trim()) { alert('請先計算結果'); return; }
+    if (navigator.share) {
+        navigator.share({ title: '派對分帳結果', text: text }).catch(function () {});
+    } else {
+        alert('此瀏覽器不支援分享功能，請改用「複製結果」或「LINE 分享」');
+    }
+}
+// ===== end 原生分享 =====
+
+// ===== 截圖匯出 =====
+function exportScreenshot() {
+    calculate();
+    var el = document.getElementById('resultDetails');
+    if (!el) { alert('找不到結果區域'); return; }
+    if (typeof html2canvas === 'undefined') { alert('截圖功能載入中，請稍後再試'); return; }
+    html2canvas(el, {
+        backgroundColor: getComputedStyle(document.body).getPropertyValue('--card') || '#fff',
+        scale: 2
+    }).then(function (canvas) {
+        // 嘗試用 Web Share API 分享圖片（手機適用）
+        canvas.toBlob(function (blob) {
+            if (navigator.share && navigator.canShare) {
+                var file = new File([blob], 'party-split.png', { type: 'image/png' });
+                if (navigator.canShare({ files: [file] })) {
+                    navigator.share({ files: [file], title: '派對分帳結果' }).catch(function () {});
+                    return;
+                }
+            }
+            // fallback: 下載圖片
+            var link = document.createElement('a');
+            link.download = 'party-split.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }, 'image/png');
+    }).catch(function () {
+        alert('截圖失敗');
+    });
+}
+// ===== end 截圖 =====
+
+// ===== PWA 註冊 =====
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+}
+// ===== end PWA =====
 
 // 若 localStorage 有主要付錢人，先把未指定的付款人帶入預設
 applyPrimaryPayerDefaults();

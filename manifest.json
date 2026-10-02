@@ -1,0 +1,21 @@
+{
+  "name": "派對分帳神器",
+  "short_name": "分帳神器",
+  "description": "快速解析帳單、分帳計算與群組管理",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f6f8fb",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
