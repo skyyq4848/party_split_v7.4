@@ -6,461 +6,475 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>派對分帳神器 v7.5</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#7c6cf0">
     <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <style>
+        /* ── Claymorphism + Playful palette ── */
         :root {
-            --bg: #f6f8fb;
-            --card: #ffffff;
-            --muted: #6b7280;
-            --accent: #2563eb;
-            --accent-2: #06b6d4;
-            --danger: #ef4444;
-            --radius: 10px;
-            --text: #111827;
-            --border: #e6e9ee;
+            --bg: #f0edff;
+            --card: #f8f5ff;
+            --card-alt: #fff0f6;
+            --text: #2d2252;
+            --text-sub: #6e5f8a;
+            --muted: #a99bc4;
+            --accent: #7c6cf0;
+            --accent-light: #ece8ff;
+            --pink: #f472b6;
+            --mint: #6ee7b7;
+            --peach: #fdba74;
+            --sky: #7dd3fc;
+            --border: rgba(124,108,240,0.10);
             --input-bg: #fff;
-            --fold-bg: #fff;
-            --fold-header: linear-gradient(180deg, #fafafe, #ffffff);
-            --tag-bg: #f8fafc;
-            --table-stripe: rgba(15, 23, 42, 0.02);
+            --tag-bg: #f3f0ff;
+            --table-stripe: rgba(124,108,240,0.04);
+            --radius: 24px;
+            --radius-sm: 16px;
+            /* clay shadows */
+            --clay: 0 20px 50px rgba(124,108,240,0.12),
+                    inset 0 -6px 12px rgba(100,70,180,0.08),
+                    inset 0 6px 12px rgba(255,255,255,0.55);
+            --clay-sm: 0 8px 24px rgba(124,108,240,0.10),
+                       inset 0 -3px 6px rgba(100,70,180,0.06),
+                       inset 0 3px 6px rgba(255,255,255,0.50);
+            --clay-btn: 0 6px 16px rgba(124,108,240,0.18),
+                        inset 0 -2px 4px rgba(80,50,160,0.12),
+                        inset 0 2px 4px rgba(255,255,255,0.45);
         }
 
         :root[data-theme="dark"] {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --muted: #94a3b8;
-            --text: #e2e8f0;
-            --border: #334155;
-            --input-bg: #1e293b;
-            --fold-bg: #1e293b;
-            --fold-header: linear-gradient(180deg, #1e293b, #1e293b);
-            --tag-bg: #334155;
-            --table-stripe: rgba(255, 255, 255, 0.03);
-            --danger: #f87171;
+            --bg: #16122a;
+            --card: #221e38;
+            --card-alt: #2a1e30;
+            --text: #e8e2f4;
+            --text-sub: #b0a3c8;
+            --muted: #7a6e96;
+            --accent: #a08aff;
+            --accent-light: #2e2650;
+            --border: rgba(160,138,255,0.12);
+            --input-bg: #2a2545;
+            --tag-bg: #2a2545;
+            --table-stripe: rgba(160,138,255,0.05);
+            --clay: 0 20px 50px rgba(0,0,0,0.25),
+                    inset 0 -6px 12px rgba(0,0,0,0.15),
+                    inset 0 6px 12px rgba(255,255,255,0.04);
+            --clay-sm: 0 8px 24px rgba(0,0,0,0.20),
+                       inset 0 -3px 6px rgba(0,0,0,0.12),
+                       inset 0 3px 6px rgba(255,255,255,0.03);
+            --clay-btn: 0 6px 16px rgba(0,0,0,0.22),
+                        inset 0 -2px 4px rgba(0,0,0,0.15),
+                        inset 0 2px 4px rgba(255,255,255,0.05);
+            color-scheme: dark;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #16122a;
+                --card: #221e38;
+                --card-alt: #2a1e30;
+                --text: #e8e2f4;
+                --text-sub: #b0a3c8;
+                --muted: #7a6e96;
+                --accent: #a08aff;
+                --accent-light: #2e2650;
+                --border: rgba(160,138,255,0.12);
+                --input-bg: #2a2545;
+                --tag-bg: #2a2545;
+                --table-stripe: rgba(160,138,255,0.05);
+                --clay: 0 20px 50px rgba(0,0,0,0.25),
+                        inset 0 -6px 12px rgba(0,0,0,0.15),
+                        inset 0 6px 12px rgba(255,255,255,0.04);
+                --clay-sm: 0 8px 24px rgba(0,0,0,0.20),
+                           inset 0 -3px 6px rgba(0,0,0,0.12),
+                           inset 0 3px 6px rgba(255,255,255,0.03);
+                --clay-btn: 0 6px 16px rgba(0,0,0,0.22),
+                            inset 0 -2px 4px rgba(0,0,0,0.15),
+                            inset 0 2px 4px rgba(255,255,255,0.05);
+                color-scheme: dark;
+            }
         }
 
-        html,
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
-            height: 100%;
-        }
-
-        body {
-            font-family: "Noto Sans TC", Arial, Helvetica, sans-serif;
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Nunito', 'Noto Sans TC', system-ui, sans-serif;
+            margin: 0; background: var(--bg); color: var(--text);
             -webkit-font-smoothing: antialiased;
         }
+        .app { max-width: 780px; margin: 0 auto; padding: 20px 16px 48px; }
 
-        .app {
-            max-width: 1100px;
-            margin: 28px auto;
-            padding: 20px;
-        }
-
+        /* ── Header: 大圓角 clay hero ── */
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
+            background: linear-gradient(135deg, #7c6cf0, #b06cf0, #f472b6);
+            border-radius: 32px; padding: 26px 28px 22px;
+            margin-bottom: 22px; color: #fff;
+            box-shadow: 0 24px 60px rgba(124,108,240,0.22),
+                        inset 0 -8px 16px rgba(80,40,160,0.15),
+                        inset 0 8px 16px rgba(255,255,255,0.18);
+            position: relative; overflow: hidden;
         }
-
-        .title {
-            display: flex;
-            gap: 12px;
-            align-items: baseline;
+        /* 裝飾用的浮動圓球 */
+        .header .blob {
+            position: absolute; border-radius: 50%; opacity: 0.15;
+            animation: blobFloat 6s ease-in-out infinite alternate;
         }
-
-        .title h1 {
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: 0.2px;
+        .header .blob-1 { width: 120px; height: 120px; background: #fff; top: -30px; right: -10px; }
+        .header .blob-2 { width: 80px; height: 80px; background: var(--mint); bottom: -20px; left: 40px; animation-delay: -3s; }
+        .header .blob-3 { width: 50px; height: 50px; background: var(--peach); top: 10px; right: 120px; animation-delay: -1.5s; }
+        @keyframes blobFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(8px, -12px) scale(1.1); }
         }
-
-        .title .sub {
-            color: var(--muted);
-            font-size: 13px;
+        .header-top {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            gap: 10px; position: relative; z-index: 1;
         }
-
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-            padding: 18px;
-            margin-bottom: 18px;
-            border: 1px solid var(--border);
+        .header h1 {
+            margin: 0; font-size: 1.5rem; font-weight: 900;
+            letter-spacing: -0.01em; line-height: 1.2;
         }
-
-        input[type="text"],
-        input[type="number"],
-        textarea,
-        select {
-            border: 1px solid var(--border);
-            padding: 10px 12px;
-            border-radius: 8px;
-            background: var(--input-bg);
-            color: var(--text);
-            outline: none;
-            transition: box-shadow .12s, border-color .12s;
-            font-size: 14px;
+        .header .sub { opacity: 0.85; font-size: 0.8rem; margin-top: 4px; font-weight: 600; }
+        .header-util { display: flex; gap: 6px; }
+        .header-util button {
+            background: rgba(255,255,255,0.2); border: none; color: #fff;
+            width: 36px; height: 36px; border-radius: 14px; font-size: 1rem;
+            cursor: pointer; backdrop-filter: blur(4px);
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,0.15);
+            transition: all 0.15s;
         }
+        .header-util button:hover { background: rgba(255,255,255,0.35); transform: scale(1.08); box-shadow: none; }
 
-        input:focus,
-        textarea:focus,
-        select:focus {
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.08);
-            border-color: var(--accent);
+        .header-actions {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+            position: relative; z-index: 1;
         }
-
-        button {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform .06s ease, box-shadow .08s ease, opacity .08s;
+        .header-actions button {
+            font-size: 0.78rem; padding: 8px 18px; border-radius: 18px;
+            border: none; cursor: pointer; font-weight: 700; font-family: inherit;
+            transition: all 0.15s;
+            background: rgba(255,255,255,0.2); color: #fff;
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.06), inset 0 2px 4px rgba(255,255,255,0.12);
         }
-
-        button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+        .header-actions button:hover { background: rgba(255,255,255,0.35); transform: translateY(-2px) scale(1.03); box-shadow: none; }
+        .header-actions button.primary {
+            background: #fff; color: var(--accent); font-weight: 800;
+            box-shadow: var(--clay-btn);
         }
+        .header-actions button.primary:hover { transform: translateY(-2px) scale(1.05); }
 
-        button.secondary {
-            background: var(--input-bg);
-            color: var(--accent);
-            border: 1px solid var(--border);
-            box-shadow: none;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--muted);
-            border: 1px dashed var(--border);
-        }
-
-        .btn-icon {
-            background: transparent;
-            color: var(--muted);
-            border: none;
-            padding: 6px 8px;
-            font-size: 18px;
-            box-shadow: none;
-        }
-
-        .btn-icon:hover {
-            color: var(--accent);
-            box-shadow: none;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        ul#peopleList,
-        ul#groupList {
-            list-style: none;
-            padding-left: 0;
-            margin: 8px 0 0 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        ul#peopleList li,
-        ul#groupList li {
-            background: var(--tag-bg);
-            padding: 8px 10px;
-            border-radius: 999px;
-            color: var(--text);
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid var(--border);
-        }
-
-        ul#peopleList li button {
-            background: transparent;
-            color: var(--danger);
-            border: none;
-            padding: 0 6px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        .member-box {
-            gap: 8px;
-        }
-
-        .member-box label {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: var(--tag-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .member-box input {
-            margin-right: 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: transparent;
-        }
-
-        th,
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            text-align: left;
-        }
-
-        thead th {
-            background: transparent;
-            color: var(--muted);
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        tbody tr:nth-child(odd) {
-            background: var(--table-stripe);
-        }
-
-        .table-box {
-            padding: 10px;
-            border-radius: 8px;
-            background: var(--card);
-        }
-
-        .result {
-            white-space: pre-wrap;
-            font-family: monospace;
-            font-size: 13px;
-            color: var(--text);
-        }
-
-        @media(max-width:720px) {
-            .app {
-                padding: 12px;
-            }
-
-            .title h1 {
-                font-size: 18px;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-
-        .biginput {
-            border: 1px solid var(--border);
-            padding: 10px 15px;
-            border-radius: 60px;
-            outline: none;
-            transition: all 0.3s;
-            width: 80%;
-            box-sizing: border-box;
-            background: var(--input-bg);
-            color: var(--text);
-        }
-
-        details.fold-section {
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--fold-bg);
-            overflow: hidden;
-        }
-
-        details.fold-section summary {
-            cursor: pointer;
-            padding: 10px 14px;
-            font-weight: 700;
-            background: var(--fold-header);
-            list-style: none;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        details.fold-section[open] summary {
-            box-shadow: inset 0 -1px 0 var(--border);
-        }
-
-        details.fold-section .fold-body {
-            padding: 10px 14px;
-        }
-
-        details.fold-section summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .fold-summary-title {
-            display: inline-block;
-        }
-
-        .fold-summary-chevron {
-            font-size: 14px;
-            color: var(--muted);
-            margin-left: 8px;
-        }
-
-        details.help-box {
-            position: relative;
-            display: inline-block;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
+        /* ── Help popup ── */
+        details.help-box { position: relative; display: inline-block; }
         details.help-box summary {
-            width: 28px;
-            height: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            list-style: none;
-            padding: 0;
-            outline: none;
+            width: 36px; height: 36px; display: inline-flex; align-items: center;
+            justify-content: center; border-radius: 14px;
+            background: rgba(255,255,255,0.2); color: #fff; font-weight: 800;
+            cursor: pointer; border: none; list-style: none; padding: 0; outline: none;
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.08), inset 0 2px 4px rgba(255,255,255,0.15);
         }
-
-        details.help-box summary::-webkit-details-marker {
-            display: none;
-        }
-
+        details.help-box summary::-webkit-details-marker { display: none; }
         details.help-box .help-body {
-            display: none;
-            position: absolute;
-            top: 38px;
-            right: 0;
-            width: 420px;
-            max-width: calc(100vw - 32px);
-            background: var(--card);
+            display: none; position: absolute; top: 42px; right: 0;
+            width: 380px; max-width: calc(100vw - 32px);
+            background: var(--card); border: 1px solid var(--border);
+            box-shadow: var(--clay); border-radius: var(--radius);
+            padding: 16px; z-index: 1200; font-size: 0.8rem; color: var(--text);
+            max-height: 60vh; overflow: auto;
+        }
+        details.help-box[open] .help-body { display: block; }
+        details.help-box .help-body p { margin: 6px 0; line-height: 1.5; }
+        details.help-box .help-body code { background: var(--tag-bg); padding: 2px 6px; border-radius: 8px; font-size: 0.78rem; }
+
+        /* ── Section title ── */
+        .section-title {
+            font-size: 1.05rem; font-weight: 800; margin: 30px 0 14px;
+            color: var(--text); display: flex; align-items: center; gap: 10px;
+        }
+        .section-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            display: inline-block; flex-shrink: 0;
+        }
+
+        /* ── Clay card ── */
+        .clay {
+            background: var(--card); border-radius: var(--radius);
+            padding: 20px; margin-bottom: 16px;
+            box-shadow: var(--clay);
             border: 1px solid var(--border);
-            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.12);
-            border-radius: 8px;
-            padding: 12px;
-            z-index: 1200;
-            font-size: 13px;
-            color: var(--text);
-            box-sizing: border-box;
-            max-height: 60vh;
-            overflow: auto;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
-
-        details.help-box[open] .help-body {
-            display: block;
-        }
-
-        details.help-box .help-body p {
-            margin: 6px 0;
-            line-height: 1.4;
-        }
-
-        details.help-box .help-body code {
-            background: var(--tag-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-            white-space: normal;
-        }
-
-        .history-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 10px;
+        .clay:hover { transform: translateY(-2px); }
+        .clay-sm {
+            background: var(--card); border-radius: var(--radius-sm);
+            padding: 14px 16px; margin-bottom: 10px;
+            box-shadow: var(--clay-sm);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 6px;
-            background: var(--tag-bg);
-            font-size: 13px;
-            gap: 8px;
+        }
+        .card-label {
+            font-size: 0.72rem; font-weight: 800; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
         }
 
-        .history-item .history-name {
-            flex: 1;
-            font-weight: 600;
+        /* ── Inputs ── */
+        input[type="text"], input[type="number"], textarea, select {
+            border: 2px solid var(--border); padding: 10px 14px;
+            border-radius: 16px; background: var(--input-bg); color: var(--text);
+            outline: none; transition: all 0.15s; font-size: 14px;
+            font-family: inherit; box-shadow: var(--clay-sm);
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light), var(--clay-sm);
+        }
+        .biginput {
+            border: 2px solid var(--border); padding: 10px 18px;
+            border-radius: 28px; outline: none; transition: all 0.15s;
+            width: 65%; background: var(--input-bg); color: var(--text);
+            font-family: inherit; font-size: 14px;
+            box-shadow: var(--clay-sm);
+        }
+        .biginput:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-light), var(--clay-sm);
         }
 
-        .history-item .history-date {
-            color: var(--muted);
-            font-size: 12px;
-            white-space: nowrap;
+        /* ── Buttons ── */
+        button {
+            background: var(--accent); color: #fff; border: none;
+            padding: 9px 20px; border-radius: 18px; font-weight: 800;
+            cursor: pointer; font-family: inherit; font-size: 0.84rem;
+            box-shadow: var(--clay-btn); transition: all 0.12s;
+        }
+        button:hover { transform: translateY(-2px) scale(1.03); filter: brightness(1.08); }
+        button:active { transform: scale(0.96); box-shadow: none; }
+        button.secondary {
+            background: var(--card); color: var(--accent);
+            border: 2px solid var(--border);
+        }
+        button.secondary:hover { background: var(--accent-light); }
+        .btn-sm { font-size: 0.75rem; padding: 6px 14px; border-radius: 14px; }
+        .btn-danger {
+            background: transparent; color: #f43f5e; border: none;
+            padding: 2px 8px; font-weight: 800; font-size: 0.85rem;
+            box-shadow: none;
+        }
+        .btn-danger:hover { background: rgba(244,63,94,0.08); box-shadow: none; transform: none; }
+
+        /* ── People chips: 彩色膨膨 pill ── */
+        .people-list {
+            list-style: none; padding: 0; margin: 10px 0 0;
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        .people-list li {
+            padding: 7px 16px; border-radius: 22px;
+            font-size: 0.82rem; font-weight: 700;
+            display: inline-flex; align-items: center; gap: 6px;
+            box-shadow: var(--clay-sm); border: 1px solid var(--border);
+            transition: transform 0.12s;
+        }
+        .people-list li:hover { transform: scale(1.06); }
+        .people-list li:nth-child(5n+1) { background: #ede9fe; color: #6d28d9; }
+        .people-list li:nth-child(5n+2) { background: #fce7f3; color: #be185d; }
+        .people-list li:nth-child(5n+3) { background: #d1fae5; color: #065f46; }
+        .people-list li:nth-child(5n+4) { background: #fef3c7; color: #92400e; }
+        .people-list li:nth-child(5n+5) { background: #dbeafe; color: #1e40af; }
+
+        ul#groupList {
+            list-style: none; padding: 0; margin: 10px 0 0;
+            display: flex; flex-wrap: wrap; gap: 8px;
+        }
+        ul#groupList li {
+            background: var(--card); padding: 8px 14px; border-radius: 18px;
+            color: var(--text); font-size: 0.82rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: var(--clay-sm); border: 1px solid var(--border);
         }
 
-        .template-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 4px;
-            background: var(--tag-bg);
-            font-size: 13px;
+        .member-box { gap: 6px; }
+        .member-box label {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 12px; border-radius: 20px;
+            background: var(--accent-light); border: 1.5px solid transparent;
+            color: var(--text); font-size: 0.78rem; cursor: pointer;
+            transition: all 0.12s; font-weight: 600;
         }
+        .member-box label:hover { border-color: var(--accent); transform: scale(1.04); }
+        .member-box input { accent-color: var(--accent); }
+
+        /* ── Table ── */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; font-size: 0.82rem; }
+        thead th { color: var(--muted); font-weight: 800; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        tbody tr:nth-child(odd) { background: var(--table-stripe); }
+        tbody tr { transition: background 0.1s; }
+        tbody tr:hover { background: var(--accent-light); }
+        .table-box { padding: 10px; border-radius: 16px; background: var(--card); }
+
+        /* ── Fold sections: clay 感 ── */
+        details.fold-section {
+            margin-bottom: 14px; border: 1px solid var(--border);
+            border-radius: var(--radius); background: var(--card);
+            overflow: hidden; box-shadow: var(--clay-sm);
+        }
+        details.fold-section summary {
+            cursor: pointer; padding: 14px 18px;
+            font-weight: 800; font-size: 0.9rem;
+            background: var(--card); list-style: none; outline: none;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.1s;
+        }
+        details.fold-section summary:hover { background: var(--accent-light); }
+        details.fold-section[open] summary { border-bottom: 1px solid var(--border); }
+        details.fold-section .fold-body { padding: 16px 18px; }
+        details.fold-section summary::-webkit-details-marker { display: none; }
+        .fold-summary-title { display: flex; align-items: center; gap: 8px; }
+        .fold-summary-chevron {
+            font-size: 12px; color: var(--muted);
+            transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        details.fold-section[open] .fold-summary-chevron { transform: rotate(180deg); }
+
+        /* ── Settings bar ── */
+        .settings-bar {
+            display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+            padding: 14px 18px; background: var(--card);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            margin-bottom: 14px; box-shadow: var(--clay-sm); font-size: 0.82rem;
+        }
+        .settings-bar label { display: flex; align-items: center; gap: 4px; font-weight: 700; }
+        .settings-bar select, .settings-bar input[type="number"] { padding: 6px 8px; font-size: 0.8rem; border-radius: 12px; }
+        .settings-bar input[type="number"] { width: 55px; }
+
+        /* ── Result ── */
+        .result {
+            white-space: pre-wrap; font-family: 'Nunito', monospace;
+            font-size: 0.8rem; color: var(--text); line-height: 1.65;
+        }
+
+        /* ── History & Template ── */
+        .history-item, .template-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px; border: 1px solid var(--border);
+            border-radius: 18px; margin-bottom: 8px;
+            background: var(--card); font-size: 0.82rem; gap: 8px;
+            box-shadow: var(--clay-sm); transition: transform 0.12s;
+        }
+        .history-item:hover, .template-item:hover { transform: translateY(-2px); }
+        .history-name { flex: 1; font-weight: 800; }
+        .history-date { color: var(--muted); font-size: 0.72rem; white-space: nowrap; }
+
+        /* ── Manual mode ── */
+        #manualParseBox td, #manualParseBox th { border: 1px solid var(--border) !important; padding: 8px !important; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .header { border-radius: 24px; padding: 20px 18px 16px; }
+            .header h1 { font-size: 1.2rem; }
+            .header-actions button { font-size: 0.72rem; padding: 6px 12px; }
+            .biginput { width: 100%; margin-bottom: 8px; }
+            .settings-bar { font-size: 0.75rem; gap: 8px; }
+            .clay { padding: 16px; border-radius: 20px; }
+        }
+
+        /* ── Theme selector ── */
+        .theme-picker {
+            display: flex; gap: 6px; margin-top: 14px; position: relative; z-index: 1;
+            flex-wrap: wrap; align-items: center;
+        }
+        .theme-picker-label {
+            font-size: 0.75rem; font-weight: 700; opacity: 0.8; margin-right: 4px;
+        }
+        .theme-dot {
+            width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+            border: 3px solid rgba(255,255,255,0.3);
+            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.2);
+            transition: all 0.15s;
+        }
+        .theme-dot:hover { transform: scale(1.15); }
+        .theme-dot.active { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.4); }
+
+        /* Theme overrides */
+        :root[data-color="lavender"] { --accent:#7c6cf0; --accent-light:#ece8ff; --bg:#f0edff; --card:#f8f5ff; --tag-bg:#f3f0ff; --input-bg:#fff; --border:rgba(124,108,240,0.10); }
+        :root[data-color="ocean"] { --accent:#0ea5e9; --accent-light:#e0f2fe; --bg:#eff8ff; --card:#f7fbff; --tag-bg:#e8f4fd; --input-bg:#fff; --border:rgba(14,165,233,0.10); }
+        :root[data-color="rose"] { --accent:#e11d78; --accent-light:#fce7f3; --bg:#fdf2f8; --card:#fef7fb; --tag-bg:#fce7f3; --input-bg:#fff; --border:rgba(225,29,120,0.10); }
+        :root[data-color="mint"] { --accent:#059669; --accent-light:#d1fae5; --bg:#ecfdf5; --card:#f5fdf9; --tag-bg:#d1fae5; --input-bg:#fff; --border:rgba(5,150,105,0.10); }
+        :root[data-color="sunset"] { --accent:#ea580c; --accent-light:#ffedd5; --bg:#fff7ed; --card:#fffbf5; --tag-bg:#fed7aa; --input-bg:#fff; --border:rgba(234,88,12,0.10); }
+
+        :root[data-theme="dark"][data-color="ocean"] { --accent:#38bdf8; --accent-light:#0c3a5a; --bg:#0b1929; --card:#122236; --tag-bg:#142d45; --input-bg:#162a3e; --border:rgba(56,189,248,0.12); }
+        :root[data-theme="dark"][data-color="rose"] { --accent:#fb7185; --accent-light:#4a1530; --bg:#1a0c14; --card:#281420; --tag-bg:#3a1828; --input-bg:#2a1420; --border:rgba(251,113,133,0.12); }
+        :root[data-theme="dark"][data-color="mint"] { --accent:#34d399; --accent-light:#0a3a28; --bg:#071a14; --card:#0e2a1e; --tag-bg:#123828; --input-bg:#0e2820; --border:rgba(52,211,153,0.12); }
+        :root[data-theme="dark"][data-color="sunset"] { --accent:#fb923c; --accent-light:#3a2010; --bg:#1a120a; --card:#281c10; --tag-bg:#3a2815; --input-bg:#2a1c10; --border:rgba(251,146,60,0.12); }
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"])[data-color="ocean"] { --accent:#38bdf8; --accent-light:#0c3a5a; --bg:#0b1929; --card:#122236; --tag-bg:#142d45; --input-bg:#162a3e; --border:rgba(56,189,248,0.12); }
+            :root:not([data-theme="light"])[data-color="rose"] { --accent:#fb7185; --accent-light:#4a1530; --bg:#1a0c14; --card:#281420; --tag-bg:#3a1828; --input-bg:#2a1420; --border:rgba(251,113,133,0.12); }
+            :root:not([data-theme="light"])[data-color="mint"] { --accent:#34d399; --accent-light:#0a3a28; --bg:#071a14; --card:#0e2a1e; --tag-bg:#123828; --input-bg:#0e2820; --border:rgba(52,211,153,0.12); }
+            :root:not([data-theme="light"])[data-color="sunset"] { --accent:#fb923c; --accent-light:#3a2010; --bg:#1a120a; --card:#281c10; --tag-bg:#3a2815; --input-bg:#2a1c10; --border:rgba(251,146,60,0.12); }
+        }
+
+        /* header gradient per color theme */
+        :root[data-color="ocean"] .header { background: linear-gradient(135deg, #0ea5e9, #0284c7, #06b6d4); }
+        :root[data-color="rose"] .header { background: linear-gradient(135deg, #e11d78, #be185d, #f472b6); }
+        :root[data-color="mint"] .header { background: linear-gradient(135deg, #059669, #047857, #34d399); }
+        :root[data-color="sunset"] .header { background: linear-gradient(135deg, #ea580c, #dc2626, #f59e0b); }
+
+        /* clay shadow per color theme */
+        :root[data-color="ocean"] { --clay:0 20px 50px rgba(14,165,233,0.12),inset 0 -6px 12px rgba(2,132,199,0.08),inset 0 6px 12px rgba(255,255,255,0.55); --clay-sm:0 8px 24px rgba(14,165,233,0.10),inset 0 -3px 6px rgba(2,132,199,0.06),inset 0 3px 6px rgba(255,255,255,0.50); --clay-btn:0 6px 16px rgba(14,165,233,0.18),inset 0 -2px 4px rgba(2,100,160,0.12),inset 0 2px 4px rgba(255,255,255,0.45); }
+        :root[data-color="rose"] { --clay:0 20px 50px rgba(225,29,120,0.12),inset 0 -6px 12px rgba(190,24,93,0.08),inset 0 6px 12px rgba(255,255,255,0.55); --clay-sm:0 8px 24px rgba(225,29,120,0.10),inset 0 -3px 6px rgba(190,24,93,0.06),inset 0 3px 6px rgba(255,255,255,0.50); --clay-btn:0 6px 16px rgba(225,29,120,0.18),inset 0 -2px 4px rgba(160,20,80,0.12),inset 0 2px 4px rgba(255,255,255,0.45); }
+        :root[data-color="mint"] { --clay:0 20px 50px rgba(5,150,105,0.12),inset 0 -6px 12px rgba(4,120,87,0.08),inset 0 6px 12px rgba(255,255,255,0.55); --clay-sm:0 8px 24px rgba(5,150,105,0.10),inset 0 -3px 6px rgba(4,120,87,0.06),inset 0 3px 6px rgba(255,255,255,0.50); --clay-btn:0 6px 16px rgba(5,150,105,0.18),inset 0 -2px 4px rgba(3,90,70,0.12),inset 0 2px 4px rgba(255,255,255,0.45); }
+        :root[data-color="sunset"] { --clay:0 20px 50px rgba(234,88,12,0.12),inset 0 -6px 12px rgba(194,65,12,0.08),inset 0 6px 12px rgba(255,255,255,0.55); --clay-sm:0 8px 24px rgba(234,88,12,0.10),inset 0 -3px 6px rgba(194,65,12,0.06),inset 0 3px 6px rgba(255,255,255,0.50); --clay-btn:0 6px 16px rgba(234,88,12,0.18),inset 0 -2px 4px rgba(160,50,10,0.12),inset 0 2px 4px rgba(255,255,255,0.45); }
+
+        /* ── Bounce animation for buttons ── */
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            60% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        details.fold-section { animation: bounceIn 0.35s cubic-bezier(0.34,1.56,0.64,1); }
     </style>
 </head>
 
 <body>
     <div class="app">
+        <!-- Header -->
         <div class="header">
-            <div class="title">
-            <h1>派對分帳神器 v7.5</h1>
-            <div class="sub">快速解析帳單、手動編輯與群組管理</div>
-                <details class="help-box" aria-label="使用說明">
-                    <summary title="使用說明">!</summary>
-                    <div class="help-body">
-                        <strong>使用說明 / 解析規則（簡要）</strong>
-                        <p><b>優先判斷人名：</b>若一行以已知<code>人名</code>開頭，且後面沒有「出/代出」字樣，視為個人費用（personal）。格式範例：<br><code>藍天 胭脂歐蕾 $78</code></p>
-                        <p><b>代付判斷：</b>含有「代出」或「出」的行視為代付（advance）。若開頭為人名且緊接「出/代出」，該人為代付者。範例：<br><code>藍天 出 大布丁 167元</code></p>
-                        <p><b>派對項目：</b>不符合上述兩種情況則視為派對共攤（party），預設分攤給全部人。範例：<br><code>披薩 300</code></p>
-                        <p><b>金額解析：</b>支援 <code>x * y</code>（例如 <code>85 * 3</code>）及取行內最後一個數字為價格。可接受 $ / 元 / NT$ 標記。</p>
-                        <p><b>手動修正：</b>切到一般模式可手動編輯每列類型（派對/個人/代付）與分攤人。個人費用：members 欄位第一個人即為付款者；代付：第一個為代付人，後續為分攤對象。</p>
-                        <p>若要解析正確，建議常用格式：</p>
-                        <ul>
-                            <li><code>人名 品項 $金額</code>（個人）</li>
-                            <li><code>人名 出/代出 品項 $金額</code>（代付）</li>
-                            <li><code>品項 $金額</code>或<code>品項 數量*單價</code>（派對共攤）</li>
-                        </ul>
-                    </div>
-                </details>
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+            <div class="header-top">
+                <div>
+                    <h1>派對分帳神器 v7.5</h1>
+                    <div class="sub">快速解析帳單 · 手動編輯 · 群組管理</div>
+                </div>
+                <div class="header-util">
+                    <details class="help-box">
+                        <summary title="使用說明">?</summary>
+                        <div class="help-body">
+                            <strong>使用說明</strong>
+                            <p><b>個人費用：</b>人名開頭 → <code>藍天 胭脂歐蕾 $78</code></p>
+                            <p><b>代付：</b>人名 + 出 → <code>藍天 出 大布丁 167元</code></p>
+                            <p><b>派對共攤：</b>其餘 → <code>披薩 300</code></p>
+                            <p><b>金額：</b>支援 <code>x * y</code>、$、元、NT$</p>
+                            <p><b>分類：</b><code>--- 飲料費用 ---</code></p>
+                        </div>
+                    </details>
+                    <button onclick="toggleDarkMode()" id="darkModeBtn" title="切換深色模式">🌙</button>
+                </div>
             </div>
-            <div class="controls">
-                <button onclick="undoAction()" class="secondary" title="復原">↩ 復原</button>
-                <button onclick="calculate()">計算</button>
-                <button class="secondary" onclick="exportLine()">複製結果</button>
-                <button class="secondary" onclick="shareLine()">LINE 分享</button>
-                <button class="secondary" onclick="shareNative()">分享</button>
-                <button class="secondary" onclick="exportScreenshot()">截圖</button>
-                <button class="secondary" onclick="resetAll()">清空</button>
-                <button class="btn-icon" onclick="toggleDarkMode()" title="切換深色模式" id="darkModeBtn">🌙</button>
+            <div class="header-actions">
+                <button class="primary" onclick="calculate()">計算</button>
+                <button onclick="undoAction()">復原</button>
+                <button onclick="exportLine()">複製</button>
+                <button onclick="shareLine()">LINE</button>
+                <button onclick="shareNative()">分享</button>
+                <button onclick="exportScreenshot()">截圖</button>
+                <button onclick="resetAll()">清空</button>
+            </div>
+            <div class="theme-picker">
+                <span class="theme-picker-label">色系</span>
+                <div class="theme-dot active" style="background:linear-gradient(135deg,#7c6cf0,#b06cf0);" onclick="setColorTheme('lavender')" title="薰衣草紫"></div>
+                <div class="theme-dot" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4);" onclick="setColorTheme('ocean')" title="海洋藍"></div>
+                <div class="theme-dot" style="background:linear-gradient(135deg,#e11d78,#f472b6);" onclick="setColorTheme('rose')" title="玫瑰粉"></div>
+                <div class="theme-dot" style="background:linear-gradient(135deg,#059669,#34d399);" onclick="setColorTheme('mint')" title="薄荷綠"></div>
+                <div class="theme-dot" style="background:linear-gradient(135deg,#ea580c,#f59e0b);" onclick="setColorTheme('sunset')" title="夕陽橘"></div>
             </div>
         </div>
 
@@ -471,55 +485,69 @@
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
-                    <input class="biginput" type="text" id="historyName" placeholder="輸入存檔名稱（如：10/2 火鍋聚餐）" style="flex:1; min-width:200px;">
-                    <button onclick="saveHistory()">存檔</button>
+                <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center;">
+                    <input class="biginput" type="text" id="historyName" placeholder="存檔名稱（如：10/2 火鍋聚餐）" style="flex:1; min-width:200px;">
+                    <button onclick="saveHistory()" class="btn-sm">存檔</button>
                 </div>
                 <div id="historyList"></div>
             </div>
         </details>
 
-        <h2>參加人員</h2>
+        <!-- 參加人員 -->
+        <div class="section-title">
+            <span class="section-dot" style="background:var(--accent);"></span>
+            參加人員
+        </div>
 
-        <!-- 常用人員範本 -->
         <details class="fold-section" id="templateDetails">
             <summary>
                 <span class="fold-summary-title">常用人員範本</span>
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; align-items:center;">
-                    <input class="biginput" type="text" id="templateName" placeholder="範本名稱（如：每週固定咖）" style="flex:1; min-width:180px;">
-                    <button onclick="saveTemplate()">儲存目前人員為範本</button>
+                <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; align-items:center;">
+                    <input class="biginput" type="text" id="templateName" placeholder="範本名稱" style="flex:1; min-width:160px;">
+                    <button onclick="saveTemplate()" class="btn-sm">儲存目前人員</button>
                 </div>
                 <div id="templateList"></div>
             </div>
         </details>
 
-        <h3>新增人員</h3>
-        <input class="biginput" id="personName" placeholder="輸入人員名稱">
-        <button onclick="addPerson()">新增</button>
-        <h3>批次匯入人員</h3>
-        <textarea id="bulkPeople" rows="3" style="width: 100%;" placeholder="可以一次使用空格逗號或換行實現一次輸入多位 ex. 藍天 阿劉 麻煩 手手 闆娘 沒角 IE 阿球 yuna 阿文 飯粒 米粒
-"></textarea>
-        <button onclick="importPeople()">批次匯入</button>
-        <h3>人員清單</h3>
-        <ul id="peopleList"></ul>
-
-        <h2>現有人員進行群組</h2>
-        <div>
-            <ul id="groupEditList"></ul>
+        <div class="clay">
+            <div class="card-label">新增人員</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <input class="biginput" id="personName" placeholder="輸入人員名稱" style="flex:1;">
+                <button onclick="addPerson()">新增</button>
+            </div>
+            <div class="card-label" style="margin-top:16px;">批次匯入</div>
+            <textarea id="bulkPeople" rows="2" style="width:100%;border-radius:16px;" placeholder="空格、逗號或換行分隔 ex. 藍天 阿劉 麻煩 手手 闆娘"></textarea>
+            <button onclick="importPeople()" style="margin-top:8px;" class="btn-sm secondary">匯入</button>
         </div>
-        <div class="member-box" id="groupSelectBox"></div>
-        <div style="margin:6px 0;">
-            <input class="biginput" type="text" id="groupName" placeholder="群組名稱">
-            <button onclick="groupPeople()">群組</button>
-            <button onclick="clearGroupSelection()" id="clearGroupBtn">清除勾選</button>
+
+        <ul id="peopleList" class="people-list"></ul>
+
+        <!-- 群組 -->
+        <div class="section-title">
+            <span class="section-dot" style="background:var(--peach);"></span>
+            群組管理
+        </div>
+        <div class="clay">
+            <div class="member-box" id="groupSelectBox"></div>
+            <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; align-items:center;">
+                <input class="biginput" type="text" id="groupName" placeholder="群組名稱" style="flex:1;">
+                <button onclick="groupPeople()" class="btn-sm">建立群組</button>
+                <button onclick="clearGroupSelection()" class="btn-sm secondary">清除勾選</button>
+            </div>
         </div>
         <ul id="groupList"></ul>
+        <div id="groupEditList"></div>
         <div id="groupEditBox" style="display:none; margin-top:10px;"></div>
 
-        <h2>帳單解析</h2>
+        <!-- 帳單解析 -->
+        <div class="section-title">
+            <span class="section-dot" style="background:var(--pink);"></span>
+            帳單解析
+        </div>
 
         <!-- AI 圖片掃描 -->
         <details class="fold-section" id="scanDetails">
@@ -529,210 +557,158 @@
             </summary>
             <div class="fold-body">
                 <div style="margin-bottom:10px;">
-                    <label style="display:block; margin-bottom:6px; font-weight:600;">上傳帳單/收據圖片</label>
                     <input type="file" id="scanCameraInput" accept="image/*" capture="environment" style="display:none;">
                     <input type="file" id="scanFileInput" accept="image/*" style="display:none;">
                     <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
-                        <button class="secondary" onclick="document.getElementById('scanCameraInput').click()">拍照</button>
-                        <button class="secondary" onclick="document.getElementById('scanFileInput').click()">選擇檔案</button>
+                        <button class="secondary btn-sm" onclick="document.getElementById('scanCameraInput').click()">拍照</button>
+                        <button class="secondary btn-sm" onclick="document.getElementById('scanFileInput').click()">選擇檔案</button>
                     </div>
-                    <div id="scanFileName" style="font-size:13px; color:var(--muted); margin-bottom:4px;"></div>
-                    <div id="scanPreview" style="max-width:300px; margin:8px 0; display:none;">
-                        <img id="scanPreviewImg" style="max-width:100%; border-radius:8px; border:1px solid var(--border);">
+                    <div id="scanFileName" style="font-size:0.78rem; color:var(--muted);"></div>
+                    <div id="scanPreview" style="max-width:260px; margin:8px 0; display:none;">
+                        <img id="scanPreviewImg" style="max-width:100%; border-radius:16px; border:2px solid var(--border);">
                     </div>
                 </div>
                 <div style="margin-bottom:10px;">
-                    <button onclick="scanImage()">掃描辨識</button>
-                    <span id="scanStatus" style="margin-left:10px; color:var(--muted); font-size:13px;"></span>
+                    <button onclick="scanImage()" class="btn-sm">掃描辨識</button>
+                    <span id="scanStatus" style="margin-left:10px; color:var(--muted); font-size:0.78rem;"></span>
                 </div>
                 <details style="margin-top:8px;">
-                    <summary style="cursor:pointer; font-size:13px; color:var(--muted);">模型設定</summary>
-                    <div style="margin-top:6px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                        <label style="font-size:13px;">端點：
-                            <input type="text" id="scanEndpoint" value="http://localhost:11434" style="width:220px;" onchange="saveScanSettings()">
-                        </label>
-                        <label style="font-size:13px;">模型：
-                            <input type="text" id="scanModel" value="gemma4" style="width:140px;" onchange="saveScanSettings()">
-                        </label>
+                    <summary style="cursor:pointer; font-size:0.78rem; color:var(--muted);">模型設定</summary>
+                    <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                        <label style="font-size:0.78rem;">端點：<input type="text" id="scanEndpoint" value="http://localhost:11434" style="width:200px;" onchange="saveScanSettings()"></label>
+                        <label style="font-size:0.78rem;">模型：<input type="text" id="scanModel" value="gemma4" style="width:120px;" onchange="saveScanSettings()"></label>
                     </div>
                 </details>
             </div>
         </details>
 
-        <!-- 服務費 / 折扣 / 尾數處理 -->
-        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:12px; padding:10px 14px; background:var(--fold-bg); border:1px solid var(--border); border-radius:8px;">
+        <!-- 設定列 -->
+        <div class="settings-bar">
             <label>主要付錢人：
                 <select id="primaryPayerSelect" onchange="onPrimaryPayerChange()">
                     <option value="">（未選擇）</option>
                 </select>
             </label>
             <label>服務費：
-                <input type="number" id="serviceCharge" value="0" min="0" max="100" step="1" style="width:60px;" onchange="clearResult()">
-                <span>%</span>
+                <input type="number" id="serviceCharge" value="0" min="0" max="100" step="1" onchange="clearResult()">%
             </label>
             <label>折扣：
-                <input type="number" id="discountRate" value="0" min="0" max="100" step="1" style="width:60px;" onchange="clearResult()">
-                <span>%</span>
+                <input type="number" id="discountRate" value="0" min="0" max="100" step="1" onchange="clearResult()">%
             </label>
-            <label>尾數處理：
+            <label>尾數：
                 <select id="roundingMode" onchange="clearResult()">
                     <option value="none">不處理</option>
                     <option value="round">四捨五入</option>
-                    <option value="floor">無條件捨去</option>
-                    <option value="ceil">無條件進位</option>
+                    <option value="floor">捨去</option>
+                    <option value="ceil">進位</option>
                 </select>
             </label>
         </div>
 
-        <!-- 模式切換按鈕 -->
-        <div style="margin-bottom:8px;margin-top: 15px;">
-            <button id="toggleParseModeBtn" onclick="toggleParseMode()" class="btn">切換到一般模式</button>
+        <!-- 模式切換 -->
+        <div style="margin-bottom:10px;">
+            <button id="toggleParseModeBtn" onclick="toggleParseMode()" class="secondary btn-sm">切換到一般模式</button>
         </div>
 
         <!-- 自動解析區 -->
         <div id="autoParseBox">
-            <details style="margin-bottom:8px;">
-                <summary style="cursor:pointer;font-weight:600;">示範範例（點擊展開/收合）</summary>
-                <pre style="white-space:pre-wrap;background:var(--tag-bg);padding:10px;border-radius:8px;border:1px solid var(--border);margin-top:8px;font-size:13px;">
-                    --------------- 雞蛋糕費用 ---------------
-                    牛奶糖 $33
-                    乳酪 $121
-                    雞蛋 $99
-                    牛奶 $40
-                    奶油 $30
+            <details class="fold-section" style="margin-bottom:10px;">
+                <summary>
+                    <span class="fold-summary-title">示範範例</span>
+                    <span class="fold-summary-chevron">▾</span>
+                </summary>
+                <div class="fold-body">
+                    <pre style="white-space:pre-wrap;background:var(--tag-bg);padding:14px;border-radius:14px;font-size:0.78rem;line-height:1.6;overflow-x:auto;">--------------- 雞蛋糕費用 ---------------
+牛奶糖 $33
+乳酪 $121
+雞蛋 $99
 
-                    --------------- 飲料費用 ---------------
-                    藍天 胭脂歐蕾 $78 溫無糖
-                    藍天 熟成榛果歐蕾 $80 微冰無糖
-                    藍天 胭脂紅茶 $55 微冰無糖
-                    藍天 熟成榛果歐蕾 $80 少冰無糖
-                    麻煩 熟成歐蕾 $75 常溫無糖
-                    沒角 熟成歐蕾 $150 去冰半糖
-                    yuna 金蜜歐蕾 $70 中杯 去冰無糖
-                    手手 春芽冷露 $65 去冰無糖
-                    闆娘 春檸綠茶 $65 去冰無糖
-                    阿文 胭脂歐蕾 $78 微冰微糖
+--------------- 飲料費用 ---------------
+藍天 胭脂歐蕾 $78 溫無糖
+麻煩 熟成歐蕾 $75 常溫無糖
 
-                    --------------- 點心費用 ---------------
-                    藍天 出 大布丁 167元
-                    闆娘 出 海鮮大拼盤 500元
-                    沒角 出 生乳捲 210元
-                </pre>
-                <div style="margin-top:6px;">
-                    <button onclick="loadExample()" class="secondary" style="padding:6px 10px;">載入示範範例到解析區</button>
-                    <small style="color:var(--muted); margin-left:8px;">載入後按「解析」即可示範解析結果。</small>
+--------------- 點心費用 ---------------
+藍天 出 大布丁 167元
+闆娘 出 海鮮大拼盤 500元</pre>
+                    <button onclick="loadExample()" class="secondary btn-sm" style="margin-top:10px;">載入範例到解析區</button>
                 </div>
             </details>
-            <textarea id="importText" rows="12" style="width: 100%;"></textarea>
-            <div style="margin-top:8px; display:flex; gap:8px;margin-bottom: 10px;">
+            <textarea id="importText" rows="10" style="width:100%;border-radius:16px;"></textarea>
+            <div style="margin-top:10px; display:flex; gap:8px; margin-bottom:10px;">
                 <button onclick="parseText()">解析</button>
-                <button class="secondary" onclick="loadExample()">載入示範範例</button>
+                <button class="secondary btn-sm" onclick="loadExample()">載入範例</button>
             </div>
         </div>
 
-        <!-- 手動一般模式編輯區 -->
+        <!-- 手動模式 -->
         <div id="manualParseBox" style="display:none; margin-top:8px;">
             <table style="width:100%; border-collapse:collapse; margin-bottom:8px;">
-                <thead>
-                    <tr>
-                        <th style="border:1px solid var(--border); padding:6px; width:15%;">分類</th>
-                        <th style="border:1px solid var(--border); padding:6px; width:45%;">品項</th>
-                        <th style="border:1px solid var(--border); padding:6px; width:15%;">價格</th>
-                        <th style="border:1px solid var(--border); padding:6px; width:20%;">分攤人（逗號分隔）</th>
-                        <th style="border:1px solid var(--border); padding:6px; width:20%;">分攤項目</th>
-                        <th style="border:1px solid var(--border); padding:6px; width:5%;">操作</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>分類</th><th>品項</th><th>價格</th><th>分攤人</th><th>類型</th><th></th></tr></thead>
                 <tbody id="manualRowsBody"></tbody>
             </table>
-            <div style="margin-bottom:8px;">
-                <button onclick="addManualRow()" class="btn">新增列</button>
-                <button onclick="saveManualRows()" class="btn">儲存至派對費用</button>
+            <div style="display:flex;gap:8px;margin-bottom:8px;">
+                <button onclick="addManualRow()" class="btn-sm">新增列</button>
+                <button onclick="saveManualRows()" class="btn-sm">儲存</button>
             </div>
         </div>
 
-        <!-- 折疊：派對費用 -->
+        <!-- 派對費用 -->
         <details class="fold-section" id="partyDetails" open>
             <summary>
-                <span class="fold-summary-title">派對費用</span>
+                <span class="fold-summary-title"><span class="section-dot" style="background:var(--mint);margin-right:4px;"></span> 派對費用</span>
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>分類</th>
-                            <th>品項</th>
-                            <th>價格</th>
-                            <th>分攤人</th>
-                            <th>付款人</th>
-                            <th>功能</th>
-                        </tr>
-                    </thead>
-                    <tbody id="partyTable"></tbody>
-                </table>
+                <div style="overflow-x:auto;">
+                <table><thead><tr><th>分類</th><th>品項</th><th>價格</th><th>分攤人</th><th>付款人</th><th></th></tr></thead>
+                <tbody id="partyTable"></tbody></table>
+                </div>
             </div>
         </details>
 
-        <!-- 折疊：個人費用 -->
+        <!-- 個人費用 -->
         <details class="fold-section" id="personalDetails" open>
             <summary>
-                <span class="fold-summary-title">個人費用</span>
+                <span class="fold-summary-title"><span class="section-dot" style="background:var(--sky);margin-right:4px;"></span> 個人費用</span>
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>人</th>
-                            <th>品項</th>
-                            <th>價格</th>
-                            <th>付款人</th>
-                            <th>功能</th>
-                        </tr>
-                    </thead>
-                    <tbody id="personalTable"></tbody>
-                </table>
+                <div style="overflow-x:auto;">
+                <table><thead><tr><th>人</th><th>品項</th><th>價格</th><th>付款人</th><th></th></tr></thead>
+                <tbody id="personalTable"></tbody></table>
+                </div>
             </div>
         </details>
 
-        <!-- 折疊：代付 -->
+        <!-- 代付 -->
         <details class="fold-section" id="advanceDetails" open>
             <summary>
-                <span class="fold-summary-title">代付</span>
+                <span class="fold-summary-title"><span class="section-dot" style="background:var(--peach);margin-right:4px;"></span> 代付</span>
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">
-                <div style="margin-bottom:8px;">
-                    <label style="margin-left:12px;">
-                        <input type="checkbox" id="consolidateAdvance" onchange="onConsolidateChange()"> 把其他人的代付視為要還給主要付錢人
+                <div style="margin-bottom:10px;">
+                    <label style="font-size:0.82rem; cursor:pointer; font-weight:600;">
+                        <input type="checkbox" id="consolidateAdvance" onchange="onConsolidateChange()" style="accent-color:var(--accent);">
+                        把其他人的代付視為要還給主要付錢人
                     </label>
                 </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>人</th>
-                            <th>品項</th>
-                            <th>金額</th>
-                            <th>分攤人</th>
-                            <th>功能</th>
-                        </tr>
-                    </thead>
-                    <tbody id="advanceTable"></tbody>
-                </table>
-                <div style="margin-top:8px;">
+                <div style="overflow-x:auto;">
+                <table><thead><tr><th>人</th><th>品項</th><th>金額</th><th>分攤人</th><th></th></tr></thead>
+                <tbody id="advanceTable"></tbody></table>
+                </div>
+                <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
                     <button onclick="calculate()">計算</button>
-                    <button onclick="exportLine()">複製結果</button>
-                    <button onclick="resetAll()">清空</button>
+                    <button onclick="exportLine()" class="secondary btn-sm">複製結果</button>
+                    <button onclick="resetAll()" class="secondary btn-sm">清空</button>
                 </div>
             </div>
         </details>
 
-        <!-- 折疊：總計 -->
+        <!-- 總計 -->
         <details class="fold-section" id="resultDetails" open>
             <summary>
-                <span class="fold-summary-title">總計</span>
+                <span class="fold-summary-title"><span class="section-dot" style="background:var(--pink);margin-right:4px;"></span> 總計</span>
                 <span class="fold-summary-chevron">▾</span>
             </summary>
             <div class="fold-body">

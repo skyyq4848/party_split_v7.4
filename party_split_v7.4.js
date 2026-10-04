@@ -66,11 +66,11 @@ const UNDO_MAX = 30;
 
 function pushUndo() {
     undoStack.push({
-        people: JSON.stringify(people),
-        party: JSON.stringify(party),
-        personal: JSON.stringify(personal),
-        advance: JSON.stringify(advance),
-        groups: JSON.stringify(groups)
+        people: localStorage.people || '[]',
+        party: localStorage.party || '[]',
+        personal: localStorage.personal || '[]',
+        advance: localStorage.advance || '[]',
+        groups: localStorage.groups || '[]'
     });
     if (undoStack.length > UNDO_MAX) undoStack.shift();
 }
@@ -104,7 +104,7 @@ function render() {
     for (let i = 0; i < people.length; i++) {
         let html = '<li>';
         html += '<span>' + people[i] + '</span>';
-        html += ' <button onclick="deletePerson(' + i + ')">刪除</button>';
+        html += ' <button class="btn-danger" onclick="deletePerson(' + i + ')">✕</button>';
         html += '</li>';
         peopleList.innerHTML += html;
     }
@@ -1608,6 +1608,23 @@ function updateDarkModeBtn() {
     updateDarkModeBtn();
 })();
 // ===== end 深色模式 =====
+
+// ===== 色系選擇 =====
+function setColorTheme(color) {
+    document.documentElement.setAttribute('data-color', color);
+    localStorage.colorTheme = color;
+    var dots = document.querySelectorAll('.theme-dot');
+    var themes = ['lavender','ocean','rose','mint','sunset'];
+    for (var i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('active', themes[i] === color);
+    }
+}
+
+(function initColorTheme() {
+    var saved = localStorage.colorTheme || 'lavender';
+    setColorTheme(saved);
+})();
+// ===== end 色系 =====
 
 // ===== 歷史紀錄 / 存檔 =====
 function getHistoryList() {
